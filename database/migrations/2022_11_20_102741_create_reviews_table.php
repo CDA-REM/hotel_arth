@@ -25,7 +25,7 @@ class CreateReviewsTable extends Migration
             $table->string('title');
             $table->mediumText('body');
             $table->boolean('is_displayed');
-            $stable->dateTime('created_at');
+            $table->dateTime('created_at');
             // $table->timestamps('created_at');
         });
     }
