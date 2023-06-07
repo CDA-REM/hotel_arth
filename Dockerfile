@@ -22,6 +22,9 @@ ENV LOG_CHANNEL stderr
 COPY --from=node /var/app/public/js /var/www/html/public/js
 COPY --from=node /var/app/public/css /var/www/html/public/css
 
+# Lie les images
+RUN php artisan storage:link
+
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
