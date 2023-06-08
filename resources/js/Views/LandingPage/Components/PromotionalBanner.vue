@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-arth-light-blue h-40 absolute inset-x-0 bottom-0"  :style="(close) ? 'display:none' : ''">
+    <div class="bg-arth-light-blue md:h-40 sm:h-20 absolute inset-x-0 bottom-0"  :style="(close) ? 'display:none' : ''">
         <div class="banner-text">
             <div class="flex flex-wrap items-center justify-between">
                 <div class="flex w-0 flex-1 items-center justify-around">

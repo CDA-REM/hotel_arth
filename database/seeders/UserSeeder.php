@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -16,23 +17,25 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::factory()
-           ->count(6)
+           ->count(5)
            ->create();
 
 
-//        DB::table('users') -> insert([
-//            [
-//                "gender" => "Monsieur",
-//                "personal_address" => json_encode(["address" => "51 route de la ligne", "zip_code" => "75015",  "city" => "Paris"]),
-//                "enterprise_name" => "Le Campus numérique",
-//                "professional_address" => json_encode(["address" => "1 Esplanade Augustin Aussedat", "zip_code" => "74000",  "city" => "Annecy"]),
-//                "firstname" => "Kaley",
-//                "lastname" => "King",
-//                "email" => "k.king@example.net",
-//                "phone" => "1-281-295-6068",
-//                "avatar_url" => "storage/avatars/avatar1.png",
-//                "password" => "P1vt7%63Hn#LoR'",
-//            ],
+        DB::table('users') -> insert([
+
+            [
+                'gender' => 'mister',
+                'personal_address' => json_encode(['address' => '51 route de la ligne', 'zip_code' => '75015',  'city' => 'Paris']),
+                'enterprise_name' => 'Le Campus numérique',
+                'professional_address' => json_encode(['address' => '1 Esplanade Augustin Aussedat', 'zip_code' => '74000',  'city' => 'Annecy']),
+                'firstname' => 'Kaley',
+                'lastname' => 'King',
+                'email' => 'rem@hotel.fr',
+                'phone' => '1-281-295-6068',
+                'avatar_url' => 'storage/avatars/avatar1.png',
+                'password' => '$2y$10$y8F7O8DXCuPskVcv4vOuvOhjTBVSLmbVofU4Sc3dgnNGqadkLbQiC',
+                'role' => "admin",
+            ],
 //            [
 //                "firstname" => "Jean",
 //                "lastname" => "Glloq",
@@ -73,7 +76,7 @@ class UserSeeder extends Seeder
 //                "avatar_url" => "storage/avatars/avatar1.png",
 //                "password" => ",*1iAy5KEUK&-`3&0$2",
 //            ],
-//        ]);
+        ]);
         /* "firstname" => Str::random(8),
             "lastname" => Str::random(8),
             "email" => Str::random(10).'@example.com',

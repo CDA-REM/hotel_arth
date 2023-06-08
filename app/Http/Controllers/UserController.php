@@ -2,111 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Validators\UserControllerValidator;
 use App\Models\User;
+use App\Repository\UserRepository;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Nette\Schema\ValidationException;
+use function PHPUnit\Framework\throwException;
+use Illuminate\Support\Facades\Response;
 
 class UserController extends Controller
 {
-    /**
-     * Register a user.
-     ** @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function register(Request $request)
-    {
-
-        $validatedData = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-        if ($validatedData->fails())
-        {
-            return response()->json([
-                'message' => $validatedData->errors(),
-            ]);
-        }else{
-            $user = User::create([
-                'email' => $request['email'],
-                'password' => Hash::make($request['password']),
-            ]);
-
-            $token = $user->createToken('auth_token')->plainTextToken;
-
-            return response()->json([
-                'token' => $token,
-                'user' => $user,
-            ]);
-        }
-    }
-
-    /**
-     * Display a user.
-     ** @param  \Illuminate\Http\Request  $request
-     * @return string
-     */
-    public function login(Request $request)
-    {
-        // Validation
-        $validatedData = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string',
-        ]);
-
-        // if validation fails
-        if ($validatedData->fails())
-        {
-            return response()->json([
-                'message' => $validatedData->errors()
-            ]);
-        }
-
-        // Check if right email and password match in database (authentication)
-        $authentication = Auth::attempt(['email' => $request['email'], 'password' => $request['password']]) === true;
-
-        // Trow an exception if authentication fails
-        function checkauthentication($response) {
-            if(!$response) {
-                throw new Exception("Email et/ ou mot de passe incorrecte");
-            }
-            return true;
-        }
-        try {
-            // Authentication of user pass
-            checkauthentication($authentication);
-            // Get user information
-            $user = User::where('email', $request['email'])->firstOrFail();
-
-            // Delete old tokens in db
-            $user->tokens()->delete();
-
-            //Get remember token
-            $rememberToken = $user->remember_token;
-
-            // Create a new token
-            $token = $user->createToken('auth_token')->plainTextToken;
-            return response()->json([
-                'token' => $token,
-                'remember_token' => $rememberToken,
-                'user' => $user,
-            ]);
-//            return redirect()->route('welcome');
-        }
-        catch (Exception $e){
-            // Authentication of user fails
-            return response()->json([
-                'message' => [
-                    'error' => $e->getMessage()
-                ]
-            ]);
-        }
-    }
 
     /**
      * Display a listing of the resource.
@@ -116,6 +28,7 @@ class UserController extends Controller
     public function user($id)
     {
         $user = User::query()->find($id);
+
         return response()->json($user);
 
     }
@@ -123,21 +36,49 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me(Request $request)
+    {
+        if(Auth::check()){
+            $user = Auth::user();
+            return response()->json([
+                'user'=> $user,
+            ]);
+        }else{
+            abort('401');
+        }
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
      * @return \Illuminate\Http\Response
+     * @throws Exception
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
+//        if($user){
+            return response()->json($user);
+//        }else{
+//            throw new Exception('Non');
+//        }
+
+//        $admin = $users->where('role', '=', 'Admin');
+//       $admin = Auth::check();
 
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return bool
      */
-    public function create()
+    public function create(User $user)
     {
-        //
+       //
     }
 
     /**
@@ -147,28 +88,6 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }
@@ -222,13 +141,37 @@ class UserController extends Controller
     }
 
     /**
+     * Update a user resource in the database.
+     * @param Request $request
+     */
+    function updateUserInfo(Request $request) {
+        // Data Validation
+        $validator = UserControllerValidator::updateUserValidator($request);
+        if($validator->fails())
+        {
+            Log::error($validator->errors());
+            return Response::json($validator->errors(), 502);
+        }
+        $validated = $validator->validated();
+        Log::info("After validated data");
+
+        return UserRepository::updateUser(User::find($validated["id"]), $validated);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        try {
+            User::destroy($id);
+            return response()->json(['Ok'], 200);
+        }catch (Exception $e){
+            return response()->json($e);
+        }
+
     }
 }

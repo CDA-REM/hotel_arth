@@ -3,7 +3,7 @@
         <select name="lang" v-model="lang" @change="switchLocale(lang)"
                 class="navbar__button appearance-none bg-white text-2xl"
                 aria-label="Menu déroulant pour changer la langue du site">
-            <option value="fr" :alt=french.image.alt>🇨🇵</option>
+            <option value="fr" :alt=french.image.alt>🇫🇷</option>
             <option value="en" :alt=english.image.alt>🇬🇧</option>
         </select>
     </div>

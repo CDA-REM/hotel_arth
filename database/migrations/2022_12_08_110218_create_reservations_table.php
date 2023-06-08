@@ -16,14 +16,18 @@ class CreateReservationsTable extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignIdFor(User::class)->nullable(false);
             $table->TinyInteger('number_of_people')->nullable(false);
-            $table->date('checkin')->nullable(false);
-            $table->date('checkout')->nullable(false);
-            $table->boolean('has_options')->nullable(false);
+            $table->dateTime('started_date')->nullable(false);
+            $table->dateTime('end_date')->nullable(false);
+            $table->dateTime('checkin')->nullable(true);
+            $table->dateTime('checkout')->nullable(true);
             $table->float('price')->nullable(false);
             $table->enum('stay_type', ['pro', 'personal'])->nullable(false);
             $table->enum('status', ['cancelled', 'terminated', 'no-show', 'validated'])->nullable(false);
+            $table->unique(["user_id", "checkin", "checkout"]);
+            $table->index("user_id");
         });
     }
 

@@ -39,11 +39,11 @@ export default {
 
 <style scoped>
     .section__video {
-        @apply flex flex-col lg:mx-6 my-6 lg:mb-10;
+        @apply flex flex-col my-6 lg:mb-10;
     }
 
     .section__video-content {
-        @apply flex flex-col lg:flex-row-reverse my-3 justify-around lg:mx-6 my-6;
+        @apply flex flex-col lg:flex-row-reverse my-3 justify-around my-6;
     }
     .video__h2 {
         @apply mx-4 ;
@@ -58,7 +58,7 @@ export default {
     }
 
     .video__media {
-        @apply w-max lg:mx-6 w-full aspect-video;
+        @apply w-max w-full aspect-video;
         max-height: 400px;
     }
 

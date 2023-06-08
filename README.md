@@ -14,12 +14,16 @@
     DB_CONNECTION=sqlite`
     DB_DATABASE=database/db.sqlite
     ```
+    *If relative path doesn't work, use absolute path.* 
+
   - Remember to change your database setup for production:
     ```
     DB_CONNECTION=pgsql
     DB_HOST=127.0.0.1
     DB_PORT=5432
     ```
+- Create database
+
 - Create and load your tables:
 
   ```

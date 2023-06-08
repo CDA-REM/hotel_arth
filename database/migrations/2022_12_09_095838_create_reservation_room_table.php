@@ -15,15 +15,15 @@ class CreateReservationRoomTable extends Migration
      */
     public function up()
     {
-        Schema::create('reservations_rooms', function (Blueprint $table) {
+        Schema::create('reservation_rooms', function (Blueprint $table) {
 
-            $table->integer('reservation_id')->nullable(false);
-            $table->foreign('reservation_id')->references('id')->on('reservations');
+//            $table->integer('reservation_id')->nullable(false);
+            $table->foreignId('reservation_id')->nullable(false);
 
-            $table->integer('room_number')->nullable(false);
-            $table->foreign('room_number')->references('room_number')->on('rooms');
+//            $table->integer('room_number')->nullable(false);
+            $table->foreignId('room_id')->nullable(false);
 
-            $table->unique(['reservation_id', 'room_number']);
+//            $table->unique(['reservation_id', 'room_id']);
         });
     }
 

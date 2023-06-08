@@ -22,12 +22,14 @@ class ReservationResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'number_of_people' => $this->number_of_people,
-            'checkin' => $this->checkin,
-            'checkout' => $this->checkout,
+            'checkin' => $this->started_date,
+            'checkout' => $this->end_date,
             'has_options' => $this->has_options,
             'price' => $this->price,
             'stay_type' => $this->stay_type,
-            'status' => $this->status
+            'status' => $this->status,
+            'rooms' => $this->rooms,
+            'options' => $this->options
         ];
     }
 }

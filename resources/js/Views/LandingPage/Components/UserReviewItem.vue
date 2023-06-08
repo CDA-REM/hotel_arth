@@ -6,41 +6,41 @@
                 </figure>
                 <div class="card__header--text">
                     <div class="header__text--rating" v-if="review.rating == '1'">
-                        <img src="/storage/pictures/Star_full.png" alt="">
-                        <img src="/storage/pictures/Star_empty.png" alt="">
-                        <img src="/storage/pictures/Star_empty.png" alt="">
-                        <img src="/storage/pictures/Star_empty.png" alt="">
-                        <img src="/storage/pictures/Star_empty.png" alt="">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.empty.source" :alt="image.empty.alt">
+                        <img :src="image.empty.source" :alt="image.empty.alt">
+                        <img :src="image.empty.source" :alt="image.empty.alt">
+                        <img :src="image.empty.source" :alt="image.empty.alt">
                     </div>
                     <div class="header__text--rating" v-if="review.rating == '2'">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_empty.png" alt="">
-                        <img src="storage/pictures/Star_empty.png" alt="">
-                        <img src="storage/pictures/Star_empty.png" alt="">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.empty.source" :alt="image.empty.alt">
+                        <img :src="image.empty.source" :alt="image.empty.alt">
+                        <img :src="image.empty.source" :alt="image.empty.alt">
                     </div>
                     <div class="header__text--rating" v-if="review.rating == '3'">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_empty.png" alt="">
-                        <img src="storage/pictures/Star_empty.png" alt="">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.empty.source" :alt="image.empty.alt">
+                        <img :src="image.empty.source" :alt="image.empty.alt">
                     </div>
                     <div class="header__text--rating" v-if="review.rating == '4'">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_empty.png" alt="">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.empty.source" :alt="image.empty.alt">
                     </div>
                     <div class="header__text--rating" v-if="review.rating == '5'">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_full.png" alt="">
-                        <img src="storage/pictures/Star_full.png" alt="">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.full.source" :alt="image.full.alt">
+                        <img :src="image.full.source" :alt="image.full.alt">
                     </div>
-                    <p>{{ review.user.firstname}} {{review.user.lastname}}</p>
+                    <p>{{ review.user.firstname }} {{ review.user.lastname }}</p>
                 </div>
             </div>
             <div class="card-body">
@@ -50,7 +50,7 @@
                 <p>{{ formatDate }}</p>
                 <blockquote>{{  review.body }}</blockquote>
                 <div class="card-actions justify-end">
-                    <div class="badge"><p>Client vérifié</p></div>
+                    <div class="badge"><p>{{ $t('reviews.badge') }}</p></div>
                 </div>
             </div>
         </div>
@@ -61,7 +61,16 @@ export default {
     data() {
         return {
             reviews: {},
-
+            image: {
+                full: {
+                    source: "storage/pictures/Star_full.png",
+                    alt: "",
+                },
+                empty: {
+                    source: "storage/pictures/Star_empty.png",
+                    alt: "",
+                }
+            }
         }
     },
     props:{
@@ -87,7 +96,7 @@ export default {
 
 <style scoped>
     .review__card {
-        @apply w-11/12 h-full bg-base-100 shadow-xl mx-auto my-8 border border-arth-yellow
+        @apply w-11/12 h-full bg-base-100 shadow-xl mx-auto my-8 border border-arth-yellow bg-white
     }
 
     .review__card--header {
@@ -111,7 +120,7 @@ export default {
     }
 
     .card-body {
-        @apply pt-0 h-max
+        @apply pt-0 h-max text-black
     }
 
     .card-title {
@@ -119,7 +128,7 @@ export default {
     }
 
     .badge {
-        @apply  border border-arth-yellow bg-white m-2 p-4 uppercase text-black
+        @apply  border border-arth-yellow bg-white m-2 p-4  text-black
     }
 
     .badge>p {
