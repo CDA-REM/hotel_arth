@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Reservation;
+use App\Models\Statistic;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class ReservationSeeder extends Seeder
+class StatisticSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +15,6 @@ class ReservationSeeder extends Seeder
      */
     public function run(): void
     {
-        Reservation::factory(50)->create();
+        Statistic::factory(10)->create();
     }
 }
