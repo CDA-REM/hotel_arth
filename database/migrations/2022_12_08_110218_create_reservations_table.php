@@ -26,7 +26,7 @@ class CreateReservationsTable extends Migration
             $table->float('price')->nullable(false);
             $table->enum('stay_type', ['pro', 'personal'])->nullable(false);
             $table->enum('status', ['cancelled', 'terminated', 'no-show', 'validated'])->nullable(false);
-            $table->unique(["user_id", "checkin", "checkout"]);
+            $table->unique(["user_id", "started_date", "end_date"]);
             $table->index("user_id");
         });
     }

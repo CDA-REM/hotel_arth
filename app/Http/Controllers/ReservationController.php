@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GetAvailableRoomsRequest;
-use App\Http\Requests\StoreReservationRequest;
 use App\Http\Resources\ReservationResource;
 use App\Http\Validators\ReservationControllerValidator;
 use App\Models\Reservation;
+use App\Repository\MailRepository;
 use App\Repository\ReservationRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Exception;
+use PDOException;
 
 class ReservationController extends Controller
 {
@@ -49,21 +51,29 @@ class ReservationController extends Controller
                                          ->take($validated["numberOfRooms"])
                                          ->pluck("id") ];
 
-        // Creating the reservation
-        $reservation = new Reservation;
-        $reservation->price = ReservationRepository::calculateReservationPrice($validated, $rooms);
-        $reservation->started_date = $validated["started_date"];
-        $reservation->end_date = $validated["end_date"];
-        $reservation->number_of_people = $validated["numberOfPeople"];
-        $reservation->stay_type = $validated["isTravelForWork"] ? "pro" : "personal";
-        $reservation->user_id = $validated["user_id"];
-        $reservation->status = "validated";
-        $reservation->save();
+        try {
+            // Creating the reservation
+            $reservation = new Reservation;
+            $reservation->price = ReservationRepository::calculateReservationPrice($validated, $rooms);
+            $reservation->started_date = $validated["started_date"];
+            $reservation->end_date = $validated["end_date"];
+            $reservation->number_of_people = $validated["numberOfPeople"];
+            $reservation->stay_type = $validated["isTravelForWork"] ? "pro" : "personal";
+            $reservation->user_id = Auth::user()->id;
+            $reservation->status = "validated";
+            $reservation->save();
+            $reservation->rooms()->attach($rooms);
+            if ($validated["formOptions"] !== []) {
+                $reservation->options()->attach($validated["formOptions"]);
+            }
 
-        $reservation->rooms()->attach($rooms);
+            MailRepository::sendMail($reservation);
 
-        if ($validated["formOptions"] !== []) {
-            $reservation->options()->attach($validated["formOptions"]);
+        } catch (PDOException $e) {
+            // Catching database exception
+            Log::error("A database error occured : {{$e}}");
+        } catch (Exception $e) {
+            Log::error($e);
         }
 
         $resource = ReservationResource::make(Reservation::findOrFail($reservation->id));
@@ -134,11 +144,16 @@ class ReservationController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
+    public function destroy(int $id) : Void
     {
         $reservation = Reservation::find($id);
         $reservation->rooms()->detach();
         $reservation->options()->detach();
         $reservation->delete();
+    }
+
+    public function test(int $id) {
+        $reservation = Reservation::findOrFail($id);
+        dd($reservation->user);
     }
 }
