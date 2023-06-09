@@ -52,9 +52,10 @@
                     <div>
                         <span class="label-text">{{ $t("signUp.rememberToken") }}</span>
                     </div>
-                    <div>
-                        <input type="checkbox" class="w-4 h-4" v-model="user.remember_token" id="remember_token" />
-                    </div>
+<!--                    TODO - Uncomment after adding remember_token to user model-->
+<!--                    <div>-->
+<!--                        <input type="checkbox" class="w-4 h-4" v-model="user.remember_token" id="remember_token" />-->
+<!--                    </div>-->
                 </div>
 
 
