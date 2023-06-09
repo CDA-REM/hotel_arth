@@ -27,7 +27,7 @@ class Reservation extends Model
 
     public $fillable = ['checkin', 'checkout', 'user_id', 'number_of_people', 'price', 'stay_type'];
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function rooms() : BelongsToMany
     {
@@ -35,7 +35,7 @@ class Reservation extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function options() : BelongsToMany
     {
