@@ -12,7 +12,7 @@ class ReservationFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition() :array
     {
         $user_id = User::all()->pluck('id')->toArray();
 

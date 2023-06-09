@@ -12,7 +12,7 @@ class CreateReservationsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
@@ -25,7 +25,7 @@ class CreateReservationsTable extends Migration
             $table->dateTime('checkout')->nullable(true);
             $table->float('price')->nullable(false);
             $table->enum('stay_type', ['pro', 'personal'])->nullable(false);
-            $table->enum('status', ['cancelled', 'terminated', 'no-show', 'validated'])->nullable(false);
+            $table->enum('status', ['cancelled', 'terminated', 'no-show', 'validated', 'in_progress'])->nullable(false);
             $table->unique(["user_id", "started_date", "end_date"]);
             $table->index("user_id");
         });
@@ -36,7 +36,7 @@ class CreateReservationsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('reservations');
     }
