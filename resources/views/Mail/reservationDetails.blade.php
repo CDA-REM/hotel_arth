@@ -19,6 +19,7 @@
         </style>
     </head>
     <body class="antialiased">
+        <p>Hey! Thank you for your reservation for the {{$checkin}}.</p>
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{$reservation_id}}">
     </body>
 </html>

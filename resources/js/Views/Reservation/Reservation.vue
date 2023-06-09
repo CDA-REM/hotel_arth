@@ -424,6 +424,8 @@ import moment from "moment";
 import {computed} from "vue";
 import {addMonths, getMonth, getYear} from 'date-fns';
 import router from "../../router";
+import axios from "axios";
+import { mapState } from "pinia";
 
 export default {
     name: 'reservation',
@@ -446,8 +448,8 @@ export default {
                 numberOfPeople: null,
                 formOptions: [],
                 isTravelForWork: false,
-                user_id: 1, // TODO - Fake Data - Remove this line when authentification will be implemented
-                //user_id: "userStore.user.id" // TODO - Uncomment this line when it will be required
+                // user_id: 1, // TODO - Fake Data - Remove this line when authentification will be implemented
+                // user_id: 7// TODO - Uncomment this line when it will be required
             },
             formUser : {
                 id: 1, // TODO - Fake Data - Remove this line when authentification will be implemented
@@ -486,6 +488,7 @@ export default {
             allTabs: ["checkAvailability", "selectOption", "validateBooking"],
             activeTab: "checkAvailability",
             errors: [],
+            isLoading: false,
         }
     },
     computed: {
@@ -568,7 +571,7 @@ export default {
             if (this.formReservation.end_date) {
             return this.formateDateForRecap(this.formReservation.end_date);
             }
-        },
+        }
     },
     methods: {
         //useUserStore, //TODO - Uncomment this line if needed
@@ -583,7 +586,7 @@ export default {
         },
         // This methods is called by the computed properties formateChekinDate() and formateCheckoutDate
         formateDateForRecap(input) {
-            if (input) {
+            if (input && !this.isLoading) {
                 return input = input.toLocaleDateString(this.globalStore.getLocale)
             }
             return new Date
@@ -597,7 +600,7 @@ export default {
         // This method formate date to match required format for request. It's called at sumbit
         formateCheckoutDateForRequest () {
             if (this.formReservation.end_date) {
-                return this.formReservation.end_date = moment(this.formReservation.end_date).format('YYYY-MM-DD');
+                return  this.formReservation.end_date = moment( this.formReservation.end_date ).format('YYYY-MM-DD');
             }
         },
         setActiveTab(tabRef) {
@@ -623,10 +626,12 @@ export default {
         },
         // Send request to create reservation
         async submitBooking() {
+            this.isLoading = true
             this.formateCheckinDateForRequest();
             this.formateCheckoutDateForRequest();
 
             if (this.$refs.reservationForm.reportValidity()) {
+
                 const config = {
                     headers: {
                         Accept: ["application/json"],
@@ -637,53 +642,33 @@ export default {
                         // TODO - Ajouter le cookie utilisateur ? ;
                     },
                 };
-            await axios
-                .post(
-                    "api/reservations/create",
-                    {
-                                ...this.formReservation,
-                            }, config
-                )
-                .then(
-                    (response) => {
-                            if (response.status === 200 || response.status === 201) {
-                                console.debug("response code: " + response.status);
-                                this.resetForm();
-                                return router.push("/reservation-confirmation");
-                            } else {
-                                this.errors.push(
-                                    "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
-                                    (response?.data?.message || " Erreur inconnue")
-                                );
-                            }
-                        },
-                )
-                .catch((error) => {
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        console.log('1')
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        console.log('2')
-                        console.log(error.request);
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log('3')
-                        console.log('Error', error.message);
-                    }
-                    console.log(error.config);
-                    this.errors.push(
-                            "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
-                        (error?.response?.data?.message || " Erreur inconnue")
-                    );
-                });
 
+                await axios.post("api/reservations/create",
+                                { ...this.formReservation, }, 
+                                config)
+                    .then(
+                        (response) => {
+                           if (response.status === 200 || response.status === 201) {
+                            this.resetForm();
+                            return router.push("/reservation-confirmation");
+                            } 
+                            // else {
+                            //     this.errors.push(
+                            //         "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
+                            //         (response?.data?.message || " Erreur inconnue")
+                            //     );
+                            // }
+                        }
+                    )
+                    .catch((error) => {
+                        this.errors = [];
+                        this.errors.push(
+                                "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
+                            (error?.response?.data?.message || " Erreur inconnue")
+                        );
+                    });
+                    
+            // TODO : Bugfix - Mise à jour de l'utilisateur avec un put
             // await axios.post('api/users/update', {...this.formUser, _method: 'put' }, config)
             //             .then(
             //                 (response) => {

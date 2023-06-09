@@ -12,7 +12,7 @@ export const useUserStore = defineStore('user', {
         //
     },
     actions: {
-        async getUser(){
+        async loadUser(){
             this.errors = []
             await axios.get('api/users/me')
                 .then((response) => {

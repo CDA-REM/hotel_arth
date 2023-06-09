@@ -193,3 +193,5 @@ Route::middleware(['auth:sanctum','role:admin'])->group(function () {
 });#######  END Protected Route admin
 
 Route::get('qr/reservation/{id}', [QRCodeController::class, 'show']);
+Route::post('reservation/{id}/send_mail', [MailController::class, 'sendmail']);
+Route::get('reservation/test/{id}', [ReservationController::class, 'test']);
