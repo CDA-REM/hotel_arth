@@ -17,7 +17,7 @@ class CreateStatisticsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->json('traceability');
-            $table->foreignIdFor(\App\Models\KeyCard::class)->nullable(false);
+            $table->foreignIdFor(\App\Models\KeyCard::class)->nullable(false)->unique();
         });
     }
 
