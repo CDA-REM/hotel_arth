@@ -8,6 +8,7 @@ use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 class ReviewController extends Controller
@@ -31,7 +32,7 @@ class ReviewController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -75,7 +76,7 @@ class ReviewController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Review $review)
     {
@@ -86,7 +87,7 @@ class ReviewController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Review $review)
     {
@@ -100,7 +101,7 @@ class ReviewController extends Controller
      * @param  int $id
      * @return JsonResponse
      */
-    public function update(UpdateReviewRequest $request, int $id)
+    public function update(UpdateReviewRequest $request, int $id) : JsonResponse
     {
         $review = ReviewResource::make(Review::query()->findOrFail($id));
         $review->update($request->post());
@@ -112,7 +113,7 @@ class ReviewController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(int $id)
     {
