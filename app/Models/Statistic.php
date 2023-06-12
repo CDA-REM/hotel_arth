@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int id
- * @property int card_id
+ * @property int key_card_id
  * @property string traceability
  */
 class Statistic extends Model
