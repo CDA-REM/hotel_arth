@@ -78,7 +78,7 @@ class ReservationController extends Controller
 
         $resource = ReservationResource::make(Reservation::findOrFail($reservation->id));
 
-        return response()->json($resource);
+        return response()->json($resource, 201);
     }
 
 
@@ -102,7 +102,7 @@ class ReservationController extends Controller
     public function update(Request $request, int $id)
     {
         $validator = Validator::make($request->post(), [
-            'status' => 'string|in:validated,cancelled,no-show,terminated'
+            'status' => 'string|in:validated,cancelled,no-show,terminated,in-progress',
                 ]
         );
 
