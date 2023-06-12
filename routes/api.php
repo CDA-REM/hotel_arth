@@ -4,6 +4,7 @@ use App\Http\Controllers\AdvantageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\HeroController;
+use App\Http\Controllers\KeyCardController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\PromotionalBannerController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoomCategoryController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SocialMediaController;
+use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QRCodeController;
 use Illuminate\Http\Request;
@@ -79,7 +81,6 @@ Route::middleware('setLocale')->prefix('reservation')->group(function () {
 
 #######  Route reservations api/reservations
 Route::middleware('setLocale')->prefix('reservations')->group(function () {
-    Route::get('/', [ReservationController::class, 'index']);
     Route::put('/{id}', [ReservationController::class, 'update']);
     Route::get('/availability', [ReservationController::class, 'getAvailableRooms']);
     Route::get('/{id}', [ReservationController::class, 'show']);
@@ -124,7 +125,7 @@ Route::middleware('setLocale')->prefix('home')->group(function () {
 }); # END Routes '/api/home/ landing page'
 
 
-# Protected routes
+# START - Protected routes admin
 Route::middleware(['auth:sanctum','role:admin'])->group(function () {
 
 #######  Protected Route api/home
@@ -190,8 +191,27 @@ Route::middleware(['auth:sanctum','role:admin'])->group(function () {
         Route::get('/options', [OptionController::class, 'index']);
         # Route::put('/options/{id}', [OptionController::class, 'update']);
     });
+});
+# END - Protected routes admin
 
-});#######  END Protected Route admin
-
+# START - Route QRCode
 Route::get('qr/reservation/{id}', [QRCodeController::class, 'show']);
+# START - Route Email
+//Route::post('reservation/{id}/send_mail', [MailController::class, 'sendmail']);
+# START - Route test
 Route::get('reservation/test/{id}', [ReservationController::class, 'test']);
+
+# START - Route key cards
+Route::middleware('setLocale')->prefix('keycard')->group(function () {
+    Route::post('/create', [KeyCardController::class, 'create']);
+    Route::get('/read', [KeyCardController::class, 'show']);
+});
+# END - Route key cards
+
+# START - Route statistics
+Route::middleware('setLocale')->prefix('statistics')->group(function () {
+    Route::post('/create', [StatisticController::class, 'create']);
+    Route::get('/{key_card_id}', [StatisticController::class, 'show']);
+    Route::put('/{key_card_id}', [StatisticController::class, 'update']);
+});
+# END - Route statistics
