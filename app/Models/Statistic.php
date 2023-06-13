@@ -15,16 +15,21 @@ class Statistic extends Model
 {
     use HasFactory;
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
     public $timestamps = true;
 
-    public $fillable = ['card_id', 'traceability'];
+    public $fillable = ['key_card_id', 'traceability'];
 
     /**
      * Defines a relationship to card from the statistic table
      * @return BelongsTo
      */
-    public function card() : BelongsTo
+    public function keycard() : BelongsTo
     {
-        return $this->belongsTo(Card::class);
+        return $this->belongsTo(KeyCard::class);
     }
 }
