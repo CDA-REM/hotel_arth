@@ -14,10 +14,11 @@ class StatisticFactory extends Factory
      */
     public function definition(): array
     {
-        $card_id = KeyCard::all()->pluck('id')->toArray();
+        $key_card_id = KeyCard::all()->pluck('id')->toArray();
 
         return [
-            'key_card_id' => $this->faker->randomElement($card_id),
+//            'key_card_id' => $this->faker->randomElement($key_card_id),
+            'key_card_id' => $this->faker->randomElements(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'], 10),
             'traceability' => '',
         ];
     }
