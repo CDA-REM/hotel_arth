@@ -2,6 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\KeyCard;
+use App\Models\Room;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -12,8 +15,8 @@ class KeyCardResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param Request $request
+     * @return array
      */
     public function toArray($request) :array
     {
@@ -21,6 +24,7 @@ class KeyCardResource extends JsonResource
             'id' => $this->id,
             'key_code' => $this->key_code,
             'room_id' => $this->room_id,
+            'reservation' => ReservationResource::make($this->reservation), // Utilise ReservationResource pour associer les champs de la table reservation.
         ];
     }
 }

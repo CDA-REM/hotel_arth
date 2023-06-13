@@ -20,6 +20,7 @@ class CreateKeyCardsTable extends Migration
             $table->timestamps();
             $table->uuid('key_code')->unique();
             $table->foreignIdFor(Room::class)->nullable(false);
+            $table->foreignIdFor(Reservation::class)->nullable(false);
         });
     }
 
