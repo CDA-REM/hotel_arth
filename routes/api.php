@@ -203,15 +203,18 @@ Route::get('reservation/test/{id}', [ReservationController::class, 'test']);
 
 # START - Route key cards
 Route::middleware('setLocale')->prefix('keycard')->group(function () {
-    Route::post('/create', [KeyCardController::class, 'create']);
-    Route::get('/read', [KeyCardController::class, 'show']);
+    Route::post('/', [KeyCardController::class, 'create']);
+    Route::get('/{keyCard}', [KeyCardController::class, 'show']);
 });
 # END - Route key cards
 
 # START - Route statistics
 Route::middleware('setLocale')->prefix('statistics')->group(function () {
-    Route::post('/create', [StatisticController::class, 'create']);
+    Route::post('/', [StatisticController::class, 'create']);
     Route::get('/{key_card_id}', [StatisticController::class, 'show']);
     Route::put('/{key_card_id}', [StatisticController::class, 'update']);
 });
 # END - Route statistics
+
+
+Route::get('/keycardReservation/{keyCard}', [KeyCardController::class, 'showWithReservation' ]);
