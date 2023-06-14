@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Exception;
+use Illuminate\Validation\ValidationException;
 use PDOException;
 
 class ReservationController extends Controller
@@ -23,7 +24,7 @@ class ReservationController extends Controller
     /**
      * Display a listing of the resource.
      *
-    //  * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * //  * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
@@ -35,22 +36,21 @@ class ReservationController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createReservation(Request $request) : JsonResponse
+    public function createReservation(Request $request): JsonResponse
     {
         // Data validation
         $validator = ReservationControllerValidator::createReservationValidator($request);
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             Log::error($validator->errors());
             return Response::json($validator->errors(), 502);
         }
         $validated = $validator->validated();
 
         // Creating an array with room ids
-        $rooms = [ ...ReservationRepository::getAvailableRooms($validated["started_date"], $validated["end_date"])
-                                         ->where("style", '==', $validated["roomCategory"])
-                                         ->take($validated["numberOfRooms"])
-                                         ->pluck("id") ];
+        $rooms = [...ReservationRepository::getAvailableRooms($validated["started_date"], $validated["end_date"])
+            ->where("style", '==', $validated["roomCategory"])
+            ->take($validated["numberOfRooms"])
+            ->pluck("id")];
 
         try {
             // Creating the reservation
@@ -88,7 +88,7 @@ class ReservationController extends Controller
      *
      * @return \App\Http\Resources\ReservationResource
      */
-    public function show(int $id) : ReservationResource
+    public function show(int $id): ReservationResource
     {
         return ReservationResource::make(Reservation::findOrFail($id));
     }
@@ -96,21 +96,26 @@ class ReservationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Reservation  $reservation
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     * @throws ValidationException
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id): JsonResponse
     {
         $validator = Validator::make($request->post(), [
             'status' => 'string|in:validated,cancelled,no-show,terminated,in-progress',
-                ]
-        );
+            'checkin' => date('Y-m-d H:i:s') || null,
+            'checkout' => date('Y-m-d H:i:s') || null,
+        ]);
+
+        if ($validator->fails()) {
+            Log::error($validator->errors());
+            return Response::json($validator->errors(), 502);
+        }
 
         $validated = $validator->validated();
-
         $resource = ReservationResource::make(Reservation::findOrFail($id));
-
         $resource->update($validated);
 
         return response()->json($resource);
@@ -122,12 +127,11 @@ class ReservationController extends Controller
      * @return JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function getAvailableRoomsFromRequest(Request $request) : Collection | Response
+    public function getAvailableRoomsFromRequest(Request $request): Collection|Response
     {
         // Data validation
         $validator = ReservationControllerValidator::getAvailableRoomsValidator($request);
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             Log::error($validator->errors());
             return Response::json($validator->errors(), 502);
         }
@@ -142,10 +146,10 @@ class ReservationController extends Controller
     /**
      * Remove the specified resource and its references in the pivot tables from storage.
      *
-     * @param  int $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id) : Void
+    public function destroy(int $id): void
     {
         $reservation = Reservation::find($id);
         $reservation->rooms()->detach();
@@ -153,7 +157,8 @@ class ReservationController extends Controller
         $reservation->delete();
     }
 
-    public function test(int $id) {
+    public function test(int $id)
+    {
         $reservation = Reservation::findOrFail($id);
         dd($reservation->user);
     }
