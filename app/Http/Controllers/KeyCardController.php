@@ -6,6 +6,7 @@ use App\Http\Requests\StoreKeyCardRequest;
 use App\Http\Requests\UpdateKeyCardRequest;
 use App\Http\Resources\KeyCardResource;
 use App\Models\KeyCard;
+use App\Repository\KeyCardRepository;
 use App\Repository\StatisticRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -40,21 +41,29 @@ class KeyCardController extends Controller
     public function create(Request $request): JsonResponse
     {
         try {
-            $keyCard = new KeyCard;
-            $keyCard->room_id = $request->room_id;
-            $keyCard->reservation_id = $request->reservation_id;
-            $keyCard->key_code = Str::uuid();
+            // If the number of keycards is less than 2, create a new card and a statistic for this card
+            if (KeyCardRepository::checkIfKeyCardCreationIsAllowed($request->room_id)) {
+                // Create the key card
+                $keyCard = new KeyCard;
+                $keyCard->room_id = $request->room_id;
+                $keyCard->reservation_id = $request->reservation_id;
+                $keyCard->key_code = Str::uuid();
 
-            $keyCard->save();
+                $keyCard->save();
 
-            // Create a statistic for this key card
-            StatisticRepository::createStatistic($keyCard->id);
-
+                // Create a statistic for this key card
+                StatisticRepository::createStatistic($keyCard->id);
+            }
+            // If the number of keycards is not less than 2, return an error
+            else {
+                Log::error("You can't create more than two keycards for this room");
+                return Response::json("Vous ne pouvez pas créer plus de deux keycards pour cette chambre", 502);
+            }
         } catch (Exception $e) {
             Log::error("A database error occured : {$e->getMessage()}");
             return Response::json($e->getMessage(), 502);
         }
-
+        // Return the created key card
         $resource = KeyCardResource::make(KeyCard::findorFail($keyCard->id));
         return response()->json($resource, 201);
     }
@@ -69,8 +78,6 @@ class KeyCardController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-
-
     }
 
     /**
@@ -85,11 +92,13 @@ class KeyCardController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource with the reservation.
      *
      * @param KeyCard $keyCard
      * @return Collection|array
      */
+
+    // TODO - Remove this method if it's useless to get reservation informations
     public function showWithReservation(KeyCard $keyCard): Collection|array
     {
         return $keyCard->with(['room.reservations'])->get();

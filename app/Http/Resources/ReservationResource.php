@@ -22,15 +22,23 @@ class ReservationResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
+            'user_gender' => $this->user->gender,
+            'user_name' => $this->user->firstname .' '. $this->user->lastname,
             'number_of_people' => $this->number_of_people,
-            'checkin' => $this->started_date,
-            'checkout' => $this->end_date,
-            'has_options' => $this->has_options,
+            'started_date' => $this->started_date,
+            'end_date' => $this->end_date,
+            'checkin' => $this->checkin,
+            'checkout' => $this->checkout,
             'price' => $this->price,
             'stay_type' => $this->stay_type,
             'status' => $this->status,
+<<<<<<< HEAD
             'rooms' => RoomResource::collection($this->rooms),
             'options' => OptionResource::collection($this->options)
+=======
+            'rooms' => RoomResource::collection($this->rooms), //
+            'options' => RoomResource::collection($this->options)
+>>>>>>> 9732d999485fd867d84dfe931c564cc5ed66935a
         ];
     }
 }

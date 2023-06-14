@@ -25,4 +25,17 @@ class StatisticRepository {
         $resource = StatisticResource::make(Statistic::findorFail($statistic->id));
         return response()->json($resource, 201);
     }
+
+    public static function getStatistic(int $key_card_id): JsonResponse
+    {
+        try {
+            $statistic = Statistic::where('key_card_id', $key_card_id)->firstOrFail();
+        } catch (Exception $e) {
+            Log::error("A database error occured : {$e->getMessage()}");
+            return Response::json($e->getMessage(), 502);
+        }
+
+        $resource = StatisticResource::make($statistic);
+        return response()->json($resource, 200);
+    }
 }
