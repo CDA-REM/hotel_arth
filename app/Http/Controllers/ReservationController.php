@@ -24,17 +24,18 @@ class ReservationController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * //  * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * //  * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return ReservationResource::collection(Reservation::all());
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ValidationException
      */
     public function createReservation(Request $request): JsonResponse
     {
@@ -85,8 +86,8 @@ class ReservationController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @return \App\Http\Resources\ReservationResource
+     * @param int $id
+     * @return ReservationResource
      */
     public function show(int $id): ReservationResource
     {
@@ -124,8 +125,8 @@ class ReservationController extends Controller
     /**
      * @param Request $request
      * @mixin Reservation
-     * @return JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return JsonResponse|Collection
+     * @throws ValidationException
      */
     public function getAvailableRoomsFromRequest(Request $request): Collection|Response
     {
@@ -147,14 +148,16 @@ class ReservationController extends Controller
      * Remove the specified resource and its references in the pivot tables from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function destroy(int $id): void
+    public function destroy(int $id): JsonResponse
     {
         $reservation = Reservation::find($id);
         $reservation->rooms()->detach();
         $reservation->options()->detach();
         $reservation->delete();
+
+        return response()->json(['message' => 'Reservation supprimée'], 204);
     }
 
     public function test(int $id)
