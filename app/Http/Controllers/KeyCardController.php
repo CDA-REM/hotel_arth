@@ -66,7 +66,6 @@ class KeyCardController extends Controller
         if (!KeyCardRepository::checkIfKeyCardCreationIsAllowed($request->room_id)) {
             return Response::json("Vous ne pouvez pas créer plus de 2 keycards pour cette chambre", 502);
         }
-
     }
 
     public function store(StoreKeyCardRequest $request)
@@ -79,8 +78,6 @@ class KeyCardController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-
-
     }
 
     /**
@@ -95,11 +92,13 @@ class KeyCardController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource with the reservation.
      *
      * @param KeyCard $keyCard
      * @return Collection|array
      */
+
+    // TODO - Remove this method if it's useless to get reservation informations
     public function showWithReservation(KeyCard $keyCard): Collection|array
     {
         return $keyCard->with(['room.reservations'])->get();

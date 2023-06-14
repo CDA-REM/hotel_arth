@@ -2,40 +2,37 @@
 
 namespace App\Repository;
 
+use App\Models\KeyCard;
+
 class KeyCardRepository
 {
     /**
-     * @param $keyCardId
+     * @param $roomId
      * @return mixed
      */
-    public static function getStatistic($keyCardId)
+    public static function getCurrentCards($roomId): mixed
     {
-        return StatisticRepository::getStatistic($keyCardId);
-    }
-
-    /**
-     * @param $keyCardId
-     * @return mixed
-     */
-    public static function getCurrentCards($roomId)
-    {
-        // créer un tableau vide $keyCardsAlreadyInUse
+        // Create empty array $keyCardsAlreadyInUse
         $keyCardsAlreadyInUse = [];
-        //récupérer toutes les keycards dont le room_id est égale au room_id de la chambre pour laquelle on veut afficher le nombre de keycards
+        // Get all keycards whose room_id is equal to the room_id of the room for which we want to know/display the number of keycards.
         foreach (KeyCard::all() as $keyCard) {
             if ($keyCard->room_id == $roomId) {
-                //ajouter la keycard au tableau $keyCardsAlreadyInUse
+                // Add the keycard to the array $keyCardsAlreadyInUse
                 array_push($keyCardsAlreadyInUse, $keyCard);
-                //retourner le nombre d'éléments du tableau $keyCardsAlreadyInUse
-                return $keyCardsAlreadyInUse;
             }
         }
+        // Return number of elements in array $keyCardsAlreadyInUse
+        dd(count($keyCardsAlreadyInUse));
         return count($keyCardsAlreadyInUse);
     }
 
-    public static function checkIfKeyCardCreationIsAllowed($roomId)
+    /**
+     * @param $roomId
+     * @return bool
+     */
+    public static function checkIfKeyCardCreationIsAllowed($roomId): bool
     {
-        //retourner true si le nombre de keycards est inférieur à 2, sinon retourner false
+        // Return true if the number of keycards is less than 2, otherwise return false
         return KeyCardRepository::getCurrentCards($roomId) < 2 ? true : false;
     }
 }
