@@ -22,6 +22,8 @@ class ReservationResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
+            'user_gender' => $this->user->gender,
+            'user_name' => $this->user->firstname .' '. $this->user->lastname,
             'number_of_people' => $this->number_of_people,
             'started_date' => $this->started_date,
             'end_date' => $this->end_date,
@@ -31,7 +33,7 @@ class ReservationResource extends JsonResource
             'stay_type' => $this->stay_type,
             'status' => $this->status,
             'rooms' => RoomResource::collection($this->rooms), //
-            'options' => $this->options
+            'options' => RoomResource::collection($this->options)
         ];
     }
 }
