@@ -28,7 +28,7 @@ class KeyCardController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return KeyCardResource::collection(
-            KeyCard::with('room_id')->paginate(10)
+            KeyCard::paginate(10)
         );
     }
 
@@ -92,16 +92,26 @@ class KeyCardController extends Controller
     }
 
     /**
-     * Display the specified resource with the reservation.
+     * Display all keyCards with their reservations.
      *
      * @param KeyCard $keyCard
      * @return Collection|array
      */
 
-    // TODO - Remove this method if it's useless to get reservation informations
     public function showWithReservation(KeyCard $keyCard): Collection|array
     {
         return $keyCard->with(['room.reservations'])->get();
+    }
+
+    /**
+     * Open the room door.
+     * @param $room_id
+     * @param $key_card_id
+     * @return JsonResponse
+     */
+    public function openRoomDoor(Request $request): JsonResponse
+    {
+        return KeyCardRepository::allowsRoomAccess($request->room_id, $request->key_card_id);
     }
 
     /**
