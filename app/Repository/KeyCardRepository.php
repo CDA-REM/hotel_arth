@@ -22,7 +22,6 @@ class KeyCardRepository
             }
         }
         // Return number of elements in array $keyCardsAlreadyInUse
-        dd(count($keyCardsAlreadyInUse));
         return count($keyCardsAlreadyInUse);
     }
 

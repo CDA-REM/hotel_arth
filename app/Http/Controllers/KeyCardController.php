@@ -40,9 +40,10 @@ class KeyCardController extends Controller
      */
     public function create(Request $request): JsonResponse
     {
-        // If the number of keycards is less than 2, create a new card and a statistic for this card
-        if (KeyCardRepository::checkIfKeyCardCreationIsAllowed($request->room_id)) {
-            try {
+        try {
+            // If the number of keycards is less than 2, create a new card and a statistic for this card
+            if (KeyCardRepository::checkIfKeyCardCreationIsAllowed($request->room_id)) {
+                // Create the key card
                 $keyCard = new KeyCard;
                 $keyCard->room_id = $request->room_id;
                 $keyCard->reservation_id = $request->reservation_id;
@@ -52,20 +53,19 @@ class KeyCardController extends Controller
 
                 // Create a statistic for this key card
                 StatisticRepository::createStatistic($keyCard->id);
-
-            } catch (Exception $e) {
-                Log::error("A database error occured : {$e->getMessage()}");
-                return Response::json($e->getMessage(), 502);
             }
-
-            $resource = KeyCardResource::make(KeyCard::findorFail($keyCard->id));
-            return response()->json($resource, 201);
-
+            // If the number of keycards is not less than 2, return an error
+            else {
+                Log::error("You can't create more than two keycards for this room");
+                return Response::json("Vous ne pouvez pas créer plus de deux keycards pour cette chambre", 502);
+            }
+        } catch (Exception $e) {
+            Log::error("A database error occured : {$e->getMessage()}");
+            return Response::json($e->getMessage(), 502);
         }
-        // If the number of keycards is not less than 2, return an error
-        if (!KeyCardRepository::checkIfKeyCardCreationIsAllowed($request->room_id)) {
-            return Response::json("Vous ne pouvez pas créer plus de 2 keycards pour cette chambre", 502);
-        }
+        // Return the created key card
+        $resource = KeyCardResource::make(KeyCard::findorFail($keyCard->id));
+        return response()->json($resource, 201);
     }
 
     public function store(StoreKeyCardRequest $request)
