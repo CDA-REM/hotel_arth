@@ -12,7 +12,7 @@ class ReservationFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition() :array
     {
         $user_id = User::all()->pluck('id')->toArray();
 
@@ -23,7 +23,7 @@ class ReservationFactory extends Factory
             'end_date' => $this->faker->dateTime(),
             'price' => $this->faker->randomFloat(2, 70, 3500),
             'stay_type' => $this->faker->randomElement(['pro', 'personal']),
-            'status' => $this->faker->randomElement(['cancelled', 'terminated', 'no-show', 'validated']),
+            'status' => 'validated',
         ];
     }
 }

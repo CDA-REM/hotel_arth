@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Reservation;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -13,7 +14,7 @@ class ReservationResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     public function toArray($request) : array
@@ -22,13 +23,14 @@ class ReservationResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'number_of_people' => $this->number_of_people,
-            'checkin' => $this->started_date,
-            'checkout' => $this->end_date,
-            'has_options' => $this->has_options,
+            'started_date' => $this->started_date,
+            'end_date' => $this->end_date,
+            'checkin' => $this->checkin,
+            'checkout' => $this->checkout,
             'price' => $this->price,
             'stay_type' => $this->stay_type,
             'status' => $this->status,
-            'rooms' => $this->rooms,
+            'rooms' => RoomResource::collection($this->rooms), //
             'options' => $this->options
         ];
     }

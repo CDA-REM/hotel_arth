@@ -12,9 +12,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int id
  * @property int user_id
  * @property int number_of_people
+ * @property string started_date
+ * @property string end_date
  * @property string checkin
  * @property string checkout
- * @property bool has_options
  * @property float price
  * @property string stay_type
  * @property string status
@@ -25,9 +26,9 @@ class Reservation extends Model
 
     public $timestamps = true;
 
-    public $fillable = ['checkin', 'checkout', 'user_id', 'number_of_people', 'price', 'stay_type'];
+    public $fillable = ['started_date','end_date', 'checkin', 'checkout', 'user_id', 'number_of_people', 'price', 'stay_type'];
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function rooms() : BelongsToMany
     {
@@ -35,7 +36,7 @@ class Reservation extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function options() : BelongsToMany
     {

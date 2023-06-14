@@ -644,14 +644,14 @@ export default {
                 };
 
                 await axios.post("api/reservations/create",
-                                { ...this.formReservation, }, 
+                                { ...this.formReservation, },
                                 config)
                     .then(
                         (response) => {
                            if (response.status === 200 || response.status === 201) {
                             this.resetForm();
                             return router.push("/reservation-confirmation");
-                            } 
+                            }
                             // else {
                             //     this.errors.push(
                             //         "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
@@ -667,7 +667,7 @@ export default {
                             (error?.response?.data?.message || " Erreur inconnue")
                         );
                     });
-                    
+
             // TODO : Bugfix - Mise à jour de l'utilisateur avec un put
             // await axios.post('api/users/update', {...this.formUser, _method: 'put' }, config)
             //             .then(

@@ -29,6 +29,7 @@ class Review extends Model
 
     /**
      * Get the content of the table users where user_id = user.id
+     * @return HasOne
      */
     public function user(): HasOne
     {
