@@ -88,6 +88,7 @@ export default {
                 this.userStore.isLogged = true
                 localStorage.setItem('isLogged', 'true')
                 await router.push({name: 'landingPage'})
+                //await router.push({name: 'reservation'})
             } catch (errors) {
                 this.errors = errors
             }

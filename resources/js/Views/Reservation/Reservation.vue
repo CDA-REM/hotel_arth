@@ -452,8 +452,8 @@ export default {
                 // user_id: 7// TODO - Uncomment this line when it will be required
             },
             formUser : {
-                id: 1, // TODO - Fake Data - Remove this line when authentification will be implemented
-                // id: "userStore.user.id", // TODO - Uncomment this line when it will be required
+                //id: 1, // TODO - Fake Data - Remove this line when authentification will be implemented
+                id: "userStore.user.id", // TODO - Uncomment this line when it will be required
                 civility: "",
                 firstname: "",
                 lastname: "",
@@ -669,7 +669,7 @@ export default {
                     });
 
             // TODO : Bugfix - Mise à jour de l'utilisateur avec un put
-            // await axios.post('api/users/update', {...this.formUser, _method: 'put' }, config)
+            // await axios.post('api/users/{this.formUser.id}', {...this.formUser, _method: 'patch' }, config)
             //             .then(
             //                 (response) => {
             //                     if (response.status === 200 || response.status === 201) {
