@@ -40,7 +40,7 @@ export default {
     },
     async mounted() {
         const response = await axios.get('api/home/footer');
-        this.footer = {...response.data['data']};
+        this.footer = {...response.data};
     },
     methods: {
 

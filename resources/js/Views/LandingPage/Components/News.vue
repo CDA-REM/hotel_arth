@@ -34,7 +34,7 @@ import NewsCard from "./NewsCard";
         },
         async mounted() {
             const response = await axios.get('api/home/news');
-            this.news.push(...response.data['data']);
+            this.news.push(...response.data);
         }
     }
 </script>

@@ -27,7 +27,7 @@ export default {
     },
     async mounted() {
         const response = await axios.get('api/home/advantages');
-        this.advantages.push(...response.data['data']) ;
+        this.advantages.push(...response.data) ;
     }
 }
 </script>

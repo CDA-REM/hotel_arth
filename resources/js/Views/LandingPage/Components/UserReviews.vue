@@ -41,7 +41,7 @@ export default {
     },
     async mounted() {
         const response = await axios.get('api/home/reviews');
-        this.reviews.push(...response.data['data']);
+        this.reviews.push(...response.data);
     }
 }
 </script>
