@@ -201,6 +201,7 @@ Route::get('reservation/test/{id}', [ReservationController::class, 'test']);
 Route::middleware('setLocale')->prefix('keycard')->group(function () {
     Route::post('/', [KeyCardController::class, 'create']);
     Route::get('/{keyCard}', [KeyCardController::class, 'show']);
+    Route::post('/room', [KeyCardController::class, 'openRoomDoor']);
 });
 # END - Route key cards
 
