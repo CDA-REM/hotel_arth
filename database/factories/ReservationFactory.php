@@ -15,13 +15,13 @@ class ReservationFactory extends Factory
     public function definition() :array
     {
         $user_id = User::all()->pluck('id')->toArray();
-        $started_random_date = $this->faker->dateTimeInInterval('-4 week', '+1 week');
+        $started_random_date = $this->faker->dateTimeBetween('-2 weeks', '+2 weeks');
 
         return [
             'user_id'=> $this->faker->randomElement($user_id),
             'number_of_people' => $this->faker->numberBetween(1, 9),
             'started_date' => $started_random_date,
-            'end_date' => $this->faker->dateTimeBetween($started_random_date, '+1 week'),
+            'end_date' => $this->faker->dateTimeBetween($started_random_date, '+2 weeks'),
             'price' => $this->faker->randomFloat(2, 70, 3500),
             'stay_type' => $this->faker->randomElement(['pro', 'personal']),
             'status' => 'validated',
