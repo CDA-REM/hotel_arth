@@ -104,22 +104,34 @@ class ReservationController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        $validator = Validator::make($request->post(), [
-            'status' => 'string|in:validated,cancelled,no-show,terminated,in-progress',
-            'checkin' => date('Y-m-d H:i:s') || null,
-            'checkout' => date('Y-m-d H:i:s') || null,
-        ]);
+        try {
+            $request->validate([
+                'status' => 'required|string|in:validated,cancelled,no-show,terminated,in_progress',
+                'checkin' => [
+                    'date_format:Y-m-d H:i:s',
+                    'date'
+                ],
+                'checkout' => [
+                    'date_format:Y-m-d H:i:s',
+                    'date'
+                ]
+            ]);
+            $reservation = Reservation::findOrFail($id);
+            $reservation->status = $request->status;
+            if (isset($request->checkin)) {
+                $reservation->checkin = $request->checkin;
+            }
+            if (isset($request->checkout)) {
+                $reservation->checkout = $request->checkout;
+            }
 
-        if ($validator->fails()) {
-            Log::error($validator->errors());
-            return Response::json($validator->errors(), 502);
+            $reservation->update($request->all());
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
         }
 
-        $validated = $validator->validated();
-        $resource = ReservationResource::make(Reservation::findOrFail($id));
-        $resource->update($validated);
-
-        return response()->json($resource);
+        return response()->json($reservation, 200);
     }
 
     /**
