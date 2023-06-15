@@ -59,9 +59,9 @@ export const translations = {
             numberOfRooms: "Number of rooms",
             selectInputHelp: "Select an option",
             roomCategory: "Type of room",
-            classic: "The Classic - 70€/person/night",
-            luxury: "The Luxury Room - 140€/person/night",
-            royal: "The Royal Suite - 280€/person/night",
+            classic: "The Classic - 70€/night",
+            luxury: "The Luxury Room - 140€/night",
+            royal: "The Royal Suite - 280€/night",
             totalPriceLegend: " Indicative price, the final price will be calculated at the end of the reservation process.",
         },
         options: {
@@ -183,9 +183,9 @@ export const translations = {
             numberOfRooms: 'Nombre de chambres',
             selectInputHelp: "Sélectionner une option",
             roomCategory: "Type de chambre",
-            classic: "La Classique - 70€/ personne/ nuit",
-            luxury: "La Chambre de Luxe - 140€/ personne/ nuit",
-            royal: "La Suite Royale - 280€/ personne/ nuit",
+            classic: "La Classique - 70€/nuit",
+            luxury: "La Chambre de Luxe - 140€/nuit",
+            royal: "La Suite Royale - 280€/nuit",
             totalPriceLegend: " Prix indicatif provisoire, le prix définitif sera calculé à la fin du processus de réservation."
         },
         options: {
@@ -232,7 +232,7 @@ export const translations = {
             title: "Confirmation de votre réservation",
             subtitle: "Merci !",
             sentenceWithReservationNumber: "Votre réservation n°xxxxx a bien été prise en compte.",
-            sentenceWithMessageForEmail: "Vous recevrez dans quelques instants un email de confirmation.",
+            sentenceWithMessageForEmail: "Vous recevrez un email de confirmation dans quelques instants.",
         },
         breadcrumb: {
             home: "Accueil",

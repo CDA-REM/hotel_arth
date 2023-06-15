@@ -1,15 +1,8 @@
-<!--Les balises span sont celles de Daisy UI : NE PAS RETIRER LES BALISES SPAN : class CSS Daisy UI -->
+<!--Les balises <span></span> sont celles de Daisy UI : NE PAS RETIRER LES BALISES SPAN : class CSS Daisy UI -->
 <template>
     <!--   START - navigation breadcrumb-->
     <nav class="flex" aria-label="Breadcrumb" id="form-breadcrumb">
         <ul class="inline-flex items-center space-x-1 md:space-x-3">
-            <!--            <li class="inline-flex items-center ml-6">-->
-            <!--                <router-link :to="{ name: 'landingPage'}"-->
-            <!--                             class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">-->
-            <!--                    {{ $t(('breadcrumb.home')) }}-->
-            <!--                </router-link>-->
-            <!--            </li>-->
-            <!--            <li> > </li>-->
             <li class="inline-flex items-center ml-6">
                 <button @click="setActiveTab('checkAvailability')"
                         :class="{ active: activeTab === 'checkAvailability' }"
@@ -40,7 +33,7 @@
     </nav>
     <!--   END - navigation breadcrumb -->
     <!-- START - Reservation form -->
-    <form ref="reservationForm"  @submit.prevent="submitBooking" class="flex flex-col mx-4">
+    <form ref="reservationForm" @submit.prevent="submitBooking" class="flex flex-col mx-4">
         <div class="form-control w-full max-w-md mx-auto my-12">
             <!-- START - Vue Reservation -->
             <fieldset class="checkAvailability__section" id="checkAvailability"
@@ -97,38 +90,42 @@
                     <option value="luxury">{{ $t('reservation.luxury') }}</option>
                     <option value="royal">{{ $t('reservation.royal') }}</option>
                 </select>
-<!--                <div v-if="form.roomCategory === 'classic'">-->
-                    <img v-if="formReservation.roomCategory === 'classic'" :src="roomsImg.classic.src" :alt="roomsImg.classic.altFr">
-                    <img v-else-if="formReservation.roomCategory === 'luxury'" :src="roomsImg.luxury.src" :alt="roomsImg.classic.altFr">
-                    <img v-else-if="formReservation.roomCategory === 'royal'" :src="roomsImg.royal.src" :alt="roomsImg.classic.altFr">
-<!--                </div>-->
+                <!--                <div v-if="form.roomCategory === 'classic'">-->
+                <img v-if="formReservation.roomCategory === 'classic'" :src="roomsImg.classic.src"
+                     :alt="roomsImg.classic.altFr">
+                <img v-else-if="formReservation.roomCategory === 'luxury'" :src="roomsImg.luxury.src"
+                     :alt="roomsImg.classic.altFr">
+                <img v-else-if="formReservation.roomCategory === 'royal'" :src="roomsImg.royal.src"
+                     :alt="roomsImg.classic.altFr">
+                <!--                </div>-->
 
                 <label for="numberOfPeople" class="label">
                     <span class="label-text">{{ $t('reservation.numberOfPeople') }}</span>
                 </label>
                 <input type="number"
-                        id="numberOfPeople"
-                        name="numberOfPeople"
-                        min="1"
-                        max="10"
-                        class="w-full max-w-md"
-                        v-model="formReservation.numberOfPeople"
-                        required
-                        >
+                       id="numberOfPeople"
+                       name="numberOfPeople"
+                       min="1"
+                       max="96"
+                       class="w-full max-w-md"
+                       v-model="formReservation.numberOfPeople"
+                       required
+                >
 
                 <label for="numberOfRooms" class="label">
                     <span class="label-text">{{ $t('reservation.numberOfRooms') }}</span>
                 </label>
                 <input type="number"
-                        id="numberOfRooms"
-                        name="numberOfRooms"
-                        :min="calculateMinNumberOfRooms"
-                        :max="calculateMaxNumberOfRooms"
-                        class="w-full max-w-md"
-                        v-model="formReservation.numberOfRooms"
-                        required>
+                       id="numberOfRooms"
+                       name="numberOfRooms"
+                       :min="calculateMinNumberOfRooms"
+                       :max="calculateMaxNumberOfRooms"
+                       class="w-full max-w-md"
+                       v-model="formReservation.numberOfRooms"
+                       required>
                 <p class="mt-6 text-center font-bold text-lg">{{ calculateRoomPrice }} € </p>
-                <p class="text-center text-red-600 font-bold italic text-sm">{{ $t('reservation.totalPriceLegend')}}</p>
+                <p class="text-center text-red-600 font-bold italic text-sm">
+                    {{ $t('reservation.totalPriceLegend') }}</p>
                 <!-- START - Navigation Button -->
                 <button type="button" @click="nextTab()" class="">
                     {{ $t('buttons.buttonBooking') }}
@@ -151,7 +148,7 @@
                         {{ $t(('options.recapEndDate')) }}
                         {{ formateCheckoutDate }} <br>
                         {{ formReservation.numberOfRooms }} {{ $t(('options.recapRoom')) }}
-                        {{ $t((`reservation.${formReservation.roomCategory}`))}},
+                        {{ $t((`reservation.${formReservation.roomCategory}`)) }},
 
                         {{ formReservation.numberOfPeople }} {{ $t(('options.recapPeople')) }}
                     </p>
@@ -226,16 +223,11 @@
                     </label>
                 </div>
                 <!-- END - Options checkboxes -->
-                <!-- START - Options price - TODO - Remove this section after validate result is the same as back-end's result -->
-<!--                <p class="mt-6 text-center text-red-600 font-bold">{{ $t('options.totalAmountOfOptions') }}-->
-<!--                    <span>{{ calculateOptionsPrice }}</span>-->
-<!--                    <span> €</span>-->
-<!--                </p>-->
-                <!-- END - Options price -->
-
+                <!-- START - Total price -->
                 <p class="mt-6 text-center text-red-600 font-bold">{{ $t('options.totalAmountOfStay') }}
                     <span class="font-bold">{{ calculateTotalPrice }} €</span>
                 </p>
+                <!-- END - Total price -->
                 <!-- START - Navigation button -->
                 <button type="button" @click="nextTab()" class="bg-arth-green w-full mt-6 mb-8">
                     {{ $t('buttons.buttonOptions') }}
@@ -244,7 +236,7 @@
             </fieldset>
             <!-- END - Vue Options -->
 
-            <!--            START - Vue Validation -->
+            <!-- START - Vue Validation -->
             <fieldset class="validation__section" id="validateBooking" v-show="activeTab === 'validateBooking'"
                       :disabled="activeTab !== 'validateBooking'">
                 <legend>
@@ -362,7 +354,7 @@
                                 <span class="label-text">{{ $t('validation.companyZipCode') }}</span>
                             </label>
                             <input type="text" id="companyZipCode" name="companyZipCode" placeholder=""
-                                   class="input input-bordered w-full max-w-md" v-model="formUser.zipCode"/>
+                            class="input input-bordered w-full max-w-md" v-model="formUser.zipCode"/>
                         </div>
 
                         <div class="form-control w-full">
@@ -370,10 +362,9 @@
                                 <span class="label-text">{{ $t('validation.companyCity') }}</span>
                             </label>
                             <input type="text" id="companyCity" name="companyCity" placeholder=""
-                                   class="input input-bordered w-full max-w-md" v-model="formUser.city"/>
+                            class="input input-bordered w-full max-w-md" v-model="formUser.city"/>
                         </div>
                     </div>
-
 
                     <div>
                         <h2>{{ $t('validation.recapTitle') }}</h2>
@@ -383,7 +374,8 @@
                                 {{ $t(('options.recapStartDate')) }} {{ formateCheckinDate }} {{
                                     $t(('options.recapEndDate'))
                                 }} {{ formateCheckoutDate }} <br>
-                                {{ formReservation.numberOfRooms }} {{ $t(('options.recapRoom')) }}  {{ $t((`reservation.${formReservation.roomCategory}`))}},
+                                {{ formReservation.numberOfRooms }} {{ $t(('options.recapRoom')) }}
+                                {{ $t((`reservation.${formReservation.roomCategory}`)) }},
                                 {{ formReservation.numberOfPeople }} {{ $t(('options.recapPeople')) }}
                             </p>
                             <p v-if="formReservation.formOptions.length" class="m-2">Options : </p>
@@ -425,11 +417,10 @@ import {computed} from "vue";
 import {addMonths, getMonth, getYear} from 'date-fns';
 import router from "../../router";
 import axios from "axios";
-import { mapState } from "pinia";
 
 export default {
     name: 'reservation',
-    components: { VueDatePicker },
+    components: {VueDatePicker},
     setup() {
         const userStore = useUserStore();
         const roomCategoriesStore = useRoomCategoriesStore();
@@ -440,7 +431,7 @@ export default {
     },
     data() {
         return {
-            formReservation : {
+            formReservation: {
                 started_date: null,
                 end_date: null,
                 roomCategory: null,
@@ -448,12 +439,9 @@ export default {
                 numberOfPeople: null,
                 formOptions: [],
                 isTravelForWork: false,
-                // user_id: 1, // TODO - Fake Data - Remove this line when authentification will be implemented
-                // user_id: 7// TODO - Uncomment this line when it will be required
             },
-            formUser : {
-                id: 1, // TODO - Fake Data - Remove this line when authentification will be implemented
-                // id: "userStore.user.id", // TODO - Uncomment this line when it will be required
+            formUser: {
+                id: this.userStore.id,
                 civility: "",
                 firstname: "",
                 lastname: "",
@@ -484,7 +472,7 @@ export default {
                     altEn: "Royal Suite",
                 }
             },
-            options: [1,2,3,4,5,6,7],
+            options: [1, 2, 3, 4, 5, 6, 7],
             allTabs: ["checkAvailability", "selectOption", "validateBooking"],
             activeTab: "checkAvailability",
             errors: [],
@@ -510,15 +498,15 @@ export default {
             if (this.formReservation.formOptions.length > 0) {
                 this.formReservation.formOptions.forEach(option => {
 
-                    if(option === "1" || option === "2" || option === "3" || option === "4" || option === "5") {
+                    if (option === "1" || option === "2" || option === "3" || option === "4" || option === "5") {
                         optionsPrice += (this.optionsStore.getOptions.find(element => element.id.toString() ===
                             option).price) * this.formReservation.numberOfPeople * numberOfDays;
                     }
-                    if(option === "6") {
+                    if (option === "6") {
                         optionsPrice += (this.optionsStore.getOptions.find(element => element.id.toString() ===
-                            option).price) * Math.ceil(numberOfDays/7) * this.formReservation.numberOfRooms;
+                            option).price) * Math.ceil(numberOfDays / 7) * this.formReservation.numberOfRooms;
                     }
-                    if(option === "7") {
+                    if (option === "7") {
                         optionsPrice += (this.optionsStore.getOptions.find(element => element.id.toString() === option).price);
                     }
                 });
@@ -536,15 +524,18 @@ export default {
             let numberOfBeds = minNumberOfRooms * 3;
 
             if (numberOfPeople > (numberOfBeds)) {
-                return minNumberOfRooms = Math.ceil(numberOfPeople/3);
+                return minNumberOfRooms = Math.ceil(numberOfPeople / 3);
             } else {
                 return minNumberOfRooms;
             }
         },
         // Define maximum number of rooms depending on number of people
         calculateMaxNumberOfRooms() {
-            if(this.formReservation.numberOfPeople > 0) {
+            if (this.formReservation.numberOfPeople > 0 && this.formReservation.numberOfPeople <= 96) {
                 return this.formReservation.numberOfPeople;
+            }
+            if (this.formReservation.numberOfPeople > 96) {
+                return 32;
             }
         },
         // Calculate minimum date of checkout depending on checkin date
@@ -569,7 +560,7 @@ export default {
         // Formate checkin date for recap
         formateCheckoutDate() {
             if (this.formReservation.end_date) {
-            return this.formateDateForRecap(this.formReservation.end_date);
+                return this.formateDateForRecap(this.formReservation.end_date);
             }
         }
     },
@@ -592,15 +583,15 @@ export default {
             return new Date
         },
         // This method formate date to match required format for request. It's called at sumbit
-        formateCheckinDateForRequest () {
+        formateCheckinDateForRequest() {
             if (this.formReservation.started_date) {
                 return this.formReservation.started_date = moment(this.formReservation.started_date).format('YYYY-MM-DD');
             }
         },
         // This method formate date to match required format for request. It's called at sumbit
-        formateCheckoutDateForRequest () {
+        formateCheckoutDateForRequest() {
             if (this.formReservation.end_date) {
-                return  this.formReservation.end_date = moment( this.formReservation.end_date ).format('YYYY-MM-DD');
+                return this.formReservation.end_date = moment(this.formReservation.end_date).format('YYYY-MM-DD');
             }
         },
         setActiveTab(tabRef) {
@@ -616,13 +607,45 @@ export default {
                 this.activeTab = this.allTabs[this.allTabs.indexOf(this.activeTab) + 1];
             }
         },
-        /*prevTab() {
-            if (this.activeTab !== "checkAvailability") {
-                this.activeTab = this.allTabs[this.allTabs.indexOf(this.activeTab) - 1];
-            }
-        },*/
         resetForm() {
             this.$refs.reservationForm.reset();
+        },
+        async submitUser() {
+            axios.post('api/users/' + this.formUser.id, {...this.formUser, _method: 'put'}, config)
+                .then(
+                    (response) => {
+                        if (response.status === 200 || response.status === 201) {
+                            console.log(this.form);
+                            console.debug("response code: " + response.status);
+                            this.resetForm();
+                            return router.push("/reservation-confirmation");
+                        }
+                    }
+                )
+                .catch((error) => {
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log('Server error out of 2xx')
+                        console.log("response data error : ", error.response.data);
+                        console.log("response data status : ", error.response.status);
+                        console.log("response data headers : ", error.response.headers);
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log('No response was received to your request.')
+                        console.log("error.request : ", error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('An error occured : ', error.message);
+                    }
+                    console.log(error.config);
+                    this.errors.push(
+                        "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
+                        (error?.response?.data?.message || " Erreur inconnue")
+                    );
+                });
         },
         // Send request to create reservation
         async submitBooking() {
@@ -631,7 +654,6 @@ export default {
             this.formateCheckoutDateForRequest();
 
             if (this.$refs.reservationForm.reportValidity()) {
-
                 const config = {
                     headers: {
                         Accept: ["application/json"],
@@ -644,71 +666,22 @@ export default {
                 };
 
                 await axios.post("api/reservations/create",
-                                { ...this.formReservation, },
-                                config)
+                    {...this.formReservation,},
+                    config)
                     .then(
                         (response) => {
-                           if (response.status === 200 || response.status === 201) {
-                            this.resetForm();
-                            return router.push("/reservation-confirmation");
+                            if (response.status === 200 || response.status === 201) {
+                                this.submitUser();
                             }
-                            // else {
-                            //     this.errors.push(
-                            //         "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
-                            //         (response?.data?.message || " Erreur inconnue")
-                            //     );
-                            // }
                         }
                     )
                     .catch((error) => {
                         this.errors = [];
                         this.errors.push(
-                                "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
+                            "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
                             (error?.response?.data?.message || " Erreur inconnue")
                         );
                     });
-
-            // TODO : Bugfix - Mise à jour de l'utilisateur avec un put
-            // await axios.post('api/users/update', {...this.formUser, _method: 'put' }, config)
-            //             .then(
-            //                 (response) => {
-            //                     if (response.status === 200 || response.status === 201) {
-            //                         console.log(this.form);
-            //                         console.debug("response code: " + response.status);
-            //                         this.resetForm();
-            //                         return router.push("/reservation-confirmation");
-            //
-            //                     } else {
-            //                         this.errors.push(
-            //                             "Une erreur s'est produite lors de l'enregistrement de l'utilisateur : " +
-            //                             (response?.data?.message || " Erreur inconnue")
-            //                         );
-            //                     }
-            //                 }
-            // ).catch((error) => { if (error.response) {
-            //         // The request was made and the server responded with a status code
-            //         // that falls out of the range of 2xx
-            //         console.log('Server error out of 2xx')
-            //         console.log("response data error : ", error.response.data);
-            //         console.log("response data status : ", error.response.status);
-            //         console.log("response data headers : ",error.response.headers);
-            //     } else if (error.request) {
-            //         // The request was made but no response was received
-            //         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            //         // http.ClientRequest in node.js
-            //         console.log('No response was received to your request.')
-            //         console.log("error.request : ", error.request);
-            //     } else {
-            //         // Something happened in setting up the request that triggered an Error
-            //         console.log('3')
-            //         console.log('An error occured : ', error.message);
-            //     }
-            //     console.log(error.config);
-            //     this.errors.push(
-            //         "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
-            //         (error?.response?.data?.message || " Erreur inconnue")
-            //     );
-            // });
             }
         },
     },
