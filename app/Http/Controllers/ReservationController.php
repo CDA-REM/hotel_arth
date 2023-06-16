@@ -102,35 +102,46 @@ class ReservationController extends Controller
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function update(Request $request, int $id): JsonResponse
+//    public function update(Request $request, int $id): JsonResponse
+//    {
+//        //
+//    }
+
+    /**
+     * Update Reservation status to in_progress and add checkin date
+     * @param Reservation $reservation
+     * @return JsonResponse
+     */
+    public function Checkin(Reservation $reservation): JsonResponse
     {
         try {
-            $request->validate([
-                'status' => 'required|string|in:validated,cancelled,no-show,terminated,in_progress',
-                'checkin' => [
-                    'date_format:Y-m-d H:i:s',
-                    'date'
-                ],
-                'checkout' => [
-                    'date_format:Y-m-d H:i:s',
-                    'date'
-                ]
-            ]);
-            $reservation = Reservation::findOrFail($id);
-            $reservation->status = $request->status;
-            if (isset($request->checkin)) {
-                $reservation->checkin = $request->checkin;
-            }
-            if (isset($request->checkout)) {
-                $reservation->checkout = $request->checkout;
-            }
-
-            $reservation->update($request->all());
+            $reservation = Reservation::findOrFail($reservation->id);
+            $reservation->status = "in_progress";
+            $reservation->checkin = now();
+            $reservation->update();
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);
         }
+        return response()->json($reservation, 200);
+    }
 
+    /**
+     * Update Reservation status to terminated and add checkout date
+     * @param Reservation $reservation
+     * @return JsonResponse
+     */
+    public function Checkout(Reservation $reservation): JsonResponse
+    {
+        try {
+            $reservation = Reservation::findOrFail($reservation->id);
+            $reservation->status = "terminated";
+            $reservation->checkout = now();
+            $reservation->update();
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
         return response()->json($reservation, 200);
     }
 

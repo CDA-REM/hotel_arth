@@ -79,7 +79,8 @@ Route::middleware('setLocale')->prefix('reservation')->group(function () {
 #######  Route reservations api/reservations
 Route::middleware('setLocale')->prefix('reservations')->group(function () {
     Route::get('/', [ReservationController::class, 'index']);
-    Route::put('/{id}', [ReservationController::class, 'update']);
+    Route::put('checkin/{reservation}', [ReservationController::class, 'checkin']);
+    Route::put('checkout/{reservation}', [ReservationController::class, 'checkout']);
     Route::get('/availability', [ReservationController::class, 'getAvailableRooms']);
     Route::get('/{id}', [ReservationController::class, 'show']);
     Route::post('/create', [ReservationController::class, 'createReservation']);
