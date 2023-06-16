@@ -209,7 +209,6 @@ Route::middleware('setLocale')->prefix('keycard')->group(function () {
 Route::middleware('setLocale')->prefix('statistics')->group(function () {
     Route::post('/', [StatisticController::class, 'create']);
     Route::get('/{key_card_id}', [StatisticController::class, 'show']);
-    Route::put('/{key_card_id}', [StatisticController::class, 'update']);
 });
 # END - Route statistics
 
