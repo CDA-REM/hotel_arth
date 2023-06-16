@@ -13,13 +13,13 @@
         <title>Hôtel Arth</title>
         <link rel="icon" type="image/png" href="{{ asset('storage/pictures/favicon.png') }}">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    
+
         <!-- Styles -->
         <style>
         </style>
     </head>
     <body class="antialiased">
-        <p>Hey! Thank you for your reservation for the {{$checkin}}.</p>
+        <p>Hey! Thank you for your reservation for the {{$started_date}}.</p>
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{$reservation_id}}">
     </body>
 </html>

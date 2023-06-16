@@ -24,6 +24,11 @@ class Statistic extends Model
 
     public $fillable = ['key_card_id', 'traceability'];
 
+    // Automatically cast the traceability field to an array
+//    protected $casts = [
+//        'traceability' => 'array'
+//    ];
+
     /**
      * Defines a relationship to card from the statistic table
      * @return BelongsTo

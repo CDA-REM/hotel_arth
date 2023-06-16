@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Http\Resources\RoomResource;
 use App\Models\Reservation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,8 +34,7 @@ class ReservationDetails extends Mailable
                     ->view('mail.reservationDetails')
                     ->with(
                         [
-                            'reservation_id' => $this->reservation->id,
-                            'started_date' => $this->reservation->started_date,
+                            'reservation' => $this->reservation
                         ]
                     );
     }

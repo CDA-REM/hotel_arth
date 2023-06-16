@@ -32,8 +32,9 @@ class ReservationResource extends JsonResource
             'price' => $this->price,
             'stay_type' => $this->stay_type,
             'status' => $this->status,
-            'rooms' => RoomResource::collection($this->rooms), //
-            'options' => RoomResource::collection($this->options)
+            'rooms' => RoomResource::collection($this->rooms),
+            'options' => OptionResource::collection($this->options),
+            'related_cards' => KeyCardLightResource::collection($this->relatedCards)
         ];
     }
 }

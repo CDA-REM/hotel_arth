@@ -17,7 +17,13 @@ class Room extends Model
         'room_number',
         'style',
         'price',
+        // TODO - Modifier le modèle et tous les fichiers pour ajouter un tableau contenant les keycards id. Le tableau peut être vide. A la fin de la réservation il est remis à zéro.
+        //'roomsKeyCards',
     ];
+
+//    protected $casts = [
+//        'keys' => 'array'
+//    ];
 
     /**
      * Rooms that belongs to a reservations

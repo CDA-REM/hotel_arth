@@ -28,7 +28,9 @@ class ReservationController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return ReservationResource::collection(Reservation::all());
+        $reservationsWithKeyCards = Reservation::with("relatedCards")->get();
+        return ReservationResource::collection($reservationsWithKeyCards);
+
     }
 
     /**
@@ -186,6 +188,8 @@ class ReservationController extends Controller
     public function test(int $id)
     {
         $reservation = Reservation::findOrFail($id);
-        dd($reservation->user);
+        dd($reservation->rooms);
     }
+
+    // List of current reservations with number of
 }

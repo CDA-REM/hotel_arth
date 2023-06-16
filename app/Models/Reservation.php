@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -41,6 +42,12 @@ class Reservation extends Model
     public function options() : BelongsToMany
     {
         return $this->belongsToMany(Option::class, 'reservations_options');
+    }
+
+
+    public  function relatedCards() : HasMany
+    {
+        return $this->hasMany(KeyCard::class, 'reservation_id', 'id');
     }
 
     /**
