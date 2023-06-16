@@ -2,17 +2,18 @@
 
 namespace App\Repository;
 
-use App\Http\Resources\KeyCardResource;
 use App\Models\KeyCard;
-use App\Models\Room;
+use Exception;
+use Illuminate\Http\JsonResponse;
 
 class KeyCardRepository
 {
     /**
+     * Get the number of keycards for a room
      * @param $roomId
-     * @return mixed
+     * @return int
      */
-    public static function getCurrentCards($roomId): mixed
+    public static function getCurrentCards($roomId): int
     {
         // Create empty array $keyCardsAlreadyInUse
         $keyCardsAlreadyInUse = [];
@@ -28,6 +29,7 @@ class KeyCardRepository
     }
 
     /**
+     * Verifies if the number of keycards is less than 2
      * @param $roomId
      * @return bool
      */
@@ -38,10 +40,13 @@ class KeyCardRepository
     }
 
     /**
+     * Verify if the keycard is valid before allowing access to the room
      * @param $room_id
-     * @return mixed
+     * @param $key_card_id
+     * @return JsonResponse
+     * @throws Exception
      */
-    public static function allowsRoomAccess($room_id, $key_card_id): mixed
+    public static function allowsRoomAccess($room_id, $key_card_id): JsonResponse
     {
         //Récupérer la $keycard->room_id
         $keycard = KeyCard::findorFail($key_card_id);
@@ -57,12 +62,13 @@ class KeyCardRepository
 
         //Vérifier si $room_id est égale à $keycard->room_id
         if ($keyCard_room_id == $room_id && !isset($checkout) && $today <= $end_date) {
+            // enregistrer la date et l'heure dans les statistiques
+            StatisticRepository::updateStatistic($key_card_id);
             // retourner un objet json avec un message et le status de la requete
             return response()->json([
                 'message' => 'Vous pouvez accéder à la chambre',
                 'status' => 200
             ]);
-            return true;
         } else {
             // retourner un objet json avec un message et le status de la requete
             return response()->json([
