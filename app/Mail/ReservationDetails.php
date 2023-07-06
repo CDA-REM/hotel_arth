@@ -32,8 +32,10 @@ class ReservationDetails extends Mailable
         return $this->from("romain.candusso@gmail.com", "Hotel Arth")
                     ->view('mail.reservationDetails')
                     ->with(
-                        ['reservation_id' => $this->reservation->id,
-                          'checkin' => $this->reservation->started_date]
+                        [
+                            'reservation_id' => $this->reservation->id,
+                            'started_date' => $this->reservation->started_date,
+                        ]
                     );
     }
 }

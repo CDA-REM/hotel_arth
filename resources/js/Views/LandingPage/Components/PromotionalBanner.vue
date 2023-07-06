@@ -41,7 +41,7 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
         },
         async mounted() {
             const response = await axios.get('api/home/promotional_banner');
-            this.promotionalBanner = {...response.data['data']};
+            this.promotionalBanner = {...response.data};
         },
         methods: {
             closeBanner (){

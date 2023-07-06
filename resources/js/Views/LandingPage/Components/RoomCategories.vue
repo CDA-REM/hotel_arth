@@ -24,7 +24,7 @@ import Room from './Room';
         },
         async mounted() {
             const response = await axios.get('/api/home/room_category');
-            this.roomCategories.push(...response.data['data']);
+            this.roomCategories.push(...response.data);
         }
     }
 </script>

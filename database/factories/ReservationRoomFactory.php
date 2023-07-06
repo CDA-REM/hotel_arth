@@ -18,6 +18,7 @@ class ReservationRoomFactory extends Factory
     {
         $rooms = Room::all()->pluck('id');
         $reservations = Reservation::all()->pluck('id');
+
         return [
             'room_id' => $this->faker->randomElement($rooms),
             'reservation_id' => $this->faker->randomElement($reservations)

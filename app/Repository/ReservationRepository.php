@@ -29,11 +29,11 @@ class ReservationRepository
 
     private static function calculateOptionPrice(array $validated, int $numberOfRooms) : float|int
     {
-        $checkin = $validated["started_date"];
-        $checkout = $validated["end_date"];
+        $started_date = $validated["started_date"];
+        $end_date = $validated["end_date"];
         $people = $validated["numberOfPeople"];
         // Carbon is a class used to work with dates
-        $number_of_days = Carbon::parse($checkin)->diffInDays(Carbon::parse($checkout));
+        $number_of_days = Carbon::parse($started_date)->diffInDays(Carbon::parse($end_date));
 
         $option_price = 0;
         $options = $validated["formOptions"];
@@ -52,10 +52,10 @@ class ReservationRepository
         return $option_price;
     }
 
-    static function getAvailableRooms($checkin, $checkout) {
+    static function getAvailableRooms($started_date, $end_date) {
         // Get the id of every reservation between two dates
-        $reservationsIdArray = Reservation::whereBetween("started_date", [$checkin, $checkout])
-            ->orWhereBetween("end_date", [$checkin, $checkout])
+        $reservationsIdArray = Reservation::whereBetween("started_date", [$started_date, $end_date])
+            ->orWhereBetween("end_date", [$started_date, $end_date])
             ->pluck("id");
 
         // Retrieve Reservations in a Collection

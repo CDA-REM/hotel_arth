@@ -21,10 +21,10 @@ class Room extends Model
 
     /**
      * Rooms that belongs to a reservations
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function reservations() : BelongsToMany
     {
-        return $this->hasMany(Reservation::class, 'reservation_rooms');
+        return $this->belongsToMany(Reservation::class, 'reservation_rooms');
     }
 }

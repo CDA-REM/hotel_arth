@@ -24,7 +24,7 @@
                 }
             }
         );
-            this.hero = {...response.data['data']};
+            this.hero = {...response.data};
             this.image = {backgroundImage:`url(${this.hero.media_url})`}
         },
         data() {
