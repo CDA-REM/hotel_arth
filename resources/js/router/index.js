@@ -13,30 +13,30 @@ const routes = [
     {
         path: '/',
         name: 'landingPage',
-        component: LandingPage
+        component: LandingPage,
+        // children: [
+        //     {
+        //         path: '/rooms',
+        //         name: 'roomCategories',
+        //         component: RoomCategories
+        //     },
+        //     {
+        //         path: '/advantages',
+        //         name: 'advantages',
+        //         component: Advantages
+        //     },
+        //     {
+        //         path: '/reviews',
+        //         name: 'userReviews',
+        //         component: UserReviews
+        //     },
+        //     {
+        //         path: '/news',
+        //         name: 'news',
+        //         component: News
+        //     },
+        // ]
     },
-    {
-        path: '/rooms',
-        name: 'roomCategories',
-        component: RoomCategories
-    },
-    {
-        path: '/advantages',
-        name: 'advantages',
-        component: Advantages
-    },
-    {
-        path: '/reviews',
-        name: 'userReviews',
-        component: UserReviews
-    },
-    {
-        path: '/news',
-        name: 'news',
-        component: News
-    },
-
-
     {
         path: '/login',
         name: 'login',
