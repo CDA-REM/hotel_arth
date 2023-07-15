@@ -24,7 +24,7 @@
                     <!-- STOP - Open button for small and medium devices -->
 
                     <!-- START - Nav links for large devices -->
-                    <PopoverGroup as="nav" class="hidden space-x-6 lg:space-x-10 lg:flex items-center ml-0"
+                    <PopoverGroup as="nav" v-if="isHomeView()" class="hidden space-x-6 lg:space-x-10 lg:flex items-center ml-0"
                                   aria-label="Barre de navigation">
                         <router-link to="#rooms" class="font-medium text-gray-500 hover:text-gray-900">
                             {{$t("navbar.rooms")}}
@@ -102,9 +102,10 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- START - Link to landing page section for small devices -->
+
                         <div class="space-y-6 py-6 px-5">
-                            <div class="grid grid-cols-2 gap-y-4 gap-x-8">
+                            <!-- START - Link to landing page section for small devices -->
+                            <div v-if="isHomeView()" class="grid grid-cols-2 gap-y-4 gap-x-8">
                                 <router-link to="#rooms" class="font-medium text-gray-900 hover:text-gray-700">
                                     {{ $t("navbar.rooms") }}
                                 </router-link>
@@ -124,6 +125,8 @@
                                              class="flex w-full items-center justify-center border border-transparent bg-arth-dark-blue hover:bg-white hover:text-black hover:border-arth-dark-blue my-6 px-4 py-2 font-medium text-white shadow-sm">
                                     {{ $t("buttons.reservation")}}
                                 </router-link>
+
+                                <!--                                START - Sign up and login buttons -->
                                 <div v-if="!store.user">
                                     <router-link :to="{ name: 'signUp'}"
                                                  class="flex w-full items-center justify-center border border-arth-dark-blue bg-white hover:border-transparent hover:bg-arth-light-blue my-6 px-4 py-2 font-medium text-arth-dark-blue shadow-sm">
@@ -137,6 +140,8 @@
                                         </router-link>
                                     </p>
                                 </div>
+                                <!--                                STOP - Sign up and login buttons -->
+                                <!-- START - Profile and logout buttons -->
                                 <div v-if="store.user">
                                     <router-link :to="{ name: '' }"
                                                  class="flex w-full items-center justify-center border border-arth-dark-blue bg-white hover:border-transparent hover:bg-arth-light-blue my-6 px-4 py-2 font-medium text-arth-dark-blue shadow-sm">
@@ -150,6 +155,7 @@
                                     class="flex w-full mt-6 text-center text-black font-medium  items-center justify-center whitespace-nowrap border border-arth-light-blue px-6 py-2 shadow-sm hover:bg-arth-light-blue"
                                 >{{$t("buttons.logout")}}
                                 </router-link>
+                                <!-- STOP - Profile and logout buttons -->
                             </div>
                         </div>
                     </div>
