@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from "vue-router";
+import {createRouter, createWebHashHistory, createWebHistory} from "vue-router";
 import LandingPage from '../Views/LandingPage/LandingPage';
 import Login from '../Views/Login';
 import SignUp from '../Views/SignUp';
@@ -45,12 +45,12 @@ const routes = [
     {
         path: '/signup',
         name: 'signUp',
-        component: SignUp
+        component: () => import('../Views/SignUp.vue')
     },
     {
         path: '/reservation',
         name: 'reservation',
-        component: Reservation,
+        component: () => import('../Views/Reservation/Reservation.vue')
     },
     {
         path: '/reservation-confirmation',
@@ -60,7 +60,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+    history: createWebHashHistory(process.env.BASE_URL),
     routes,
     scrollBehavior(to, from, savedPosition) {
         // if (savedPosition) {
