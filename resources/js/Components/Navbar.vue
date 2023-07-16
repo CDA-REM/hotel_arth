@@ -59,7 +59,14 @@
                             <label tabindex="0" class="inline-flex items-center justify-center cursor-pointer whitespace-nowrap border border-arth-dark-blue px-6 py-2 shadow-sm hover:bg-arth-dark-blue hover:text-white"
                             >{{ $t("buttons.profile")}}</label>
                             <ul tabindex="0" class="dropdown-content menu  bg-arth-light-blue w-48">
-                                <li><a class="hover:bg-arth-grey">{{ $t("buttons.account")}}</a></li>
+                                <li>
+                                    <router-link
+                                        :to="{ name : 'userAccount' }"
+                                        class="hover:bg-arth-grey"
+                                    >
+                                        {{ $t("buttons.account")}}
+                                    </router-link>
+                                </li>
                                 <li>
                                     <a @click="store.logout()" href="/" class="hover:bg-arth-grey">{{ $t("buttons.logout")}}</a>
                                 </li>
@@ -104,7 +111,14 @@
                                         </svg>
                                         </label>
                                         <ul tabindex="0" class="dropdown-content menu bg-arth-light-blue w-36">
-                                            <li><a class="hover:bg-arth-grey">{{ $t("buttons.account")}}</a></li>
+                                            <li>
+                                                <router-link
+                                                    :to="{ name : 'userAccount' }"
+                                                    class="hover:bg-arth-grey"
+                                                >
+                                                    {{ $t("buttons.account")}}
+                                                </router-link>
+                                            </li>
                                             <li>
                                                 <a @click="store.logout()" href="/" class="hover:bg-arth-grey">{{ $t("buttons.logout")}}</a>
                                             </li>

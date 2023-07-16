@@ -11,6 +11,24 @@ import ReservationConfirmation from "../Views/Reservation/ReservationConfirmatio
 
 const routes = [
     {
+        // path: '/user/:id',
+        path: '/user',
+        name: 'userAccount',
+        component: () => import('../Views/private/Account.vue'),
+        // props: (route: { params: { id: string } }) => ({...route.params, id: parseInt(route.params.id)})
+        // beforeEnter(to: { params: { id: string }; path: string; query: any; hash: any }, from: any) {
+        //     const exists = sourceData.users.find(
+        //         destination => destination.id === parseInt(to.params.id)
+        //     )
+        //     if (!exists) return {
+        //         name: 'NotFound',
+        //         params: {pathMatch: to.path.split('/').slice(1)},
+        //         query: to.query,
+        //         hash: to.hash,
+        //     }
+        // },
+    },
+    {
         path: '/',
         name: 'landingPage',
         component: LandingPage,
@@ -40,7 +58,7 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: Login
+        component: () => import('../Views/Login.vue')
     },
     {
         path: '/signup',
