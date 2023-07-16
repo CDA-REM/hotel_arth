@@ -90,19 +90,37 @@
                                         <img class="h-20 w-auto" src="/storage/pictures/Logo.svg" alt="Hôtel Arth" />
                                     </div>
                                 </router-link>
-                                <div>
-                                    <LanguagesToggleButton />
-                                </div>
-                                <div class="-mr-2">
-                                    <PopoverButton
-                                        class="inline-flex items-center justify-center rounded-md bg-white mt-0 p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-arth-dark-blue">
-                                        <span class="sr-only">Close menu</span>
-                                        <XMarkIcon class="h-6 w-6" aria-hidden="true" />
-                                    </PopoverButton>
+                                <div class="flex items-center justify-between gap-2">
+                                    <div>
+                                        <LanguagesToggleButton />
+                                    </div>
+                                    <div v-if="store.user" class="header__button--profile dropdown">
+                                        <label tabindex="0"
+                                               class="inline-flex items-center justify-center whitespace-nowrap hover:bg-arth-dark-blue hover:text-white"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                               stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        </label>
+                                        <ul tabindex="0" class="dropdown-content menu bg-arth-light-blue w-36">
+                                            <li><a class="hover:bg-arth-grey">{{ $t("buttons.account")}}</a></li>
+                                            <li>
+                                                <a @click="store.logout()" href="/" class="hover:bg-arth-grey">{{ $t("buttons.logout")}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="-mr-2">
+                                        <PopoverButton
+                                            class="inline-flex items-center justify-center rounded-md bg-white mt-0 p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-arth-dark-blue">
+                                            <span class="sr-only">Close menu</span>
+                                            <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+                                        </PopoverButton>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
+                        <!-- START - Navbar body for small devices -->
                         <div class="space-y-6 py-6 px-5">
                             <!-- START - Link to landing page section for small devices -->
                             <div v-if="isHomeView()" class="grid grid-cols-2 gap-y-4 gap-x-8">
@@ -141,23 +159,9 @@
                                     </p>
                                 </div>
                                 <!--                                STOP - Sign up and login buttons -->
-                                <!-- START - Profile and logout buttons -->
-                                <div v-if="store.user">
-                                    <router-link :to="{ name: '' }"
-                                                 class="flex w-full items-center justify-center border border-arth-dark-blue bg-white hover:border-transparent hover:bg-arth-light-blue my-6 px-4 py-2 font-medium text-arth-dark-blue shadow-sm">
-                                        {{ $t("buttons.profile")}}
-                                    </router-link>
-                                </div>
-                                <router-link
-                                    v-if="store.user"
-                                    :to="{ name: 'landingPage' }"
-                                    @click="store.logout()"
-                                    class="flex w-full mt-6 text-center text-black font-medium  items-center justify-center whitespace-nowrap border border-arth-light-blue px-6 py-2 shadow-sm hover:bg-arth-light-blue"
-                                >{{$t("buttons.logout")}}
-                                </router-link>
-                                <!-- STOP - Profile and logout buttons -->
                             </div>
                         </div>
+                        <!-- STOP - Navbar body for small devices -->
                     </div>
                 </PopoverPanel>
             </transition>
@@ -232,5 +236,9 @@ export default {
 <style scoped>
 .section__navbar{
     /*    */
+}
+
+.header__button--profile {
+    @apply flex w-full items-center justify-center border bg-white border-transparent my-6 px-4 py-2 font-medium text-arth-dark-blue
 }
 </style>
