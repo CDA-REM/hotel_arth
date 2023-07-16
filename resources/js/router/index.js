@@ -74,6 +74,11 @@ const routes = [
         path: '/reservation-confirmation',
         name: 'reservationConfirmation',
         component: ReservationConfirmation
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'notFound',
+        component: () => import('../Views/NotFound.vue')
     }
 ]
 
