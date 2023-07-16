@@ -1,6 +1,7 @@
 <template>
-    <div class="bg-arth-light-blue md:h-40 sm:h-20 absolute inset-x-0 bottom-0"  :style="(close) ? 'display:none' : ''">
-        <div class="banner-text">
+    <div class="bg-arth-light-blue md:max-h-40 sm:max-h-20 absolute inset-x-0 bottom-0"  :style="(close) ?
+    'display:none' : ''">
+        <div class="banner__text">
             <div class="flex flex-wrap items-center justify-between">
                 <div class="flex w-0 flex-1 items-center justify-around">
                     <p class="mx-4 mb-4 sm:mb-0 text-xl lg:text-2xl text-arth-dark-blue text-center">{{ promotionalBanner.text
@@ -54,7 +55,7 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 </script>
 
 <style scoped>
-.banner-text{
-    @apply mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8 sm:transform sm:translate-y-10;
+.banner__text{
+    @apply mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8 ;
 }
 </style>
