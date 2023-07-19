@@ -101,28 +101,11 @@
                                     <div>
                                         <LanguagesToggleButton />
                                     </div>
-                                    <div v-if="store.user" class="header__button--profile dropdown">
-                                        <label tabindex="0"
-                                               class="inline-flex items-center justify-center whitespace-nowrap hover:bg-arth-dark-blue hover:text-white"
+                                    <div v-if="store.user" class="header__button--profile dropdown avatar">
+                                        <div class="inline-flex items-center justify-center whitespace-nowrap hover:bg-arth-dark-blue hover:text-white w-12 rounded-full ring ring-teal-900 ring-offset-base-100 ring-offset-2"
                                         >
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                               stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                        </label>
-                                        <ul tabindex="0" class="dropdown-content menu bg-arth-light-blue w-36">
-                                            <li>
-                                                <router-link
-                                                    :to="{ name : 'userAccount' }"
-                                                    class="hover:bg-arth-grey"
-                                                >
-                                                    {{ $t("buttons.account")}}
-                                                </router-link>
-                                            </li>
-                                            <li>
-                                                <a @click="store.logout()" href="/" class="hover:bg-arth-grey">{{ $t("buttons.logout")}}</a>
-                                            </li>
-                                        </ul>
+                                            <img :src="store.user.avatar_url" alt="mon avatar"/>
+                                        </div>
                                     </div>
                                     <div class="-mr-2">
                                         <PopoverButton
@@ -150,30 +133,60 @@
                                 <router-link to="#news" class="font-medium text-gray-900 hover:text-gray-700">
                                     {{  $t("navbar.news") }}
                                 </router-link>
-                                <!-- STOP - Link to landing page section for small devices -->
                             </div>
-                            <div>
-                                <router-link :to="{ name: 'reservation' }"
-                                             class="flex w-full items-center justify-center border border-transparent bg-arth-dark-blue hover:bg-white hover:text-black hover:border-arth-dark-blue my-6 px-4 py-2 font-medium text-white shadow-sm">
-                                    {{ $t("buttons.reservation")}}
-                                </router-link>
+                            <!-- STOP - Link to landing page section for small devices -->
+                            <router-link :to="{ name: 'reservation' }"
+                                         class="flex w-full items-center justify-center border border-transparent bg-arth-dark-blue hover:bg-white hover:text-black hover:border-arth-dark-blue my-6 px-4 py-2 font-medium text-white shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                                </svg>
 
-                                <!--                                START - Sign up and login buttons -->
-                                <div v-if="!store.user">
-                                    <router-link :to="{ name: 'signUp'}"
-                                                 class="flex w-full items-center justify-center border border-arth-dark-blue bg-white hover:border-transparent hover:bg-arth-light-blue my-6 px-4 py-2 font-medium text-arth-dark-blue shadow-sm">
-                                        {{ $t("buttons.signUp")}}
-                                    </router-link>
-                                    <p class="mt-6 text-center font-medium text-gray-500">
-                                        {{ $t("navbar.alreadyHaveAccount") }}
-                                        {{ ' ' }}
-                                        <router-link :to="{ name: 'login' }"
-                                                     class="text-arth-dark-blue hover:font-bold">{{$t("buttons.connect")}}
-                                        </router-link>
-                                    </p>
-                                </div>
-                                <!--                                STOP - Sign up and login buttons -->
+                                {{ $t("buttons.reservation")}}
+                            </router-link>
+
+<!--                            START - Link to account and logout for small devices-->
+                            <div v-if="store.user">
+                                <router-link
+                                    :to="{ name : 'userAccount' }"
+                                    class="flex w-full items-center justify-center border border-transparent bg-arth-dark-blue hover:bg-white hover:text-black hover:border-arth-dark-blue my-6 px-4 py-2 font-medium text-white shadow-sm"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+
+                                    {{ $t("buttons.account")}}
+                                </router-link>
+                                <router-link
+                                    to=""
+                                    @click="store.logout()"
+                                    class="flex w-full items-center justify-center border border-transparent bg-arth-dark-blue hover:bg-white hover:text-black hover:border-arth-dark-blue my-6 px-4 py-2 font-medium text-white shadow-sm"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                                    </svg>
+
+                                    {{ $t("buttons.logout")}}
+                                </router-link>
                             </div>
+<!--                            STOP - Link to account and logout for small devices-->
+                            <!--                                START - Sign up and login buttons -->
+                            <div v-if="!store.user">
+                                <router-link :to="{ name: 'signUp'}"
+                                             class="flex w-full items-center justify-center border border-arth-dark-blue bg-white hover:border-transparent hover:bg-arth-light-blue my-6 px-4 py-2 font-medium text-arth-dark-blue shadow-sm">
+                                    {{ $t("buttons.signUp")}}
+                                </router-link>
+                                <p class="mt-6 text-center font-medium text-gray-500">
+                                    {{ $t("navbar.alreadyHaveAccount") }}
+                                    {{ ' ' }}
+                                    <router-link :to="{ name: 'login' }"
+                                                 class="text-arth-dark-blue hover:font-bold">{{$t("buttons.connect")}}
+                                    </router-link>
+                                </p>
+                            </div>
+                            <!--                                STOP - Sign up and login buttons -->
                         </div>
                         <!-- STOP - Navbar body for small devices -->
                     </div>
