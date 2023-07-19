@@ -48,19 +48,15 @@
                     </label>
                     <input type="password" placeholder="Password confirmation" v-model="user.password_confirmation" id="password_confirmation" autocomplete="off"/>
                 </div>
-                <div class=" flex space-x-4 mt-4">
-                    <div>
-                        <span class="label-text">{{ $t("signUp.rememberToken") }}</span>
-                    </div>
-<!--                    TODO - Uncomment after adding remember_token to user model-->
+                <!-- TODO - Uncomment after adding remember_token to user model-->
+<!--                <div class=" flex space-x-4 mt-4">-->
+<!--                    <div>-->
+<!--                        <span class="label-text">{{ $t("signUp.rememberToken") }}</span>-->
+<!--                    </div>-->
 <!--                    <div>-->
 <!--                        <input type="checkbox" class="w-4 h-4" v-model="user.remember_token" id="remember_token" />-->
 <!--                    </div>-->
-                </div>
-
-
-
-
+<!--                </div>-->
                 <p class="mt-6 text-center text-arth-dark-blue"><router-link :to="{ name: 'login'}">{{
                         $t('signUp.haveAccount') }}</router-link></p>
             </div>
@@ -96,7 +92,8 @@ export default {
                 remember_token: '',
                 token:''
             },
-            errors: []
+            errors: [],
+            userIsRegistered: false
         }
     },
 
@@ -110,7 +107,7 @@ export default {
                 this.userStore.user = handleResponse(response)
                 this.userStore.isLogged = true
                 localStorage.setItem('isLogged', 'true')
-                await router.push({name: 'landingPage'})
+                await router.push({name: 'reservation'})
 
             } catch (errors) {
                 this.errors = errors
