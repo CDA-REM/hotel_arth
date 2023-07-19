@@ -4,7 +4,7 @@
         <div class="banner__text">
             <div class="flex flex-wrap items-center justify-between">
                 <div class="flex w-0 flex-1 items-center justify-around">
-                    <p class="mx-4 mb-4 sm:mb-0 text-xl lg:text-2xl text-arth-dark-blue text-center">{{ promotionalBanner.text
+                    <p class="mx-4 sm:mb-0 text-xl lg:text-2xl text-arth-dark-blue text-center">{{ promotionalBanner.text
                         }}</p>
                 </div>
 <!--                <div class="order-3 mt-2 w-full flex-shrink-0 sm:order-2 sm:mt-0 sm:w-auto">
