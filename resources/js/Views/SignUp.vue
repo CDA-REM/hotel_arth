@@ -107,7 +107,8 @@ export default {
                 this.userStore.user = handleResponse(response)
                 this.userStore.isLogged = true
                 localStorage.setItem('isLogged', 'true')
-                await router.push({name: 'reservation'})
+                const intendedURL = sessionStorage.getItem('intendedURL') || '/';
+                this.$router.push(intendedURL);
 
             } catch (errors) {
                 this.errors = errors

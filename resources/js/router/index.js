@@ -8,26 +8,9 @@ import Advantages from "../Views/LandingPage/Components/Advantages.vue";
 import UserReviews from "../Views/LandingPage/Components/UserReviews.vue";
 import News from "../Views/LandingPage/Components/News.vue";
 import ReservationConfirmation from "../Views/Reservation/ReservationConfirmation.vue";
+import { useUserStore } from '../../stores/userStore'
 
 const routes = [
-    {
-        // path: '/user/:id',
-        path: '/user',
-        name: 'userAccount',
-        component: () => import('../Views/private/Account.vue'),
-        // props: (route: { params: { id: string } }) => ({...route.params, id: parseInt(route.params.id)})
-        // beforeEnter(to: { params: { id: string }; path: string; query: any; hash: any }, from: any) {
-        //     const exists = sourceData.users.find(
-        //         destination => destination.id === parseInt(to.params.id)
-        //     )
-        //     if (!exists) return {
-        //         name: 'NotFound',
-        //         params: {pathMatch: to.path.split('/').slice(1)},
-        //         query: to.query,
-        //         hash: to.hash,
-        //     }
-        // },
-    },
     {
         path: '/',
         name: 'landingPage',
@@ -58,22 +41,63 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: () => import('../Views/Login.vue')
+        component: () => import('../Views/Login.vue'),
+        meta: {
+            name: 'login',
+            noAuthRequired: true
+        }
     },
     {
         path: '/signup',
         name: 'signUp',
-        component: () => import('../Views/SignUp.vue')
+        component: () => import('../Views/SignUp.vue'),
+        meta: {
+            name: 'signUp',
+            noAuthRequired: true
+        }
     },
     {
         path: '/reservation',
         name: 'reservation',
+        meta: {
+            name: 'reservation',
+            requiresAuth: true
+        },
+        // beforeEnter: (to, from, next) => {
+        //     const userStore = useUserStore()
+        //     if (userStore.user) {
+        //         next()
+        //     } else {
+        //         next({name: 'login'})
+        //     }
+        // },
         component: () => import('../Views/Reservation/Reservation.vue')
     },
     {
         path: '/reservation-confirmation',
         name: 'reservationConfirmation',
-        component: ReservationConfirmation
+        component: ReservationConfirmation,
+        meta: {
+            name: 'reservationConfirmation',
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/user/mon-compte',
+        name: 'userAccount',
+        // beforeEnter: (to, from, next) => {
+        //     const userStore = useUserStore()
+        //     if (userStore.user) {
+        //         next()
+        //     } else {
+        //         next({name: 'login'})
+        //     }
+        // },
+        component: () => import('../Views/private/Account.vue'),
+        meta: {
+            name: 'userAccount',
+            requiresAuth: true
+        }
     },
     {
         path: '/:pathMatch(.*)*',
@@ -86,16 +110,40 @@ const router = createRouter({
     history: createWebHashHistory(process.env.BASE_URL),
     routes,
     scrollBehavior(to, from, savedPosition) {
-        // if (savedPosition) {
-        //     return savedPosition;
-        // }
         if (to.hash) {
             return {
                 el: to.hash,
                 behavior: 'smooth',
             }
         }
-        // return {x: 0, y: 0};
+        return savedPosition || new Promise((resolve) => {
+            setTimeout(() => resolve({top: 0, behavior: 'smooth'}), 300)
+        })
     },
 })
+
+function checkIfUserIsAuthenticated() {
+    const userStore = useUserStore()
+    return userStore.user ? true : false
+}
+
+// router.js (continued)
+router.beforeEach((to, from, next) => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        // Check if the user is authenticated here
+        const isAuthenticated = checkIfUserIsAuthenticated(); // You need to implement this function
+
+        if (!isAuthenticated) {
+            // Save the intended URL to session storage or as a query parameter
+            sessionStorage.setItem('intendedURL', to.fullPath); // You can also use a query parameter instead of session storage
+            next('/login');
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
+});
+
+
 export default router
