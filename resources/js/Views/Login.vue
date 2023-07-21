@@ -40,6 +40,10 @@
                 </label>
                 <input type="password" placeholder="Password" v-model="user.password" id="password" autocomplete="off"/>
                 <span class="text-red-500 text-sm" v-for="password in errors.password">{{ password }}</span>
+                <div class=" flex space-x-4 mt-4">
+                    <span class="label-text">{{ $t("signUp.rememberToken") }}</span>
+                    <input type="checkbox" class="w-4 h-4" v-model="rememberMe" id="remember_me" />
+                </div>
                 <p class="mt-6 text-arth-dark-blue text-center"><router-link :to="{ name: 'signUp'}">{{
                         $t('login.dontHaveAccount')
                     }}</router-link></p>
@@ -49,8 +53,6 @@
                 <button @click="submitLogin()" class="bg-arth-green hover:scale-105">{{ $t("login.title") }}</button>
             </div>
         </form>
-
-
     </div>
 </template>
 
@@ -59,7 +61,7 @@
 import {useUserStore} from '../../stores/userStore'
 import axios from "axios";
 import {handleResponse} from "../utils/apiUtils";
-import router from "../router";
+import authStore from '../../stores/auth';
 
 export default {
     name: 'login',
@@ -74,7 +76,8 @@ export default {
                 email: '',
                 password: ''
             },
-            errors: []
+            errors: [],
+            rememberMe: false,
         }
     },
     methods: {
@@ -86,6 +89,7 @@ export default {
                 const response = await axios.post('api/login', this.user)
                 this.userStore.user = handleResponse(response)
                 this.userStore.isLogged = true
+                authStore.setRememberMe(this.rememberMe);
                 localStorage.setItem('isLogged', 'true')
                 const intendedURL = sessionStorage.getItem('intendedURL') || '/';
                 this.$router.push(intendedURL);

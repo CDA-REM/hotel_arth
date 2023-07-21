@@ -57,7 +57,7 @@
                         <!-- START - account and logout dropdown -->
                         <div class="dropdown" v-else>
                             <label tabindex="0" class="inline-flex items-center justify-center cursor-pointer whitespace-nowrap border border-arth-dark-blue px-6 py-2 shadow-sm hover:bg-arth-dark-blue hover:text-white"
-                            >{{ $t("buttons.profile")}}</label>
+                            >{{ $t("buttons.profile")}} </label>
                             <ul tabindex="0" class="dropdown-content menu  bg-arth-light-blue w-48">
                                 <li>
                                     <router-link
@@ -199,6 +199,7 @@
 </template>
 
 <script>
+import {defineComponent} from 'vue'
 import { Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/vue'
 import {
     Bars3Icon,
@@ -218,9 +219,9 @@ import LanguagesToggleButton from "./LanguagesToggleButton"
 import { useUserStore } from '../../stores/userStore'
 import landingPage from "../Views/LandingPage/LandingPage.vue";
 import GoToTopButton from "./GoToTopButton.vue";
+import authStore from "../../stores/auth";
 
-
-export default {
+export default defineComponent({
     name: "NavBar.vue",
     components: {
         LanguagesToggleButton,
@@ -248,16 +249,16 @@ export default {
     },
     data() {
         return {
-
-
+            rememberMe: authStore.state.rememberMe,
         }
     },
     methods: {
         isHomeView() {
             return this.$router.currentRoute.value.name === 'landingPage';
         },
-    }
-}
+    },
+})
+
 </script>
 
 <style scoped>
