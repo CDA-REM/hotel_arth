@@ -15,28 +15,6 @@ const routes = [
         path: '/',
         name: 'landingPage',
         component: LandingPage,
-        // children: [
-        //     {
-        //         path: '/rooms',
-        //         name: 'roomCategories',
-        //         component: RoomCategories
-        //     },
-        //     {
-        //         path: '/advantages',
-        //         name: 'advantages',
-        //         component: Advantages
-        //     },
-        //     {
-        //         path: '/reviews',
-        //         name: 'userReviews',
-        //         component: UserReviews
-        //     },
-        //     {
-        //         path: '/news',
-        //         name: 'news',
-        //         component: News
-        //     },
-        // ]
     },
     {
         path: '/login',
@@ -63,14 +41,6 @@ const routes = [
             name: 'reservation',
             requiresAuth: true
         },
-        // beforeEnter: (to, from, next) => {
-        //     const userStore = useUserStore()
-        //     if (userStore.user) {
-        //         next()
-        //     } else {
-        //         next({name: 'login'})
-        //     }
-        // },
         component: () => import('../Views/Reservation/Reservation.vue')
     },
     {
@@ -85,14 +55,6 @@ const routes = [
     {
         path: '/user/mon-compte',
         name: 'userAccount',
-        // beforeEnter: (to, from, next) => {
-        //     const userStore = useUserStore()
-        //     if (userStore.user) {
-        //         next()
-        //     } else {
-        //         next({name: 'login'})
-        //     }
-        // },
         component: () => import('../Views/private/Account.vue'),
         meta: {
             name: 'userAccount',
