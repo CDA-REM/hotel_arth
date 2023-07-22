@@ -85,8 +85,8 @@ const router = createRouter({
 })
 
 function checkIfUserIsAuthenticated() {
-    const userStore = useUserStore()
-    return userStore.user ? true : false
+    const userIsLoggedIn = localStorage.isLogged === 'true'
+    return userIsLoggedIn ? true : false
 }
 
 // router.js (continued)
