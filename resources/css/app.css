@@ -10,6 +10,7 @@
 @import "tailwindcss/utilities";
 
 /* Definition of global values used throughout the project */
+@import 'buttons.css';
 
 /* Reset du CSS */
 html,
@@ -49,7 +50,7 @@ span {
 }
 
 button {
-    @apply bg-white px-10 py-2 border-2 mx-auto font-bold;
+    @apply bg-white px-10 py-2 mx-auto justify-center items-center font-tinos font-bold cursor-pointer;
 }
 
 input {
@@ -60,4 +61,9 @@ input {
 .label-text,
 option {
     font-size: 1rem;
+    color: #000;
+}
+
+input {
+    background-color: #fff;
 }

@@ -6,7 +6,8 @@
                 <UserReviewItem :review="review"/>
             </div>
         </div>
-        <button class="section__reviews--CTA-SeeMore" @click="isHidden = !isHidden">{{ $t("buttons.more") }}</button>
+        <button class="section__reviews--CTA-SeeMore btn__yellow--outline" @click="isHidden = !isHidden">{{ $t("buttons.more")
+            }}</button>
         <div class="reviews__cards" v-if="!isHidden" >
             <div v-for="review in reviews" :key="review.id" v-show="review.is_displayed === 1 && review.id > 3 &&
             review.id < 7">
@@ -14,8 +15,9 @@
             </div>
         </div>
         <div class="p-12 flex justify-center">
-            <router-link :to="{ name: 'reservation' }" class="self-center">
-                <button class="mt-0 border-arth-dark-blue hover:bg-arth-dark-blue hover:text-white">{{
+            <router-link :to="{ name: 'reservation' }"
+                         class="btn__darkblue--outline mx-auto justify-center items-center font-tinos font-bold cursor-pointer self-center mt-0">
+                <button class="">{{
                         $t("buttons.reservation")
                     }}</button>
             </router-link>
@@ -56,7 +58,7 @@ export default {
 }
 
 .section__reviews--CTA-SeeMore {
-    @apply border-arth-yellow mt-16 text-black hover:bg-arth-yellow
+    @apply mt-16
 }
 
 </style>

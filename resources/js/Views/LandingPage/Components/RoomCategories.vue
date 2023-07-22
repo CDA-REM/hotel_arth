@@ -6,7 +6,7 @@
          </div>
         <div class="p-12 flex justify-center">
             <router-link :to="{ name: 'reservation' }" class="self-center">
-                <button class="mt-0 hover:bg-arth-dark-blue hover:text-white">{{ $t("buttons.reservation") }}</button>
+                <button class="btn__lightblue--outline mt-0">{{ $t("buttons.reservation") }}</button>
             </router-link>
         </div>
     </section>

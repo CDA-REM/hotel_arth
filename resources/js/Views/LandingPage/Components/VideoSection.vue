@@ -12,7 +12,7 @@
             </video>
         </div>
         <router-link :to="{ name: 'reservation' }" class="self-center">
-            <button class="video__button-reservation">
+            <button class="video__button-reservation btn__lightblue--outline">
                 {{ $t("buttons.reservation") }}
             </button>
         </router-link>
@@ -30,9 +30,22 @@ export default {
             presentationVideo: {}
         }
     },
+    methods: {
+        loadPresentationVideo() {
+            const userLocale = navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language;
+            axios.get('api/home/presentation_video', {
+                headers: {
+                    "Accept-Language": userLocale
+                }
+            }).then(response => {
+                this.presentationVideo = {...response.data};
+            }).catch(error => {
+                console.log('Erreur lors de la requête API :', error);
+            });
+        }
+    },
     async mounted() {
-        const response = await axios.get('api/home/presentation_video');
-        this.presentationVideo = {...response.data};
+        await this.loadPresentationVideo();
     }
 }
 </script>
@@ -43,7 +56,7 @@ export default {
     }
 
     .section__video-content {
-        @apply flex flex-col lg:flex-row-reverse my-3 justify-around my-6;
+        @apply flex flex-col lg:flex-row-reverse justify-around my-6;
     }
     .video__h2 {
         @apply mx-4 ;
@@ -63,7 +76,7 @@ export default {
     }
 
     .video__button-reservation {
-        @apply my-10 hover:bg-arth-grey
+        @apply my-10;
     }
 
 </style>
