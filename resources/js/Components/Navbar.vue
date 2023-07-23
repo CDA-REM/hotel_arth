@@ -49,15 +49,16 @@
                         <!-- START - login or logout button-->
                         <!-- START - Login button-->
                         <router-link :to="{ name: 'login' }" v-if="!store.user"
-                                     class="inline-flex items-center justify-center whitespace-nowrap border border-arth-dark-blue px-6 py-2 shadow-sm hover:bg-arth-dark-blue hover:text-white"
+                                     class="nav__button btn__darkblue--outline"
                         >
-                            {{ $t("buttons.connect")}}
+                            {{ $t("buttons.connect") }}
                         </router-link>
                         <!-- STOP - Login button-->
                         <!-- START - account and logout dropdown -->
                         <div class="dropdown" v-else>
-                            <label tabindex="0" class="inline-flex items-center justify-center cursor-pointer whitespace-nowrap border border-arth-dark-blue px-6 py-2 shadow-sm hover:bg-arth-dark-blue hover:text-white"
-                            >{{ $t("buttons.profile")}} </label>
+                            <label tabindex="0"
+                                   class="nav__button btn__darkblue--outline"
+                            >{{ $t("buttons.profile") }}</label>
                             <ul tabindex="0" class="dropdown-content menu  bg-arth-light-blue w-48">
                                 <li>
                                     <router-link
@@ -75,8 +76,8 @@
                         <!-- STOP - account and logout dropdown -->
                         <!-- Start- Book button-->
                         <router-link :to="{ name: 'reservation' }">
-                            <button class="inline-flex items-center justify-center whitespace-nowrap border
-                        border-arth-dark-blue px-8 py-2 shadow-sm hover:bg-arth-dark-blue hover:text-white"
+                            <button
+                                class="inline-flex whitespace-nowrap px-8 shadow-sm btn__darkblue--outline"
                             >
                                 {{ $t("buttons.reservation") }}
                             </button>
@@ -136,7 +137,7 @@
                             </div>
                             <!-- STOP - Link to landing page section for small devices -->
                             <router-link :to="{ name: 'reservation' }"
-                                         class="flex w-full items-center justify-center border border-transparent bg-arth-dark-blue hover:bg-white hover:text-black hover:border-arth-dark-blue my-6 px-4 py-2 font-medium text-white shadow-sm">
+                                         class="btn__darkblue flex w-full items-center justify-center my-6 px-4 py-2 font-medium text-white shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
@@ -149,7 +150,7 @@
                             <div v-if="store.user">
                                 <router-link
                                     :to="{ name : 'userAccount' }"
-                                    class="flex w-full items-center justify-center border border-transparent bg-arth-dark-blue hover:bg-white hover:text-black hover:border-arth-dark-blue my-6 px-4 py-2 font-medium text-white shadow-sm"
+                                    class="btn__darkblue flex w-full items-center justify-center my-6 px-4 py-2 font-medium shadow-sm"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
@@ -161,7 +162,7 @@
                                 <router-link
                                     to=""
                                     @click="store.logout()"
-                                    class="flex w-full items-center justify-center border border-transparent bg-arth-dark-blue hover:bg-white hover:text-black hover:border-arth-dark-blue my-6 px-4 py-2 font-medium text-white shadow-sm"
+                                    class="btn__darkblue flex w-full items-center justify-center my-6 px-4 py-2 font-medium shadow-sm"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
@@ -182,7 +183,7 @@
                                     {{ $t("navbar.alreadyHaveAccount") }}
                                     {{ ' ' }}
                                     <router-link :to="{ name: 'login' }"
-                                                 class="text-arth-dark-blue hover:font-bold">{{$t("buttons.connect")}}
+                                        class="text-arth-dark-blue hover:font-bold">{{$t("buttons.connect")}}
                                     </router-link>
                                 </p>
                             </div>
@@ -250,20 +251,28 @@ export default defineComponent({
     data() {
         return {
             rememberMe: authStore.state.rememberMe,
+            user:'test',
         }
     },
     methods: {
         isHomeView() {
             return this.$router.currentRoute.value.name === 'landingPage';
         },
+        getUser() {
+            this.user = this.store;
+        },
+
+    },
+    async mounted() {
+        await this.getUser()
     },
 })
 
 </script>
 
 <style scoped>
-.section__navbar{
-    /*    */
+.nav__button {
+    @apply inline-flex items-center justify-center cursor-pointer whitespace-nowrap px-6 py-2 shadow-sm
 }
 
 .header__button--profile {
