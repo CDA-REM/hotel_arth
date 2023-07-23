@@ -448,6 +448,8 @@ export default defineComponent({
     data() {
         return {
             user: null,
+            personalAddress: null,
+            professionalAddress: null,
             formReservation: {
                 started_date: null,
                 end_date: null,
@@ -458,12 +460,12 @@ export default defineComponent({
                 isTravelForWork: false,
             },
             formUser: {
-                id: this.userStore.id,
-                civility: "",
-                firstname: "",
-                lastname: "",
-                email: "",
-                phoneNumber: "",
+                id: this.userStore.user.id,
+                civility: this.userStore.user.gender || '',
+                firstname: this.userStore.user.firstname || '',
+                lastname: this.userStore.user.lastname || "",
+                email: this.userStore.user.email || "",
+                phoneNumber: this.userStore.user.phone || "",
                 address: "",
                 zipCode: "",
                 city: "",
@@ -585,7 +587,6 @@ export default defineComponent({
         }
     },
     methods: {
-//useUserStore, //TODO - Uncomment this line if needed
         useGlobalStore,
         calculateNumberOfDays() {
             if (this.formReservation.started_date && this.formReservation.end_date) {
@@ -632,6 +633,12 @@ export default defineComponent({
         },
         getUser() {
             this.user = this.userStore;
+        },
+        getPersonalAddress() {
+            return this.personalAddress = JSON.parse(this.userStore.user.personal_address)
+        },
+        getProfessionalAddress() {
+            return this.professionalAddress = JSON.parse(this.userStore.user.professional_address)
         },
         async submitUser() {
             axios.post('api/users/' + this.userStore.user.id, {...this.formUser, _method: 'put'})
@@ -710,6 +717,8 @@ export default defineComponent({
     },
     async mounted() {
         await this.getUser();
+        await this.getPersonalAddress();
+        await this.getProfessionalAddress();
     },
 })
 </script>
