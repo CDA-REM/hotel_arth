@@ -10,8 +10,8 @@ export default defineComponent({
     <div class="not-found__container">
         <h1>Not Found</h1>
         <p>
-            Oops, we couldn't find that page. Try going
-            <router-link to="/">home</router-link>
+            Oops, nous n'avons pas trouvé cette page. Essayez de retourner à la page d'accueil.
+            <router-link to="/" class="btn__darkblue--outline">home</router-link>
         </p>
     </div>
 </template>

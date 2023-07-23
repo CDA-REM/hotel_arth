@@ -228,7 +228,6 @@ export default defineComponent({
     methods: {
         getUser() {
             this.user = this.userStore.user
-            console.log(this.user.personal_address)
         },
         getPersonalAddress() {
             return this.personalAddress = JSON.parse(this.userStore.user.personal_address)

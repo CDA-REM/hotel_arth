@@ -1,14 +1,6 @@
-import {createRouter, createWebHashHistory, createWebHistory} from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
 import LandingPage from '../Views/LandingPage/LandingPage';
-import Login from '../Views/Login';
-import SignUp from '../Views/SignUp';
-import Reservation from "../Views/Reservation/Reservation.vue";
-import RoomCategories from "../Views/LandingPage/Components/RoomCategories.vue";
-import Advantages from "../Views/LandingPage/Components/Advantages.vue";
-import UserReviews from "../Views/LandingPage/Components/UserReviews.vue";
-import News from "../Views/LandingPage/Components/News.vue";
 import ReservationConfirmation from "../Views/Reservation/ReservationConfirmation.vue";
-import { useUserStore } from '../../stores/userStore'
 
 const routes = [
     {
@@ -85,8 +77,7 @@ const router = createRouter({
 })
 
 function checkIfUserIsAuthenticated() {
-    const userIsLoggedIn = localStorage.isLogged === 'true'
-    return userIsLoggedIn ? true : false
+    return localStorage.isLogged === 'true'
 }
 
 // router.js (continued)
