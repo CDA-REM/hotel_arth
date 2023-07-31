@@ -77,7 +77,7 @@ export default {
     }
 
     .card__header--img{
-        @apply h-4/5 w-auto
+        @apply h-16 w-16
     }
 
     .card__header--text {
@@ -93,11 +93,15 @@ export default {
     }
 
     .card-title {
-        @apply text-2xl font-bold
+        @apply text-xl font-bold
+    }
+
+    .card-actions {
+        @apply items-end
     }
 
     .badge {
-        @apply  border border-arth-yellow bg-white m-2 p-4  text-black
+        @apply border border-arth-yellow bg-white m-2 p-4 text-black
     }
 
     .review__rating{
