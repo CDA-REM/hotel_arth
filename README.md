@@ -1,7 +1,7 @@
 - Need to setup your project on your local machine ?
   - Clone repo with ssh :
     ```
-    git clone git@github.com:Michelle-al/hotel_arth.git
+    git clone git@github.com:CDA-REM/hotel_arth.git
     ```
   - In the repo directory, run `npm install` and `composer install` ;
   - The `.env` file is missing : create it and generate a key with the following command.
