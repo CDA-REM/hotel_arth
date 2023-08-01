@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="flex">
-            <button class="border-arth-dark-blue justify-center font-tinos hover:bg-arth-dark-blue hover:text-white">
+            <button class="btn__darkblue--outline">
                 {{ $t("buttons.reservation") }}</button>
         </div>
     </section>

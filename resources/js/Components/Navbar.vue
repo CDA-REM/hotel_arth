@@ -24,7 +24,7 @@
                     <!-- STOP - Open button for small and medium devices -->
 
                     <!-- START - Nav links for large devices -->
-                    <PopoverGroup as="nav" class="hidden space-x-6 lg:space-x-10 lg:flex items-center ml-0"
+                    <PopoverGroup as="nav" v-if="isHomeView()" class="hidden space-x-6 lg:space-x-10 lg:flex items-center ml-0"
                                   aria-label="Barre de navigation">
                         <router-link to="#rooms" class="font-medium text-gray-500 hover:text-gray-900">
                             {{$t("navbar.rooms")}}
@@ -47,39 +47,37 @@
                         <LanguagesToggleButton/>
 
                         <!-- START - login or logout button-->
-                        <!--                    Login button-->
-
+                        <!-- START - Login button-->
                         <router-link :to="{ name: 'login' }" v-if="!store.user"
-                                     class="inline-flex items-center justify-center whitespace-nowrap border border-arth-dark-blue px-6 py-2 shadow-sm hover:bg-arth-dark-blue hover:text-white"
+                                     class="nav__button btn__darkblue--outline"
                         >
-                            {{ $t("buttons.connect")}}
-
+                            {{ $t("buttons.connect") }}
                         </router-link>
-
-                        <!--                    profil button-->
-<!--                        <router-link :to="{ name: '' }" v-else-->
-<!--                                     class="inline-flex items-center justify-center whitespace-nowrap border border-arth-dark-blue px-6 py-2 shadow-sm hover:bg-arth-dark-blue hover:text-white"-->
-<!--                        >-->
-<!--                            {{ $t("buttons.logout")}}-->
-
-<!--                        </router-link>-->
-
+                        <!-- STOP - Login button-->
+                        <!-- START - account and logout dropdown -->
                         <div class="dropdown" v-else>
-                            <label tabindex="0" class="inline-flex items-center justify-center cursor-pointer whitespace-nowrap border border-arth-dark-blue px-6 py-2 shadow-sm hover:bg-arth-dark-blue hover:text-white"
-                            >{{ $t("buttons.profile")}}</label>
+                            <label tabindex="0"
+                                   class="nav__button btn__darkblue--outline"
+                            >{{ $t("buttons.profile") }}</label>
                             <ul tabindex="0" class="dropdown-content menu  bg-arth-light-blue w-48">
-                                <li><a class="hover:bg-arth-grey">{{ $t("buttons.account")}}</a></li>
+                                <li>
+                                    <router-link
+                                        :to="{ name : 'userAccount' }"
+                                        class="hover:bg-arth-grey"
+                                    >
+                                        {{ $t("buttons.account")}}
+                                    </router-link>
+                                </li>
                                 <li>
                                     <a @click="store.logout()" href="/" class="hover:bg-arth-grey">{{ $t("buttons.logout")}}</a>
                                 </li>
                             </ul>
                         </div>
-                        <!-- STOP - login or logout button-->
-
-                        <!--                    Book button-->
+                        <!-- STOP - account and logout dropdown -->
+                        <!-- Start- Book button-->
                         <router-link :to="{ name: 'reservation' }">
-                            <button class="inline-flex items-center justify-center whitespace-nowrap border
-                        border-arth-dark-blue px-8 py-2 shadow-sm hover:bg-arth-dark-blue hover:text-white"
+                            <button
+                                class="inline-flex whitespace-nowrap px-8 shadow-sm btn__darkblue--outline"
                             >
                                 {{ $t("buttons.reservation") }}
                             </button>
@@ -90,7 +88,8 @@
             </div>
             <!-- START - Display for small and medium devices -->
             <transition enter-active-class="duration-200 ease-out" enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100" leave-active-class="duration-100 ease-in" leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
-                <PopoverPanel focus class="absolute inset-x-0 top-0 origin-top-right transform p-2 transition lg:hidden">
+                <PopoverPanel focus
+                              class="absolute inset-x-0 top-0 origin-top-right transform p-2 transition lg:hidden z-20">
                     <div class="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                         <div class="px-5 pt-5 pb-6">
                             <div class="flex items-center justify-between">
@@ -99,22 +98,30 @@
                                         <img class="h-20 w-auto" src="/storage/pictures/Logo.svg" alt="Hôtel Arth" />
                                     </div>
                                 </router-link>
-
-                                <div>
-                                    <LanguagesToggleButton />
-                                </div>
-                                <div class="-mr-2">
-                                    <PopoverButton
-                                        class="inline-flex items-center justify-center rounded-md bg-white mt-0 p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-arth-dark-blue">
-                                        <span class="sr-only">Close menu</span>
-                                        <XMarkIcon class="h-6 w-6" aria-hidden="true" />
-                                    </PopoverButton>
+                                <div class="flex items-center justify-between gap-2">
+                                    <div>
+                                        <LanguagesToggleButton />
+                                    </div>
+                                    <div v-if="store.user" class="header__button--profile dropdown avatar">
+                                        <div class="inline-flex items-center justify-center whitespace-nowrap hover:bg-arth-dark-blue hover:text-white w-12 rounded-full ring ring-teal-900 ring-offset-base-100 ring-offset-2"
+                                        >
+                                            <img :src="store.user.avatar_url" alt="mon avatar"/>
+                                        </div>
+                                    </div>
+                                    <div class="-mr-2">
+                                        <PopoverButton
+                                            class="inline-flex items-center justify-center rounded-md bg-white mt-0 p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-arth-dark-blue">
+                                            <span class="sr-only">Close menu</span>
+                                            <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+                                        </PopoverButton>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- START - Main Code for small devices -->
+                        <!-- START - Navbar body for small devices -->
                         <div class="space-y-6 py-6 px-5">
-                            <div class="grid grid-cols-2 gap-y-4 gap-x-8">
+                            <!-- START - Link to landing page section for small devices -->
+                            <div v-if="isHomeView()" class="grid grid-cols-2 gap-y-4 gap-x-8">
                                 <router-link to="#rooms" class="font-medium text-gray-900 hover:text-gray-700">
                                     {{ $t("navbar.rooms") }}
                                 </router-link>
@@ -127,58 +134,73 @@
                                 <router-link to="#news" class="font-medium text-gray-900 hover:text-gray-700">
                                     {{  $t("navbar.news") }}
                                 </router-link>
-                                <!-- STOP - Main Code for small devices -->
                             </div>
-                            <div>
-                                <router-link :to="{ name: 'reservation' }"
-                                             class="flex w-full items-center justify-center border border-transparent bg-arth-dark-blue hover:bg-white hover:text-black hover:border-arth-dark-blue my-6 px-4 py-2 font-medium text-white shadow-sm">
-                                    {{ $t("buttons.reservation")}}
-                                </router-link>
+                            <!-- STOP - Link to landing page section for small devices -->
+                            <router-link :to="{ name: 'reservation' }"
+                                         class="btn__darkblue flex w-full items-center justify-center my-6 px-4 py-2 font-medium text-white shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                                </svg>
 
-                                <!-- START - login or logout button-->
-                                <!--                    Login button-->
-                                <p class="mt-6 text-center font-medium text-gray-500" v-if="!store.user">
+                                {{ $t("buttons.reservation")}}
+                            </router-link>
+
+<!--                            START - Link to account and logout for small devices-->
+                            <div v-if="store.user">
+                                <router-link
+                                    :to="{ name : 'userAccount' }"
+                                    class="btn__darkblue flex w-full items-center justify-center my-6 px-4 py-2 font-medium shadow-sm"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+
+                                    {{ $t("buttons.account")}}
+                                </router-link>
+                                <router-link
+                                    to=""
+                                    @click="store.logout()"
+                                    class="btn__darkblue flex w-full items-center justify-center my-6 px-4 py-2 font-medium shadow-sm"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                                    </svg>
+
+                                    {{ $t("buttons.logout")}}
+                                </router-link>
+                            </div>
+<!--                            STOP - Link to account and logout for small devices-->
+                            <!--                                START - Sign up and login buttons -->
+                            <div v-if="!store.user">
+                                <router-link :to="{ name: 'signUp'}"
+                                             class="flex w-full items-center justify-center border border-arth-dark-blue bg-white hover:border-transparent hover:bg-arth-light-blue my-6 px-4 py-2 font-medium text-arth-dark-blue shadow-sm">
+                                    {{ $t("buttons.signUp")}}
+                                </router-link>
+                                <p class="mt-6 text-center font-medium text-gray-500">
                                     {{ $t("navbar.alreadyHaveAccount") }}
                                     {{ ' ' }}
                                     <router-link :to="{ name: 'login' }"
-                                                 class="text-arth-dark-blue hover:font-bold">{{$t("buttons.connect")}}
+                                        class="text-arth-dark-blue hover:font-bold">{{$t("buttons.connect")}}
                                     </router-link>
                                 </p>
-                                <!--                    Logout button-->
-<!--                                <p class="mt-6 text-center font-medium  items-center justify-center whitespace-nowrap border border-arth-light-blue px-6 py-2 shadow-sm hover:bg-arth-light-blue"  v-else>-->
-<!--                                    <router-link :to="{ name: '' }"-->
-<!--                                    >{{$t("buttons.logout")}}-->
-<!--                                    </router-link>-->
-<!--                                </p>-->
-                                <div  class=" dropdown cursor-pointer w-full text-center font-medium whitespace-nowrap border border-arth-light-blue px-6 py-2 shadow-sm hover:bg-arth-light-blue" v-else>
-                                    <label tabindex="0" class="text-center font-medium items-center justify-center cursor-pointer"
-                                    >{{ $t("buttons.profile")}}</label>
-                                    <ul tabindex="0" class="dropdown-content menu bg-arth-light-blue w-48">
-                                        <li><a class="hover:bg-arth-grey">{{ $t("buttons.account")}}</a></li>
-                                        <li>
-<!--                                            <router-link :to="{ name: '' }" class="hover:bg-arth-grey">-->
-<!--                                                {{ $t("buttons.logout")}}-->
-<!--                                            </router-link>-->
-                                            <a @click="store.logout()" class=" hover:bg-arth-grey">{{ $t("buttons.logout")}}</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- STOP - login or logout button-->
-
                             </div>
+                            <!--                                STOP - Sign up and login buttons -->
                         </div>
+                        <!-- STOP - Navbar body for small devices -->
                     </div>
                 </PopoverPanel>
             </transition>
             <!-- STOP - Display for small and medium devices -->
-
         </Popover>
         <GoToTopButton />
     </header>
-
 </template>
 
 <script>
+import {defineComponent} from 'vue'
 import { Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/vue'
 import {
     Bars3Icon,
@@ -198,9 +220,9 @@ import LanguagesToggleButton from "./LanguagesToggleButton"
 import { useUserStore } from '../../stores/userStore'
 import landingPage from "../Views/LandingPage/LandingPage.vue";
 import GoToTopButton from "./GoToTopButton.vue";
+import authStore from "../../stores/auth";
 
-
-export default {
+export default defineComponent({
     name: "NavBar.vue",
     components: {
         LanguagesToggleButton,
@@ -228,29 +250,32 @@ export default {
     },
     data() {
         return {
-
-
+            rememberMe: authStore.state.rememberMe,
+            user:'test',
         }
     },
-    mounted() {
-        //
-    },
-    computed: {
-        //
-    },
     methods: {
-        landingPage() {
-            //return landingPage
-        },
         isHomeView() {
             return this.$router.currentRoute.value.name === 'landingPage';
         },
-    }
-}
+        getUser() {
+            this.user = this.store;
+        },
+
+    },
+    async mounted() {
+        await this.getUser()
+    },
+})
+
 </script>
 
 <style scoped>
-.section__navbar{
-    /*    */
+.nav__button {
+    @apply inline-flex items-center justify-center cursor-pointer whitespace-nowrap px-6 py-2 shadow-sm
+}
+
+.header__button--profile {
+    @apply flex w-full items-center justify-center border bg-white border-transparent my-6 px-4 py-2 font-medium text-arth-dark-blue
 }
 </style>

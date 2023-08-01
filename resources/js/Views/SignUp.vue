@@ -49,18 +49,9 @@
                     <input type="password" placeholder="Password confirmation" v-model="user.password_confirmation" id="password_confirmation" autocomplete="off"/>
                 </div>
                 <div class=" flex space-x-4 mt-4">
-                    <div>
-                        <span class="label-text">{{ $t("signUp.rememberToken") }}</span>
-                    </div>
-<!--                    TODO - Uncomment after adding remember_token to user model-->
-<!--                    <div>-->
-<!--                        <input type="checkbox" class="w-4 h-4" v-model="user.remember_token" id="remember_token" />-->
-<!--                    </div>-->
+                    <span class="label-text">{{ $t("signUp.rememberToken") }}</span>
+                    <input type="checkbox" class="w-4 h-4" v-model="rememberMe" id="remember_me" />
                 </div>
-
-
-
-
                 <p class="mt-6 text-center text-arth-dark-blue"><router-link :to="{ name: 'login'}">{{
                         $t('signUp.haveAccount') }}</router-link></p>
             </div>
@@ -76,7 +67,7 @@
 
 import { useUserStore } from '../../stores/userStore'
 import {handleResponse} from "../utils/apiUtils";
-import router from "../router";
+import authStore from '../../stores/auth';
 
 export default {
     name: 'signUp',
@@ -96,7 +87,9 @@ export default {
                 remember_token: '',
                 token:''
             },
-            errors: []
+            errors: [],
+            userIsRegistered: false,
+            rememberMe: false,
         }
     },
 
@@ -109,8 +102,10 @@ export default {
                 const response = await axios.post('api/register', this.user)
                 this.userStore.user = handleResponse(response)
                 this.userStore.isLogged = true
+                authStore.setRememberMe(this.rememberMe);
                 localStorage.setItem('isLogged', 'true')
-                await router.push({name: 'landingPage'})
+                const intendedURL = sessionStorage.getItem('intendedURL') || '/';
+                this.$router.push(intendedURL);
 
             } catch (errors) {
                 this.errors = errors

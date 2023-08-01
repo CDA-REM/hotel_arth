@@ -5,7 +5,7 @@
             <h2 class="text-white mt-4 font-semibold  lg:text-3xl">{{hero.subtitle}}</h2>
         </div>
         <router-link :to="{ name: 'reservation' }" class="self-center">
-            <button class="border-arth-light-blue justify-center font-tinos text-arth-dark-blue hover:bg-arth-light-blue mb-16">{{
+            <button class="btn__lightblue--outline mb-16">{{
                     $t("buttons.reservation") }}
             </button>
         </router-link>

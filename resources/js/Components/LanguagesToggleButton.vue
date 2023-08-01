@@ -1,42 +1,61 @@
 <template>
     <div class="section__navbar">
-        <select name="lang" v-model="lang" @change="switchLocale(lang)"
+        <select name="lang"
+                v-model="lang"
+                @change="switchLocale(lang)"
                 class="navbar__button appearance-none bg-white text-2xl"
                 aria-label="Menu déroulant pour changer la langue du site">
-            <option value="fr" :alt=french.image.alt>🇫🇷</option>
-            <option value="en" :alt=english.image.alt>🇬🇧</option>
+            <option
+                v-for="flag in flags"
+                :value="flag.value"
+                :alt="flag.image.alt"
+                class="navbar__flag"
+                :class="flag.value"
+            >
+                 {{ flag.text }}
+            </option>
         </select>
     </div>
 
 </template>
 
 <script>
+import * as url from "url";
+
 export default {
     name: "LanguagesToggleButton.vue",
     data() {
         return {
             lang: "",
             isFrench: true,
-            french:
+            flags: [
                 {
                     name: 'Français',
                     image: {
                         source: '/storage/pictures/flag-french.jpg',
                         alt: "Drapeau Français"
                     },
+                    value: 'fr',
+                    text: '🇫🇷'
                 },
-            english: {
-                name: 'English',
-                image: {
-                    source: '/storage/pictures/flag-english.jpg',
-                    alt: "British Flag"
-                },
-            }
+                {
+                    name: 'English',
+                    image: {
+                        source: '/storage/pictures/flag-english.jpg',
+                        alt: "British Flag"
+                    },
+                    value: 'en',
+                    text: '🇬🇧'
+                }
+            ]
         }
     },
     computed: {
+        url() {
+            return url
+        },
         isSelected() {
-            return this.lang == localStorage.lang
+            return this.lang === localStorage.lang
         }
     },
     methods: {
@@ -67,11 +86,12 @@ export default {
 .navbar__flag {
     @apply mt-0 max-h-5 h-auto;
 }
-.navbar__flag--french {
-    /*@apply ;*/
+
+.fr {
+    background-image: url("/storage/pictures/flag-french.jpg");
 }
 
-.navbar__flag--english {
-    /*@apply ;*/
+.en {
+    background-image: url("/storage/pictures/flag-english.jpg");
 }
 </style>

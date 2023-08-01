@@ -5,40 +5,19 @@
                     <img :src="review.user.avatar" class="card__header--img" alt="user_avatar" />
                 </figure>
                 <div class="card__header--text">
-                    <div class="header__text--rating" v-if="review.rating == '1'">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.empty.source" :alt="image.empty.alt">
-                        <img :src="image.empty.source" :alt="image.empty.alt">
-                        <img :src="image.empty.source" :alt="image.empty.alt">
-                        <img :src="image.empty.source" :alt="image.empty.alt">
-                    </div>
-                    <div class="header__text--rating" v-if="review.rating == '2'">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.empty.source" :alt="image.empty.alt">
-                        <img :src="image.empty.source" :alt="image.empty.alt">
-                        <img :src="image.empty.source" :alt="image.empty.alt">
-                    </div>
-                    <div class="header__text--rating" v-if="review.rating == '3'">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.empty.source" :alt="image.empty.alt">
-                        <img :src="image.empty.source" :alt="image.empty.alt">
-                    </div>
-                    <div class="header__text--rating" v-if="review.rating == '4'">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.empty.source" :alt="image.empty.alt">
-                    </div>
-                    <div class="header__text--rating" v-if="review.rating == '5'">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.full.source" :alt="image.full.alt">
-                        <img :src="image.full.source" :alt="image.full.alt">
+                    <div class="review__rating">
+                        <div v-for="i in 5" :key="i">
+                            <img
+                                v-if="i <= review.rating"
+                                :src="image.full.source"
+                                :alt="image.full.alt"
+                            >
+                            <img
+                                v-else
+                                :src="image.empty.source"
+                                :alt="image.empty.alt"
+                            >
+                        </div>
                     </div>
                     <p>{{ review.user.firstname }} {{ review.user.lastname }}</p>
                 </div>
@@ -79,24 +58,18 @@ export default {
             default: () => {}
         }
     },
-    methods: {
-        //
-    },
     computed: {
         formatDate() {
             const date = new Date(this.review.created_at)
             return date.toLocaleDateString()
         }
     },
-    mounted() {
-        // console.log(this.review)
-    }
 }
 </script>
 
 <style scoped>
     .review__card {
-        @apply w-11/12 h-full bg-base-100 shadow-xl mx-auto my-8 border border-arth-yellow bg-white
+        @apply w-11/12 h-full bg-white shadow-xl mx-auto my-8 border border-arth-yellow
     }
 
     .review__card--header {
@@ -104,7 +77,7 @@ export default {
     }
 
     .card__header--img{
-        @apply h-4/5 w-auto
+        @apply h-16 w-16
     }
 
     .card__header--text {
@@ -115,23 +88,23 @@ export default {
         @apply mt-0 mb-3 text-xl
     }
 
-    .header__text--rating {
-        @apply flex
-    }
-
     .card-body {
         @apply pt-0 h-max text-black
     }
 
     .card-title {
-        @apply text-2xl font-bold
+        @apply text-xl font-bold
+    }
+
+    .card-actions {
+        @apply items-end
     }
 
     .badge {
-        @apply  border border-arth-yellow bg-white m-2 p-4  text-black
+        @apply border border-arth-yellow bg-white m-2 p-4 text-black
     }
 
-    .badge>p {
-        /*@apply */
+    .review__rating{
+        @apply flex flex-row
     }
 </style>

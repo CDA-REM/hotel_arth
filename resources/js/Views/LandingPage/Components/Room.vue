@@ -9,9 +9,9 @@
         <div class="flex flex-col p-8 justify-around lg:basis-1/3">
             <h2>{{room.title}}</h2>
             <p class="text-justify">{{room.description}}</p>
-            <button v-if="room.id == 1" class="border-arth-yellow hover:bg-arth-yellow">{{ $t("buttons.discover") }}</button>
-            <button v-if="room.id == 2" class="border-arth-light-blue hover:bg-arth-light-blue">{{ $t("buttons.discover") }}</button>
-            <button v-if="room.id == 3" class="border-arth-dark-blue hover:bg-arth-dark-blue hover:text-white">{{ $t("buttons.discover") }}</button>
+            <button v-if="room.id == 1" class="btn__yellow--outline">{{ $t("buttons.discover") }}</button>
+            <button v-if="room.id == 2" class="btn__lightblue--outline">{{ $t("buttons.discover") }}</button>
+            <button v-if="room.id == 3" class="btn__darkblue--outline">{{ $t("buttons.discover") }}</button>
         </div>
     </div>
 </template>

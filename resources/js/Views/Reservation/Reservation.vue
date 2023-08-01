@@ -36,8 +36,10 @@
     <form ref="reservationForm" @submit.prevent="submitBooking" class="flex flex-col mx-4">
         <div class="form-control w-full max-w-md mx-auto my-12">
             <!-- START - Vue Reservation -->
-            <fieldset class="checkAvailability__section" id="checkAvailability"
-                      v-show="activeTab === 'checkAvailability'">
+            <fieldset
+                class="checkAvailability__section"
+                id="checkAvailability"
+                v-show="activeTab === 'checkAvailability'">
                 <legend>
                     <h1 class="reservation__heading">{{ $t(('reservation.title')) }}</h1>
                 </legend>
@@ -91,43 +93,51 @@
                     <option value="royal">{{ $t('reservation.royal') }}</option>
                 </select>
                 <!--                <div v-if="form.roomCategory === 'classic'">-->
-                <img v-if="formReservation.roomCategory === 'classic'" :src="roomsImg.classic.src"
-                     :alt="roomsImg.classic.altFr">
-                <img v-else-if="formReservation.roomCategory === 'luxury'" :src="roomsImg.luxury.src"
-                     :alt="roomsImg.classic.altFr">
-                <img v-else-if="formReservation.roomCategory === 'royal'" :src="roomsImg.royal.src"
-                     :alt="roomsImg.classic.altFr">
+                <img
+                    v-if="formReservation.roomCategory === 'classic'"
+                    :src="roomsImg.classic.src"
+                    :alt="roomsImg.classic.altFr">
+                <img
+                    v-else-if="formReservation.roomCategory === 'luxury'"
+                    :src="roomsImg.luxury.src"
+                    :alt="roomsImg.classic.altFr">
+                <img
+                    v-else-if="formReservation.roomCategory === 'royal'"
+                    :src="roomsImg.royal.src"
+                    :alt="roomsImg.classic.altFr">
                 <!--                </div>-->
 
                 <label for="numberOfPeople" class="label">
                     <span class="label-text">{{ $t('reservation.numberOfPeople') }}</span>
                 </label>
-                <input type="number"
-                       id="numberOfPeople"
-                       name="numberOfPeople"
-                       min="1"
-                       max="96"
-                       class="w-full max-w-md"
-                       v-model="formReservation.numberOfPeople"
-                       required
+                <input
+                    type="number"
+                    id="numberOfPeople"
+                    name="numberOfPeople"
+                    min="1"
+                    max="96"
+                    class="w-full max-w-md"
+                    v-model="formReservation.numberOfPeople"
+                    required
                 >
 
                 <label for="numberOfRooms" class="label">
                     <span class="label-text">{{ $t('reservation.numberOfRooms') }}</span>
                 </label>
-                <input type="number"
-                       id="numberOfRooms"
-                       name="numberOfRooms"
-                       :min="calculateMinNumberOfRooms"
-                       :max="calculateMaxNumberOfRooms"
-                       class="w-full max-w-md"
-                       v-model="formReservation.numberOfRooms"
-                       required>
+                <input
+                    type="number"
+                    id="numberOfRooms"
+                    name="numberOfRooms"
+                    :min="calculateMinNumberOfRooms"
+                    :max="calculateMaxNumberOfRooms"
+                    class="w-full max-w-md"
+                    v-model="formReservation.numberOfRooms"
+                    required>
                 <p class="mt-6 text-center font-bold text-lg">{{ calculateRoomPrice }} € </p>
                 <p class="text-center text-red-600 font-bold italic text-sm">
                     {{ $t('reservation.totalPriceLegend') }}</p>
                 <!-- START - Navigation Button -->
-                <button type="button" @click="nextTab()" class="">
+                <button type="button" @click="nextTab()" class="btn__lightblue">
                     {{ $t('buttons.buttonBooking') }}
                 </button>
                 <!-- END - Navigation Button -->
@@ -135,8 +145,11 @@
             <!-- END - Vue Reservation -->
 
             <!-- START - Vue Options -->
-            <fieldset class="options__section" id="selectOption" v-show="activeTab === 'selectOption'"
-                      :disabled="activeTab === 'checkAvailability'">
+            <fieldset
+                class="options__section"
+                id="selectOption"
+                v-show="activeTab === 'selectOption'"
+                :disabled="activeTab === 'checkAvailability'">
                 <legend>
                     <h1 class="option__heading">{{ $t(('options.title')) }}</h1>
                 </legend>
@@ -157,13 +170,14 @@
                 <p class="option__heading--help">{{ $t(('options.help')) }}</p>
                 <!-- START - Options checkboxes -->
                 <div class="form-control flex flex-row flex-wrap mx-4 my-2">
-                    <input type="checkbox"
-                           id="optionPetitDejeuner"
-                           name="optionPetitDejeuner"
-                           checked="checked"
-                           class="checkbox checkbox-xs"
-                           value="1"
-                           v-model="formReservation.formOptions">
+                    <input
+                        type="checkbox"
+                        id="optionPetitDejeuner"
+                        name="optionPetitDejeuner"
+                        checked="checked"
+                        class="checkbox checkbox-xs"
+                        value="1"
+                        v-model="formReservation.formOptions">
                     <label for="optionPetitDejeuner" class="label cursor-pointer ml-4">
                         <span class="label-text">{{ $t('options.1') }}</span>
                     </label>
@@ -223,13 +237,8 @@
                     </label>
                 </div>
                 <!-- END - Options checkboxes -->
-                <!-- START - Total price -->
-                <p class="mt-6 text-center text-red-600 font-bold">{{ $t('options.totalAmountOfStay') }}
-                    <span class="font-bold">{{ calculateTotalPrice }} €</span>
-                </p>
-                <!-- END - Total price -->
                 <!-- START - Navigation button -->
-                <button type="button" @click="nextTab()" class="bg-arth-green w-full mt-6 mb-8">
+                <button type="button" @click="nextTab()" class="btn__lightblue w-full mt-6 mb-8">
                     {{ $t('buttons.buttonOptions') }}
                 </button>
                 <!-- END - Navigation button -->
@@ -354,7 +363,7 @@
                                 <span class="label-text">{{ $t('validation.companyZipCode') }}</span>
                             </label>
                             <input type="text" id="companyZipCode" name="companyZipCode" placeholder=""
-                            class="input input-bordered w-full max-w-md" v-model="formUser.zipCode"/>
+                                   class="input input-bordered w-full max-w-md" v-model="formUser.zipCode"/>
                         </div>
 
                         <div class="form-control w-full">
@@ -362,7 +371,7 @@
                                 <span class="label-text">{{ $t('validation.companyCity') }}</span>
                             </label>
                             <input type="text" id="companyCity" name="companyCity" placeholder=""
-                            class="input input-bordered w-full max-w-md" v-model="formUser.city"/>
+                                   class="input input-bordered w-full max-w-md" v-model="formUser.city"/>
                         </div>
                     </div>
 
@@ -382,6 +391,12 @@
                             <ul class="m-2">
                                 <li v-for="(option) in formReservation.formOptions">{{ $t((`options.${option}`)) }}</li>
                             </ul>
+
+                            <!-- START - Total price -->
+                            <p class="mt-6 text-center font-bold">{{ $t('options.totalAmountOfStay') }}
+                                <span class="font-bold">{{ calculateTotalPrice }} €</span>
+                            </p>
+                            <!-- END - Total price -->
                             <p class="mx-6 my-6 text-start">{{ $t('validation.annulationDelay') }}</p>
                         </div>
                     </div>
@@ -405,6 +420,7 @@
 </template>
 
 <script>
+import {defineComponent} from "vue";
 import {useUserStore} from "../../../stores/userStore";
 import {useGlobalStore} from "../../../stores/globalStore";
 import {useRoomCategoriesStore} from "../../../stores/roomCategoriesStore";
@@ -418,7 +434,7 @@ import {addMonths, getMonth, getYear} from 'date-fns';
 import router from "../../router";
 import axios from "axios";
 
-export default {
+export default defineComponent({
     name: 'reservation',
     components: {VueDatePicker},
     setup() {
@@ -431,6 +447,9 @@ export default {
     },
     data() {
         return {
+            user: null,
+            personalAddress: null,
+            professionalAddress: null,
             formReservation: {
                 started_date: null,
                 end_date: null,
@@ -441,12 +460,12 @@ export default {
                 isTravelForWork: false,
             },
             formUser: {
-                id: this.userStore.id,
-                civility: "",
-                firstname: "",
-                lastname: "",
-                email: "",
-                phoneNumber: "",
+                id: this.userStore.user.id,
+                civility: this.userStore.user.gender || '',
+                firstname: this.userStore.user.firstname || '',
+                lastname: this.userStore.user.lastname || "",
+                email: this.userStore.user.email || "",
+                phoneNumber: this.userStore.user.phone || "",
                 address: "",
                 zipCode: "",
                 city: "",
@@ -480,7 +499,10 @@ export default {
         }
     },
     computed: {
-        // Calculate room price
+        userId() {
+            return this.user.id
+        },
+// Calculate room price
         calculateRoomPrice() {
             let roomPrice = 0;
             let numberOfDays = this.calculateNumberOfDays();
@@ -490,7 +512,7 @@ export default {
             }
             return roomPrice;
         },
-        // Calculate options price
+// Calculate options price
         calculateOptionsPrice() {
             let optionsPrice = 0;
             let numberOfDays = this.calculateNumberOfDays();
@@ -513,11 +535,11 @@ export default {
             }
             return optionsPrice;
         },
-        // Calculate total price of reservation
+// Calculate total price of reservation
         calculateTotalPrice() {
             return this.calculateRoomPrice + this.calculateOptionsPrice;
         },
-        // Calculate Minimum number of rooms depending on number of people
+// Calculate Minimum number of rooms depending on number of people
         calculateMinNumberOfRooms() {
             const numberOfPeople = this.formReservation.numberOfPeople;
             let minNumberOfRooms = 1;
@@ -529,7 +551,7 @@ export default {
                 return minNumberOfRooms;
             }
         },
-        // Define maximum number of rooms depending on number of people
+// Define maximum number of rooms depending on number of people
         calculateMaxNumberOfRooms() {
             if (this.formReservation.numberOfPeople > 0 && this.formReservation.numberOfPeople <= 96) {
                 return this.formReservation.numberOfPeople;
@@ -538,7 +560,7 @@ export default {
                 return 32;
             }
         },
-        // Calculate minimum date of checkout depending on checkin date
+// Calculate minimum date of checkout depending on checkin date
         calculateMinCheckoutDate() {
             if (this.formReservation.started_date) {
                 const checkinDate = new Date(moment(this.formReservation.started_date, "DD MM YYYY"));
@@ -547,17 +569,17 @@ export default {
 
             }
         },
-        // This method is only for component display
+// This method is only for component display
         formateDateForDatePicker() {
             return this.globalStore.getLocale === 'fr' ? 'dd/MM/yyyy' : 'MM/dd/yyyy'
         },
-        // Formate checkin date for recap
+// Formate checkin date for recap
         formateCheckinDate() {
             if (this.formReservation.started_date) {
                 return this.formateDateForRecap(this.formReservation.started_date);
             }
         },
-        // Formate checkin date for recap
+// Formate checkin date for recap
         formateCheckoutDate() {
             if (this.formReservation.end_date) {
                 return this.formateDateForRecap(this.formReservation.end_date);
@@ -565,7 +587,6 @@ export default {
         }
     },
     methods: {
-        //useUserStore, //TODO - Uncomment this line if needed
         useGlobalStore,
         calculateNumberOfDays() {
             if (this.formReservation.started_date && this.formReservation.end_date) {
@@ -575,20 +596,20 @@ export default {
                 return numberOfDays;
             }
         },
-        // This methods is called by the computed properties formateChekinDate() and formateCheckoutDate
+// This methods is called by the computed properties formateChekinDate() and formateCheckoutDate
         formateDateForRecap(input) {
             if (input && !this.isLoading) {
                 return input = input.toLocaleDateString(this.globalStore.getLocale)
             }
             return new Date
         },
-        // This method formate date to match required format for request. It's called at sumbit
+// This method formate date to match required format for request. It's called at sumbit
         formateCheckinDateForRequest() {
             if (this.formReservation.started_date) {
                 return this.formReservation.started_date = moment(this.formReservation.started_date).format('YYYY-MM-DD');
             }
         },
-        // This method formate date to match required format for request. It's called at sumbit
+// This method formate date to match required format for request. It's called at sumbit
         formateCheckoutDateForRequest() {
             if (this.formReservation.end_date) {
                 return this.formReservation.end_date = moment(this.formReservation.end_date).format('YYYY-MM-DD');
@@ -610,8 +631,17 @@ export default {
         resetForm() {
             this.$refs.reservationForm.reset();
         },
+        getUser() {
+            this.user = this.userStore;
+        },
+        getPersonalAddress() {
+            return this.personalAddress = JSON.parse(this.userStore.user.personal_address)
+        },
+        getProfessionalAddress() {
+            return this.professionalAddress = JSON.parse(this.userStore.user.professional_address)
+        },
         async submitUser() {
-            axios.post('api/users/' + this.formUser.id, {...this.formUser, _method: 'put'}, config)
+            axios.post('api/users/' + this.userStore.user.id, {...this.formUser, _method: 'put'})
                 .then(
                     (response) => {
                         if (response.status === 200 || response.status === 201) {
@@ -624,20 +654,20 @@ export default {
                 )
                 .catch((error) => {
                     if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
+// The request was made and the server responded with a status code
+// that falls out of the range of 2xx
                         console.log('Server error out of 2xx')
                         console.log("response data error : ", error.response.data);
                         console.log("response data status : ", error.response.status);
                         console.log("response data headers : ", error.response.headers);
                     } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
+// The request was made but no response was received
+// `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+// http.ClientRequest in node.js
                         console.log('No response was received to your request.')
                         console.log("error.request : ", error.request);
                     } else {
-                        // Something happened in setting up the request that triggered an Error
+// Something happened in setting up the request that triggered an Error
                         console.log('An error occured : ', error.message);
                     }
                     console.log(error.config);
@@ -647,7 +677,7 @@ export default {
                     );
                 });
         },
-        // Send request to create reservation
+// Send request to create reservation
         async submitBooking() {
             this.isLoading = true
             this.formateCheckinDateForRequest();
@@ -658,10 +688,10 @@ export default {
                     headers: {
                         Accept: ["application/json"],
                         "Content-Type": ["application/json"],
-                        //withCredentials: true,
+//withCredentials: true,
                     },
                     auth: {
-                        // TODO - Ajouter le cookie utilisateur ? ;
+// TODO - Ajouter le cookie utilisateur ? ;
                     },
                 };
 
@@ -685,10 +715,12 @@ export default {
             }
         },
     },
-    mounted() {
-        //
-    }
-}
+    async mounted() {
+        await this.getUser();
+        await this.getPersonalAddress();
+        await this.getProfessionalAddress();
+    },
+})
 </script>
 
 <style scoped>
@@ -738,7 +770,6 @@ label {
 
 #nav--button {
     border: none;
-
     @apply pl-2 pr-2 font-normal border-0;
 }
 
@@ -769,4 +800,3 @@ label {
     @apply mt-0;
 }
 </style>
-

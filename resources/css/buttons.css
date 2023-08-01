@@ -1,0 +1,25 @@
+.btn__darkblue {
+    @apply border border-arth-dark-blue bg-arth-dark-blue text-white hover:bg-white hover:text-arth-dark-blue;
+}
+
+.btn__darkblue--outline {
+    @apply border border-arth-dark-blue bg-white text-arth-dark-blue hover:bg-arth-dark-blue hover:text-white;
+}
+
+.btn__lightblue {
+    @apply border border-arth-light-blue bg-arth-light-blue text-black hover:bg-white;
+}
+
+.btn__lightblue--outline {
+    @apply border border-arth-light-blue bg-white text-black hover:bg-arth-light-blue;
+}
+
+.btn__yellow {
+    @apply border border-arth-yellow bg-arth-yellow text-black hover:bg-white;
+}
+
+.btn__yellow--outline {
+    @apply border border-arth-yellow bg-white text-black hover:bg-arth-yellow;
+}
+
+
