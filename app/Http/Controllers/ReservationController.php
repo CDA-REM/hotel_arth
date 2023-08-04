@@ -73,7 +73,7 @@ class ReservationController extends Controller
 
         } catch (PDOException $e) {
             // Catching database exception
-            Log::error("A database error occured : {{$e}}");
+            Log::error("A database error occurred : {{$e}}");
         } catch (Exception $e) {
             Log::error($e);
         }
@@ -112,7 +112,7 @@ class ReservationController extends Controller
      * @param Reservation $reservation
      * @return JsonResponse
      */
-    public function Checkin(Reservation $reservation): JsonResponse
+    public function checkin(Reservation $reservation): JsonResponse
     {
         try {
             $reservation = Reservation::findOrFail($reservation->id);
@@ -131,7 +131,7 @@ class ReservationController extends Controller
      * @param Reservation $reservation
      * @return JsonResponse
      */
-    public function Checkout(Reservation $reservation): JsonResponse
+    public function checkout(Reservation $reservation): JsonResponse
     {
         try {
             $reservation = Reservation::findOrFail($reservation->id);

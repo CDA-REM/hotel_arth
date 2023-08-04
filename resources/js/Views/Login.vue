@@ -46,7 +46,7 @@
                 <span class="text-red-500 text-sm" v-for="password in errors.password">{{ password }}</span>
                 <div class=" flex space-x-4 mt-4">
                     <span class="label-text">{{ $t("signUp.rememberToken") }}</span>
-                    <input type="checkbox" class="w-4 h-4" v-model="rememberMe" id="remember_me" />
+                    <input type="checkbox" class="w-4 h-4 dark:checkbox-primary" v-model="rememberMe" id="remember_me" />
                 </div>
                 <p class="mt-6 text-arth-dark-blue text-center">{{ $t('login.dontHaveAccount') }}
                     <router-link :to="{ name:'signUp' }">

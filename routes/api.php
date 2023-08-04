@@ -81,6 +81,7 @@ Route::middleware('setLocale')->prefix('reservations')->name('reservations')->gr
     Route::get('/', [ReservationController::class, 'index'])->name('.index');
     Route::put('checkin/{reservation}', [ReservationController::class, 'checkin'])->name('.checkin');
     Route::put('checkout/{reservation}', [ReservationController::class, 'checkout'])->name('.checkout');
+//    Route::get('/availability/{started_date}/{end_date}', [ReservationController::class, 'getAvailableRooms'])->name('.availability');
     Route::get('/availability', [ReservationController::class, 'getAvailableRooms'])->name('.availability');
     Route::get('/{id}', [ReservationController::class, 'show'])->name('.show');
     Route::post('/create', [ReservationController::class, 'createReservation'])->name('.create');

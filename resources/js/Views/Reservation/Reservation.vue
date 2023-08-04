@@ -496,6 +496,7 @@ export default defineComponent({
             activeTab: "checkAvailability",
             errors: [],
             isLoading: false,
+            availabilityStatus: null,
         }
     },
     computed: {
@@ -586,8 +587,45 @@ export default defineComponent({
             }
         }
     },
+
+    watch: {
+        'formReservation.numberOfRooms'() {
+            if (this.formReservation.started_date && this.formReservation.end_date &&
+                this.formReservation.roomCategory && this.formReservation.numberOfRooms && this.formReservation.numberOfPeople) {
+                this.getAvailability();
+            }
+        },
+    },
     methods: {
         useGlobalStore,
+        async getAvailability() {
+            console.log("getAvailability");
+            // axios.get(`api/availability/?started_date=${this.formateCheckinDateForRequest()}&end_date=${this.formateCheckoutDateForRequest()}`, {
+            await axios.get(`api/availability`, {
+                params: {
+                    started_date: this.formateCheckinDateForRequest(),
+                    end_date: this.formateCheckoutDateForRequest(),
+                //     // roomCategory: this.formReservation.roomCategory,
+                //     // numberOfRooms: this.formReservation.numberOfRooms,
+                //     // numberOfPeople: this.formReservation.numberOfPeople,
+                }
+            })
+                .then((response) => {
+                    if (response.status === 200 || response.status === 201) {
+                        console.log("response code: " + response.status);
+                        console.log("response data : ", response.data);
+                        this.availabilityStatus = response.data;
+                    }
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        this.errors.push('Une erreur est survenue',error?.response?.data?.message || " Erreur inconnue")
+                        console.log(`Erreur : ${error}`)
+// The request was made and the server responded with a status code
+                    }
+                });
+        },
+
         calculateNumberOfDays() {
             if (this.formReservation.started_date && this.formReservation.end_date) {
                 const checkinDate = new Date(moment(this.formReservation.started_date, "DD MM YYYY"));

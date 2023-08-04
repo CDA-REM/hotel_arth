@@ -6,6 +6,7 @@ use App\Models\Option;
 use App\Models\Reservation;
 use App\Models\Room;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 
 class ReservationRepository
@@ -52,7 +53,8 @@ class ReservationRepository
         return $option_price;
     }
 
-    static function getAvailableRooms($started_date, $end_date) {
+    static function getAvailableRooms($started_date, $end_date): Collection|array
+    {
         // Get the id of every reservation between two dates
         $reservationsIdArray = Reservation::whereBetween("started_date", [$started_date, $end_date])
             ->orWhereBetween("end_date", [$started_date, $end_date])
