@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repository\ReservationRepository;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -11,7 +12,17 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getOperationalDashboardData() 
+    public function getOperationalDashboardData()
+    {
+        return ReservationRepository::getReservationsByDate(today()->toDateString());
+    }
+
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getTacticalDashboardData()
     {
         //
     }
@@ -21,17 +32,7 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getTacticalDashboardData() 
-    {
-        //
-    }
-
-        /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getStrategicalDashboardData() 
+    public function getStrategicalDashboardData()
     {
         //
     }

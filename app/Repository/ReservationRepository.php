@@ -6,7 +6,10 @@ use App\Models\Option;
 use App\Models\Reservation;
 use App\Models\Room;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
 
 class ReservationRepository
 {
@@ -70,6 +73,25 @@ class ReservationRepository
         // Return the free rooms
         return Room::all()->whereNotIn("id", array_unique($booked));
 
+    }
+
+    /**
+     * @param datetime $date
+     * @return Collection
+     */
+    public static function getReservationsByDate($date) {
+        $reservations = Reservation::all()
+            ->where('started_date', '<=', $date)
+            ->where('end_date', '>=', $date);
+
+        foreach($reservations as $reservation) {
+            dd($reservation->user);
+        }
+
+        return $reservations;
+        // foreach($reservations as $reservation) {
+        //     dd($reservation->user());
+        // }
     }
 }
 
