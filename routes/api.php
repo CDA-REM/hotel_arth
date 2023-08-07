@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdvantageController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\KeyCardController;
@@ -215,3 +216,6 @@ Route::middleware('setLocale')->prefix('statistics')->name('statistics')->group(
 
 
 Route::get('/keycardReservation/{keyCard}', [KeyCardController::class, 'showWithReservation'])->name('keycardReservation.show');
+
+// Tests for dashboard
+Route::get('/dashboard/operational', [DashboardController::class, 'getOperationalDashboardData'])->name('operationalDashboard');
