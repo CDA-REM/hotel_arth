@@ -35,6 +35,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('setLocale')->group(function () {
     # Login route
     Route::post('/login', [AuthController::class, 'login'])->name('login');
+    # Api login route
+    Route::post('/sanctum/token', [AuthController::class, 'loginApi'])->name('loginApi');
     # Register route
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     # Logout route
@@ -59,6 +61,8 @@ Route::middleware('setLocale')->group(function () {
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('.delete');
         # Get info of user connected
         Route::get('/me', [UserController::class, 'me'])->name('.me');
+        # Get info of admin connected
+        Route::get('/admin', [UserController::class, 'admin'])->name('.admin');
     });
 });
 
