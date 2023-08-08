@@ -18,6 +18,7 @@ use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QRCodeController;
+use App\Repository\ReservationRepository;
 use Illuminate\Support\Facades\Route;
 
 
@@ -86,7 +87,7 @@ Route::middleware('setLocale')->prefix('reservations')->name('reservations')->gr
     Route::get('/', [ReservationController::class, 'index'])->name('.index');
     Route::put('checkin/{reservation}', [ReservationController::class, 'checkin'])->name('.checkin');
     Route::put('checkout/{reservation}', [ReservationController::class, 'checkout'])->name('.checkout');
-    Route::get('/availability', [ReservationController::class, 'getAvailableRooms'])->name('.availability');
+    Route::get('/availability', [ReservationController::class, 'getAvailableRoomsFromRequest'])->name('.availability');
     Route::get('/{id}', [ReservationController::class, 'show'])->name('.show');
     Route::post('/create', [ReservationController::class, 'createReservation'])->name('.create');
     Route::delete('/delete/{id}', [ReservationController::class, 'destroy'])->name('.destroy');
@@ -223,3 +224,14 @@ Route::get('/keycardReservation/{keyCard}', [KeyCardController::class, 'showWith
 
 // Tests for dashboard
 Route::get('/dashboard/operational', [DashboardController::class, 'getOperationalDashboardData'])->name('operationalDashboard');
+
+
+// START - Routes Dashboard Tactic
+Route::get('dashboard/tactical', [DashboardController::class, 'getReservationsBetweenDates'])->name('tacticalDashboard');
+Route::get('/dashboard/tactical/totalSales', [DashboardController::class, 'totalSalesBetweenDates']);
+Route::get('/dashboard/tactical/averageCartEvolution', [DashboardController::class, 'averageCartValueBetweenTwoDates']);
+Route::get('/dashboard/tactical/occupancy', [DashboardController::class, 'totalReservationsBetweenDates']);
+Route::get('/dashboard/tactical/occupancyRate', [DashboardController::class, 'occupancyRateBetweenDates']);
+Route::get('/dashboard/tactical/occupancyRateByRoomType', [DashboardController::class, 'occupancyRatePerRoomTypeBetweenDates']);
+Route::get('/dashboard/tactical/occupancyRateByOptions', [DashboardController::class, 'occupancyRatePerOptionBetweenDates']);
+// END - Routes Dashboard Tactic
