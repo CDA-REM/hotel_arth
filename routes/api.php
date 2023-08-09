@@ -227,11 +227,13 @@ Route::get('/dashboard/operational', [DashboardController::class, 'getOperationa
 
 
 // START - Routes Dashboard Tactic
-Route::get('dashboard/tactical', [DashboardController::class, 'getReservationsBetweenDates'])->name('tacticalDashboard');
-Route::get('/dashboard/tactical/totalSales', [DashboardController::class, 'totalSalesBetweenDates']);
-Route::get('/dashboard/tactical/averageCartEvolution', [DashboardController::class, 'averageCartValueBetweenTwoDates']);
-Route::get('/dashboard/tactical/occupancy', [DashboardController::class, 'totalReservationsBetweenDates']);
-Route::get('/dashboard/tactical/occupancyRate', [DashboardController::class, 'occupancyRateBetweenDates']);
-Route::get('/dashboard/tactical/occupancyRateByRoomType', [DashboardController::class, 'occupancyRatePerRoomTypeBetweenDates']);
-Route::get('/dashboard/tactical/occupancyRateByOptions', [DashboardController::class, 'occupancyRatePerOptionBetweenDates']);
+Route::get('dashboard/tactical/reservationsBetweenDates', [DashboardController::class, 'getReservationsBetweenTwoDates'])->name('tacticalDashboard');
+Route::get('/dashboard/tactical/totalSales', [DashboardController::class, 'getTotalSalesBetweenTwoDates']);
+Route::get('/dashboard/tactical/averageCartEvolution', [DashboardController::class, 'getAverageCartValueBetweenTwoDates']);
+Route::get('/dashboard/tactical/occupancy', [DashboardController::class, 'getNumberOfReservationsBetweenTwoDates']);
+Route::get('/dashboard/tactical/occupancyRate', [DashboardController::class, 'getOccupancyRateBetweenTwoDates']);
+Route::get('/dashboard/tactical/occupancyRateByRoomType', [DashboardController::class, 'getOccupancyRatePerRoomTypeBetweenTwoDates']);
+Route::get('/dashboard/tactical/occupancyRateByOptions', [DashboardController::class, 'getOccupancyRatePerOptionBetweenTwoDates']);
+Route::get('/dashboard/tactical/averageTimeBetweenBookingAndCheckin', [DashboardController::class, 'getAverageTimeBetweenBookingAndCheckin']);
+Route::get('/dashboard/tactical/averageDurationOfAReception', [DashboardController::class, 'getAverageDurationOfAReception']);
 // END - Routes Dashboard Tactic

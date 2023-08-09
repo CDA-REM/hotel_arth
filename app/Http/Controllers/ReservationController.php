@@ -112,7 +112,7 @@ class ReservationController extends Controller
      * @param Reservation $reservation
      * @return JsonResponse
      */
-    public function Checkin(Reservation $reservation): JsonResponse
+    public function checkin(Reservation $reservation): JsonResponse
     {
         try {
             $reservation = Reservation::findOrFail($reservation->id);
@@ -131,7 +131,7 @@ class ReservationController extends Controller
      * @param Reservation $reservation
      * @return JsonResponse
      */
-    public function Checkout(Reservation $reservation): JsonResponse
+    public function checkout(Reservation $reservation): JsonResponse
     {
         try {
             $reservation = Reservation::findOrFail($reservation->id);

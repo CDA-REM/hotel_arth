@@ -2,218 +2,125 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reservation;
-use Exception;
-use Illuminate\Database\QueryException;
+use App\Repository\DashboardTacticRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Carbon;
-use Illuminate\Validation\ValidationException;
 
 class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return
      */
     public function getOperationalDashboardData()
     {
         //
     }
 
-        /**
+    /**
      * Display a listing of the resource.
      *
-     * @return JsonResponse
-         */
+     * @return
+     */
     public function getTacticalDashboardData()
     {
-       //
+        //
     }
 
     /**
-     * Display a listing of reservations taken between two dates.
+     * Return a listing of the reservations between two dates, using the repository.
      * @param Request $request
      * @return JsonResponse
      */
-    public function getReservationsBetweenDates(Request $request): JsonResponse
+    public function getReservationsBetweenTwoDates(Request $request) : JsonResponse
     {
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        $reservations = Reservation::whereBetween('started_date', [$startDate, $endDate])
-            ->orWhereBetween('end_date', [$startDate, $endDate])
-            ->get();
-
-        return response()->json($reservations);
-//        return $reservations;
+        return DashboardTacticRepository::reservationsBetweenDates($request);
     }
 
     /**
-     * Return the total sales between two dates.
+     * Return the total sales between two dates, using the repository.
      * @param Request $request
      * @return JsonResponse
      */
-    public function totalSalesBetweenDates(Request $request): JsonResponse
+    public function getTotalSalesBetweenTwoDates(Request $request) : JsonResponse
     {
-        try {
-            $this->validate($request, [
-                'start_date' => 'required|date',
-                'end_date' => 'required|date|after_or_equal:start_date',
-            ]);
-
-            $startDate = $request->input('start_date');
-            $endDate = $request->input('end_date');
-
-            $reservations = Reservation::whereBetween('started_date', [$startDate, $endDate])
-                ->orWhereBetween('end_date', [$startDate, $endDate])
-                ->get();
-
-            $totalSales = 0;
-
-            foreach ($reservations as $reservation) {
-                $totalSales += $reservation->price;
-            }
-
-            return response()->json(['total_sales' => $totalSales]);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => 'La valeur saisie est invalide.'], 400);
-        } catch (QueryException $e) {
-            return response()->json(['error' => 'Une erreur s\'est produite au niveau de la base de données.'], 500);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Une erreur s\'est produite'], 500);
-        }
+        return DashboardTacticRepository::totalSalesBetweenDates($request);
     }
 
     /**
-     * Return the average cart value between two dates.
+     * Return the average cart between two dates, using the repository.
      * @param Request $request
      * @return JsonResponse
      */
-    public function averageCartValueBetweenTwoDates(Request $request): JsonResponse
+    public function getAverageCartValueBetweenTwoDates(Request $request) : JsonResponse
     {
-        try {
-            $this->validate($request, [
-                'start_date' => 'required|date',
-                'end_date' => 'required|date|after_or_equal:start_date',
-            ]);
-
-            $startDate = $request->input('start_date');
-            $endDate = $request->input('end_date');
-
-            $reservations = Reservation::whereBetween('started_date', [$startDate, $endDate])
-                ->orWhereBetween('end_date', [$startDate, $endDate])
-                ->get();
-
-            $cartValues = [];
-
-            foreach ($reservations as $reservation) {
-                $date = Carbon::parse($reservation->started_date)->format('d-m-Y');
-                $cartValue = $reservation->price;
-
-                if (isset($cartValues[$date])) {
-                    $cartValues[$date]['value'] += $cartValue;
-                    $cartValues[$date]['count']++;
-                } else {
-                    $cartValues[$date] = ['value' => $cartValue, 'count' => 1];
-                }
-            }
-
-            $averageCartValues = [];
-
-            foreach ($cartValues as $date => $values) {
-                $averageValue = $values['value'] / $values['count'];
-                $averageCartValues[] = ['date' => $date, 'cartValue' => $averageValue];
-            }
-
-            return response()->json($averageCartValues);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => 'Invalid input.'], 400);
-        } catch (QueryException $e) {
-            return response()->json(['error' => 'Database error.'], 500);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'An error occurred.'], 500);
-        }
+        return DashboardTacticRepository::averageCartValueBetweenTwoDates($request);
     }
 
     /**
-     * Return the number of reservations between two dates.
+     * Return the total number reservations between two dates, using the repository.
      * @param Request $request
      * @return JsonResponse
      */
-    public function totalReservationsBetweenDates(Request $request): JsonResponse
+    public function getNumberOfReservationsBetweenTwoDates(Request $request) : JsonResponse
     {
-        try {
-            $this->validate($request, [
-                'start_date' => 'required|date',
-                'end_date' => 'required|date|after_or_equal:start_date',
-            ]);
-
-            $startDate = $request->input('start_date');
-            $endDate = $request->input('end_date');
-
-            $totalReservations = Reservation::whereBetween('started_date', [$startDate, $endDate])
-                ->orWhereBetween('end_date', [$startDate, $endDate])
-                ->count();
-
-            return response()->json(['total_reservations' => $totalReservations]);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => 'Invalid input.'], 400);
-        } catch (QueryException $e) {
-            return response()->json(['error' => 'Database error.'], 500);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'An error occurred.'], 500);
-        }
+        return DashboardTacticRepository::numberOfReservationsBetweenDates($request);
     }
 
     /**
-     * Return the occupancy rate between two dates.
+     * Return the occupancy rate between two dates, using the repository.
      * @param Request $request
      * @return JsonResponse
      */
-    public function occupancyRateBetweenDates(Request $request): JsonResponse
+    public function getOccupancyRateBetweenTwoDates(Request $request) : JsonResponse
     {
-        try {
-            $this->validate($request, [
-                'start_date' => 'required|date',
-                'end_date' => 'required|date|after_or_equal:start_date',
-            ]);
-
-            $startDate = $request->input('start_date');
-            $endDate = $request->input('end_date');
-
-            $totalReservations = Reservation::whereBetween('started_date', [$startDate, $endDate])
-                ->orWhereBetween('end_date', [$startDate, $endDate])
-                ->count();
-
-            $occupancyRate = ($totalReservations / (32 * $this->calculateDaysDifference($startDate, $endDate))) * 100;
-
-            return response()->json(['occupancy_rate' => $occupancyRate]);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => 'Invalid input.'], 400);
-        } catch (QueryException $e) {
-            return response()->json(['error' => 'Database error.'], 500);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'An error occurred.'], 500);
-        }
+        return DashboardTacticRepository::occupancyRateBetweenDates($request);
     }
 
     /**
-     * Return the number of reservations between two dates.
-     * @param $startDate
-     * @param $endDate
-     * @return bool|int
-     * @throws Exception
+     * Return the occupancy rate per room type between two dates, using the repository.
+     * @param Request $request
+     * @return JsonResponse
      */
-    private function calculateDaysDifference($startDate, $endDate): bool|int
+    public function getOccupancyRatePerRoomTypeBetweenTwoDates(Request $request) : JsonResponse
     {
-        $start = new \DateTime($startDate);
-        $end = new \DateTime($endDate);
-        $interval = $start->diff($end);
-        return $interval->days;
+        return DashboardTacticRepository::occupancyRatePerRoomTypeBetweenDates($request);
     }
+
+    /**
+     * Return the occupancy rate per option between two dates, using the repository.
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getOccupancyRatePerOptionBetweenTwoDates(Request $request) : JsonResponse
+    {
+        return DashboardTacticRepository::occupancyRatePerOptionBetweenDates($request);
+    }
+
+    /**
+     * Return the average time between two dates, using the repository.
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAverageTimeBetweenBookingAndCheckin(Request $request) : JsonResponse
+    {
+        return DashboardTacticRepository::averageTimeBetweenBookingAndCheckin($request);
+    }
+
+    /**
+     * Return the average duration of a reception, using the repository.
+     * @param Request $request
+     * @return JsonResponse
+     */
+
+    public function getAverageDurationOfAReception(Request $request) : JsonResponse
+    {
+        return DashboardTacticRepository::averageDurationOfAReception($request);
+    }
+
+
 
 
 
