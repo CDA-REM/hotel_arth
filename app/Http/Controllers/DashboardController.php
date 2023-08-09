@@ -2,19 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DashboardOperationalTableResource;
 use App\Repository\ReservationRepository;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return array
      */
-    public function getOperationalDashboardData()
+    public function getOperationalDashboardTableData()
     {
-        return ReservationRepository::getReservationsByDate(today()->toDateString());
+        $collection = ReservationRepository::getFormattedReservationsByDate(today()->toDateString());
+
+        return $collection;
+    }
+
+    /**
+     * Return the total number of people for a day.
+     *
+     * @return array
+     */
+    public function getNumberOfPeople() {
+        return ReservationRepository::getReservationsTotalNumberOfPeople(today()->toDateString());
+    }
+
+    /**
+     * Return the total number of people for a day.
+     *
+     * @return array
+     */
+    public function getReservationsMenusOptions() {
+        return ReservationRepository::getReservationsMenusByDate(today()->toDateString());
     }
 
         /**
