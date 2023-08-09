@@ -249,15 +249,15 @@ class DashboardTacticRepository
             foreach ($reservation->rooms as $room) {
                 if ($room->style == 'classic') {
                     $classicRoom++;
-                } elseif ($room->style == 'deluxe') {
+                } elseif ($room->style == 'luxury') {
                     $deluxeRoom++;
-                } elseif ($room->style == 'suite') {
+                } elseif ($room->style == 'royal') {
                     $suiteRoom++;
                 }
             }
         }
 
-        dd($occupancyRatePerRoomType);
+//        dd($occupancyRatePerRoomType);
 
         // TODO - Compter le nombre de chambres par réservation. Ce nombre remplacera $totalReservations
 
