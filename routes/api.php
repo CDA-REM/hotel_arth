@@ -18,6 +18,7 @@ use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QRCodeController;
+use App\Repository\ReservationRepository;
 use Illuminate\Support\Facades\Route;
 
 
@@ -86,7 +87,7 @@ Route::middleware('setLocale')->prefix('reservations')->name('reservations')->gr
     Route::get('/', [ReservationController::class, 'index'])->name('.index');
     Route::put('checkin/{reservation}', [ReservationController::class, 'checkin'])->name('.checkin');
     Route::put('checkout/{reservation}', [ReservationController::class, 'checkout'])->name('.checkout');
-    Route::get('/availability', [ReservationController::class, 'getAvailableRooms'])->name('.availability');
+    Route::get('/availability', [ReservationController::class, 'getAvailableRoomsFromRequest'])->name('.availability');
     Route::get('/{id}', [ReservationController::class, 'show'])->name('.show');
     Route::post('/create', [ReservationController::class, 'createReservation'])->name('.create');
     Route::delete('/delete/{id}', [ReservationController::class, 'destroy'])->name('.destroy');
@@ -222,5 +223,28 @@ Route::middleware('setLocale')->prefix('statistics')->name('statistics')->group(
 Route::get('/keycardReservation/{keyCard}', [KeyCardController::class, 'showWithReservation'])->name('keycardReservation.show');
 
 // Tests for dashboard
+
 Route::get('/dashboard/operational', [DashboardController::class, 'getOperationalDashboardData'])->name('operationalDashboard');
+
 Route::get('/dashboard/strategic', [DashboardController::class, 'getStrategicalDashboardData'])->name('strategicalDashboardData');
+
+
+// START - Routes Dashboard Tactic
+Route::get('dashboard/tactical/reservationsBetweenDates', [DashboardController::class, 'getReservationsBetweenTwoDates'])->name('tacticalDashboard');
+Route::get('/dashboard/tactical/totalSales', [DashboardController::class, 'getTotalSalesBetweenTwoDates']);
+Route::get('/dashboard/tactical/averageCartEvolution', [DashboardController::class, 'getAverageCartValueBetweenTwoDates']);
+Route::get('/dashboard/tactical/occupancy', [DashboardController::class, 'getNumberOfReservationsBetweenTwoDates']);
+Route::get('/dashboard/tactical/occupancyRate', [DashboardController::class, 'getOccupancyRateBetweenTwoDates']);
+Route::get('/dashboard/tactical/occupancyRateByRoomType', [DashboardController::class, 'getOccupancyRatePerRoomTypeBetweenTwoDates']);
+Route::get('/dashboard/tactical/occupancyRateByOptions', [DashboardController::class, 'getOccupancyRatePerOptionBetweenTwoDates']);
+Route::get('/dashboard/tactical/averageTimeBetweenBookingAndCheckin', [DashboardController::class, 'getAverageTimeBetweenBookingAndCheckin']);
+Route::get('/dashboard/tactical/averageDurationOfAReception', [DashboardController::class, 'getAverageDurationOfAReception']);
+// END - Routes Dashboard Tactic
+
+Route::prefix('dashboard')->name('dashboard')->group(function () {
+    Route::prefix('operational')->name('.operational')->group(function () {
+        Route::get('table', [DashboardController::class, 'getOperationalDashboardTableData'])->name('.table');
+        Route::get('total-people', [DashboardController::class, 'getNumberOfPeople'])->name('.people');
+        Route::get('menus', [DashboardController::class, 'getReservationsMenusOptions'])->name('.menus');
+    });});
+
