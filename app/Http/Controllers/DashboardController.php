@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Repository\DashboardTacticRepository;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use App\Repository\DashboardRepository;
@@ -157,7 +161,7 @@ class DashboardController extends Controller
         /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getStrategicalDashboardData(Request $request): \Illuminate\Http\JsonResponse
     {
