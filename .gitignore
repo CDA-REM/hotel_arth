@@ -14,6 +14,11 @@ yarn-error.log
 /.idea
 /.vscode
 
-# To remove before deploiement
+# Laravel Mix
+mix-manifest.json
+resources_js_Views*.js
+
+# TODO - To remove before deploiement
 public/js/app.js
 public/css/app.css
+
