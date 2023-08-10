@@ -223,6 +223,7 @@ Route::middleware('setLocale')->prefix('statistics')->name('statistics')->group(
 Route::get('/keycardReservation/{keyCard}', [KeyCardController::class, 'showWithReservation'])->name('keycardReservation.show');
 
 // Tests for dashboard
+
 Route::get('/dashboard/operational', [DashboardController::class, 'getOperationalDashboardData'])->name('operationalDashboard');
 
 
@@ -237,3 +238,11 @@ Route::get('/dashboard/tactical/occupancyRateByOptions', [DashboardController::c
 Route::get('/dashboard/tactical/averageTimeBetweenBookingAndCheckin', [DashboardController::class, 'getAverageTimeBetweenBookingAndCheckin']);
 Route::get('/dashboard/tactical/averageDurationOfAReception', [DashboardController::class, 'getAverageDurationOfAReception']);
 // END - Routes Dashboard Tactic
+
+Route::prefix('dashboard')->name('dashboard')->group(function () {
+    Route::prefix('operational')->name('.operational')->group(function () {
+        Route::get('table', [DashboardController::class, 'getOperationalDashboardTableData'])->name('.table');
+        Route::get('total-people', [DashboardController::class, 'getNumberOfPeople'])->name('.people');
+        Route::get('menus', [DashboardController::class, 'getReservationsMenusOptions'])->name('.menus');
+    });});
+
