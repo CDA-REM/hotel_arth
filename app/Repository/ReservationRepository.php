@@ -74,7 +74,6 @@ class ReservationRepository
         forEach ($reservations as $reservation) {
             $booked = [ ...$reservation->rooms->pluck("id") ];
         };
-
         // Return the free rooms
         return Room::all()->whereNotIn("id", array_unique($booked));
 
@@ -108,6 +107,7 @@ class ReservationRepository
     static function formatReservationsForDashboardTable(Collection $collection, string $date) {
 
         $formatedColl = [];
+        $occupiedRooms = [];
 
         foreach($collection as $reservation) {
 
@@ -126,11 +126,16 @@ class ReservationRepository
                 ];
 
                 array_push($formatedColl, $formatted_reservation);
+
+                if ($reservation->end_date != $date && $reservation->status != "terminated") {
+                    array_push($occupiedRooms, $room->room_number);
+                }
             }
         }
 
         // Complete the array with available rooms for display in the dashboard
-        $available = ReservationRepository::getAvailableRooms($date, $date);
+        $available = Room::all()->whereNotIn("room_number", array_unique($occupiedRooms));
+
         foreach($available as $room) {
             array_push($formatedColl, ['statut' => 'disponible', 'chambre' => $room->room_number]);
         };
