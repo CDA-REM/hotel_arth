@@ -74,7 +74,6 @@ class ReservationRepository
         forEach ($reservations as $reservation) {
             $booked = [ ...$reservation->rooms->pluck("id") ];
         };
-
         // Return the free rooms
         return Room::all()->whereNotIn("id", array_unique($booked));
 
@@ -97,7 +96,8 @@ class ReservationRepository
     static function getReservationsByDate(string $date) {
         return Reservation::all()
             ->where('started_date', '<=', $date)
-            ->where('end_date', '>=', $date);
+            ->where('end_date', '>=', $date)
+            ->whereIn("status", ["in progress", "validated"]);
     }
 
     /**
@@ -108,6 +108,7 @@ class ReservationRepository
     static function formatReservationsForDashboardTable(Collection $collection, string $date) {
 
         $formatedColl = [];
+        $occupiedRooms = [];
 
         foreach($collection as $reservation) {
 
@@ -117,7 +118,7 @@ class ReservationRepository
                 // Formatting like a goddamn monkey instead of using Resources.
                 // One room number per object.
                 $formatted_reservation = [
-                    'statut' => 'occupée',
+                    'tags' => 'occupée',
                     'nom' => $reservation->user->firstname . ' ' . $reservation->user->lastname,
                     'arrivee' => $reservation->started_date,
                     'depart' => $reservation->end_date,
@@ -126,13 +127,18 @@ class ReservationRepository
                 ];
 
                 array_push($formatedColl, $formatted_reservation);
+
+                if ($reservation->end_date != $date && $reservation->status != "terminated") {
+                    array_push($occupiedRooms, $room->room_number);
+                }
             }
         }
 
         // Complete the array with available rooms for display in the dashboard
-        $available = ReservationRepository::getAvailableRooms($date, $date);
+        $available = Room::all()->whereNotIn("room_number", array_unique($occupiedRooms));
+
         foreach($available as $room) {
-            array_push($formatedColl, ['statut' => 'disponible', 'chambre' => $room->room_number]);
+            array_push($formatedColl, ['tags' => 'disponible', 'chambre' => $room->room_number]);
         };
 
         return $formatedColl;
@@ -155,14 +161,19 @@ class ReservationRepository
         foreach($collection as $reservation) {
             // Log::info($reservation);
             foreach($reservation->options as $option) {
-                Log::info($option);
-                if ($option->id === 1) {
+
+                if ($option->id === 1
+                && $reservation->started_date != $date) {
                     $breakfast += $reservation->number_of_people;
                 }
-                if (in_array($option->id, [2, 4])) {
+
+                if (in_array($option->id, [2, 4])
+                    && $reservation->end_date != $date) {
                     $lunch += $reservation->number_of_people;
                 }
-                if (in_array($option->id, [3, 4])) {
+
+                if (in_array($option->id, [3, 4])
+                    && $reservation->end_date != $date) {
                     $diner += $reservation->number_of_people;
                 }
             }

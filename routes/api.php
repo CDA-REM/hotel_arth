@@ -226,6 +226,8 @@ Route::get('/keycardReservation/{keyCard}', [KeyCardController::class, 'showWith
 
 Route::get('/dashboard/operational', [DashboardController::class, 'getOperationalDashboardData'])->name('operationalDashboard');
 
+Route::get('/dashboard/strategic', [DashboardController::class, 'getStrategicalDashboardData'])->name('strategicalDashboardData');
+
 
 // START - Routes Dashboard Tactic
 Route::get('dashboard/tactical/reservationsBetweenDates', [DashboardController::class, 'getReservationsBetweenTwoDates'])->name('tacticalDashboard');
