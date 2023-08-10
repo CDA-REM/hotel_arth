@@ -3,5 +3,5 @@
 namespace App\Repository;
 
 class DashboardRepository {
-
+    //
 }

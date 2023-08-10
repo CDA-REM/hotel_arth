@@ -2,11 +2,15 @@
 
 namespace App\Repository;
 
+use App\Http\Resources\DashboardOperationalTableResource;
+use App\Http\Resources\ReservationResource;
 use App\Models\Option;
 use App\Models\Reservation;
 use App\Models\Room;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
+
 
 class ReservationRepository
 {
@@ -52,6 +56,10 @@ class ReservationRepository
         return $option_price;
     }
 
+    /**
+     * @param string $date
+     * @return Collection
+     */
     static function getAvailableRooms($started_date, $end_date) {
         // Get the id of every reservation between two dates
         $reservationsIdArray = Reservation::whereBetween("started_date", [$started_date, $end_date])
@@ -71,6 +79,101 @@ class ReservationRepository
         return Room::all()->whereNotIn("id", array_unique($booked));
 
     }
+
+    /**
+     * @param string $date
+     * @return array
+     */
+    public static function getFormattedReservationsByDate(string $date) {
+        $collection = ReservationRepository::getReservationsByDate($date);
+
+        return ReservationRepository::formatReservationsForDashboardTable($collection, $date);
+    }
+
+    /**
+     * @param string $date
+     * @return Collection
+     */
+    static function getReservationsByDate(string $date) {
+        return Reservation::all()
+            ->where('started_date', '<=', $date)
+            ->where('end_date', '>=', $date);
+    }
+
+    /**
+     * @param Collection $collection
+     * @param string $date
+     * @return array
+     */
+    static function formatReservationsForDashboardTable(Collection $collection, string $date) {
+
+        $formatedColl = [];
+
+        foreach($collection as $reservation) {
+
+            // n² complexity for the win ! The heavier the better.
+            foreach($reservation->rooms as $room) {
+
+                // Formatting like a goddamn monkey instead of using Resources.
+                // One room number per object.
+                $formatted_reservation = [
+                    'statut' => 'occupée',
+                    'nom' => $reservation->user->firstname . ' ' . $reservation->user->lastname,
+                    'arrivee' => $reservation->started_date,
+                    'depart' => $reservation->end_date,
+                    'chambre' => $room->room_number,
+                    'nombreCle' => $reservation->keys->count()
+                ];
+
+                array_push($formatedColl, $formatted_reservation);
+            }
+        }
+
+        // Complete the array with available rooms for display in the dashboard
+        $available = ReservationRepository::getAvailableRooms($date, $date);
+        foreach($available as $room) {
+            array_push($formatedColl, ['statut' => 'disponible', 'chambre' => $room->room_number]);
+        };
+
+        return $formatedColl;
+    }
+
+    public static function getReservationsTotalNumberOfPeople($date) {
+        // Get an array of number_of_people per reservation
+        $people = ReservationRepository::getReservationsByDate($date)->pluck('number_of_people')->toArray();
+
+        return array_sum($people);
+    }
+
+    public static function getReservationsMenusByDate($date) {
+        $collection = ReservationRepository::getReservationsByDate($date);
+        // return ReservationResource::collection($collection);
+        $breakfast = 0;
+        $lunch = 0;
+        $diner = 0;
+
+        foreach($collection as $reservation) {
+            // Log::info($reservation);
+            foreach($reservation->options as $option) {
+                Log::info($option);
+                if ($option->id === 1) {
+                    $breakfast += $reservation->number_of_people;
+                }
+                if (in_array($option->id, [2, 4])) {
+                    $lunch += $reservation->number_of_people;
+                }
+                if (in_array($option->id, [3, 4])) {
+                    $diner += $reservation->number_of_people;
+                }
+            }
+        }
+
+        $menus = [
+            'breakfast' => $breakfast,
+            'lunch' => $lunch,
+            'diner' => $diner
+        ];
+
+        return $menus;
+    }
 }
-
-
