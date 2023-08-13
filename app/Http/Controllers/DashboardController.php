@@ -2,24 +2,13 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Repository\DashboardTacticRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Resources\ReservationResource;
-use App\Models\Reservation;
 use App\Repository\DashboardRepository;
-use Carbon\Carbon;
-use DateTime;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
-use App\Repository\DashboardTacticRepository;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use App\Http\Resources\DashboardOperationalTableResource;
 use App\Repository\ReservationRepository;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class DashboardController extends Controller
 {
@@ -28,19 +17,18 @@ class DashboardController extends Controller
      *
      * @return array
      */
-    public function getOperationalDashboardTableData()
+    public function getOperationalDashboardTableData(): array
     {
-        $collection = ReservationRepository::getFormattedReservationsByDate(today()->toDateString());
-
-        return $collection;
+        return ReservationRepository::getFormattedReservationsByDate(today()->toDateString());
     }
 
     /**
      * Return the total number of people for a day.
      *
-     * @return array
+     * @return float|int
      */
-    public function getNumberOfPeople() {
+    public function getNumberOfPeople(): float|int
+    {
         return ReservationRepository::getReservationsTotalNumberOfPeople(today()->toDateString());
     }
 
@@ -49,7 +37,8 @@ class DashboardController extends Controller
      *
      * @return array
      */
-    public function getReservationsMenusOptions() {
+    public function getReservationsMenusOptions(): array
+    {
         return ReservationRepository::getReservationsMenusByDate(today()->toDateString());
     }
 
@@ -70,7 +59,7 @@ class DashboardController extends Controller
      */
     public function getReservationsBetweenTwoDates(Request $request) : JsonResponse
     {
-        return DashboardTacticRepository::reservationsBetweenDates($request);
+        return DashboardTacticRepository::reservations($request);
     }
 
     /**
@@ -80,7 +69,17 @@ class DashboardController extends Controller
      */
     public function getTotalSalesBetweenTwoDates(Request $request) : JsonResponse
     {
-        return DashboardTacticRepository::totalSalesBetweenDates($request);
+        return DashboardTacticRepository::totalSales($request);
+    }
+
+    /**
+     * Return the total average cart value between two dates, using the repository.
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAverageCartValueBetweenTwoDates(Request $request) : JsonResponse
+    {
+        return DashboardTacticRepository::averageCartValue($request);
     }
 
     /**
@@ -88,9 +87,9 @@ class DashboardController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function getAverageCartValueBetweenTwoDates(Request $request) : JsonResponse
+    public function getAverageCartEvolutionBetweenTwoDates(Request $request) : JsonResponse
     {
-        return DashboardTacticRepository::averageCartValueBetweenTwoDates($request);
+        return DashboardTacticRepository::averageCartEvolution($request);
     }
 
     /**
@@ -100,7 +99,7 @@ class DashboardController extends Controller
      */
     public function getNumberOfReservationsBetweenTwoDates(Request $request) : JsonResponse
     {
-        return DashboardTacticRepository::numberOfReservationsBetweenDates($request);
+        return DashboardTacticRepository::numberOfReservations($request);
     }
 
     /**
@@ -110,7 +109,7 @@ class DashboardController extends Controller
      */
     public function getOccupancyRateBetweenTwoDates(Request $request) : JsonResponse
     {
-        return DashboardTacticRepository::occupancyRateBetweenDates($request);
+        return DashboardTacticRepository::occupancyRate($request);
     }
 
     /**
@@ -120,7 +119,7 @@ class DashboardController extends Controller
      */
     public function getOccupancyRatePerRoomTypeBetweenTwoDates(Request $request) : JsonResponse
     {
-        return DashboardTacticRepository::occupancyRatePerRoomTypeBetweenDates($request);
+        return DashboardTacticRepository::occupancyRatePerRoomType($request);
     }
 
     /**
@@ -130,7 +129,7 @@ class DashboardController extends Controller
      */
     public function getOccupancyRatePerOptionBetweenTwoDates(Request $request) : JsonResponse
     {
-        return DashboardTacticRepository::occupancyRatePerOptionBetweenDates($request);
+        return DashboardTacticRepository::occupancyRatePerOption($request);
     }
 
     /**
@@ -144,26 +143,31 @@ class DashboardController extends Controller
     }
 
     /**
-     * Return the average duration of a reception, using the repository.
+     * Return the average duration of a checkin process, using the repository.
      * @param Request $request
      * @return JsonResponse
      */
-
-    public function getAverageDurationOfAReception(Request $request) : JsonResponse
+    public function getAverageDurationOfACheckin(Request $request) : JsonResponse
     {
-        return DashboardTacticRepository::averageDurationOfAReception($request);
+        return DashboardTacticRepository::averageDurationOfACheckin($request);
     }
 
+    /**
+     * Return the average duration of a stay, using the repository.
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAverageDurationOfAStay(Request $request):JsonResponse
+    {
+        return DashboardTacticRepository::averageDurationOfAStay($request);
+    }
 
-
-
-
-        /**
+    /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getStrategicalDashboardData(Request $request): \Illuminate\Http\JsonResponse
+    public function getStrategicalDashboardData(Request $request): JsonResponse
     {
         // Validation of parameters
         $validatedData = Validator::make($request->all(), [
