@@ -1,5 +1,5 @@
 <template>
-    <section class="section__video"> <!-- BEM Syntax for classes -->
+    <section v-if="presentationVideo" class="section__video"> <!-- BEM Syntax for classes -->
         <div class="section__video-content">
             <div class="section__video-text">
                 <h2 class="video__h2">{{ presentationVideo.title }}</h2>
@@ -17,20 +17,20 @@
             </button>
         </router-link>
     </section>
-
-
 </template>
 
 <script>
+import {addError} from "../../../helpers/errorsHelper"
 
 export default {
     name: "VideoSection.vue",
     data() {
         return {
-            presentationVideo: {}
+            presentationVideo: null,
         }
     },
     methods: {
+        addError,
         loadPresentationVideo() {
             const userLocale = navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language;
             axios.get('api/home/presentation_video', {
@@ -40,7 +40,8 @@ export default {
             }).then(response => {
                 this.presentationVideo = {...response.data};
             }).catch(error => {
-                console.log('Erreur lors de la requête API :', error);
+                const message = "Erreur lors de la requête API de récupération de la vidéo :"
+                addError(error, message);
             });
         }
     },
@@ -77,6 +78,15 @@ export default {
 
     .video__button-reservation {
         @apply my-10;
+    }
+
+    .errors__wrapper {
+        @apply flex flex-col align-middle justify-center;
+        background-color: rgba(231, 167, 180, 0.98);
+    }
+
+    .errors__wrapper--text {
+        color: crimson;
     }
 
 </style>
