@@ -21,7 +21,6 @@
 
 <script>
 import {addError} from "../../../helpers/errorsHelper"
-
 export default {
     name: "VideoSection.vue",
     data() {
@@ -72,21 +71,11 @@ export default {
     }
 
     .video__media {
-        @apply w-max w-full aspect-video;
+        @apply w-full aspect-video;
         max-height: 400px;
     }
 
     .video__button-reservation {
         @apply my-10;
     }
-
-    .errors__wrapper {
-        @apply flex flex-col align-middle justify-center;
-        background-color: rgba(231, 167, 180, 0.98);
-    }
-
-    .errors__wrapper--text {
-        color: crimson;
-    }
-
 </style>
