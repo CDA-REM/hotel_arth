@@ -201,16 +201,16 @@ class DashboardController extends Controller
 //]);
 //        dd($averageTimeOnFirstPeriod);
 
-//        return response()->json([
-//            'sales' => [
-//                'first_period' => $salesOnFirstPeriod,
-//                'second_period' => $salesOnSecondPeriod
-//            ],
-//            'reservationsNumber' => [
-//                'first_period' => $reservationsOnFirstPeriod,
-//                'second_period' => $reservationsOnSecondPeriod
-//            ]
-//        ], 200);
+        return response()->json([
+            'sales' => [
+                'first_period' => $salesOnFirstPeriod,
+                'second_period' => $salesOnSecondPeriod
+            ],
+            'reservationsNumber' => [
+                'first_period' => $reservationsOnFirstPeriod,
+                'second_period' => $reservationsOnSecondPeriod
+            ]
+        ], 200);
     }
 
 }
