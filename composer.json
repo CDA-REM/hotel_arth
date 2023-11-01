@@ -47,7 +47,10 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "post-install-cmd": [
+        "cp /app/.heroku/php/lib/php/database/database.sqlite /hotel-arth/database/db.sqlite"
+    ]
     },
     "extra": {
         "laravel": {
