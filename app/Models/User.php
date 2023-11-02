@@ -44,6 +44,17 @@ class User extends Authenticatable
 //        'remember_token',
     ];
 
+    public function role()
+    {
+        return $this->hasOne(Role::class, 'name', 'role');
+    }
+
+    public static function create(array $attributes = []): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Builder
+    {
+        $attributes['role'] = 'user'; // Rôle par défaut
+        return static::query()->create($attributes);
+    }
+
     /**
      * The attributes that should be cast.
      *
