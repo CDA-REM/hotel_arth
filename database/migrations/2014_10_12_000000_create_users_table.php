@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->enum('gender', ['madam', 'mister'])->nullable();; // TODO: Modifier l'enum
+            $table->enum('civility', ['madam', 'mister'])->nullable();; // TODO: Modifier l'enum
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->string('email')->unique();

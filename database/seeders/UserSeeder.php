@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         DB::table('users') -> insert([
 
             [
-                'gender' => 'mister',
+                'civility' => 'mister',
                 'personal_address' => json_encode(['address' => '51 route de la ligne', 'zip_code' => '75015',  'city' => 'Paris']),
                 'enterprise_name' => 'Le Campus numérique',
                 'professional_address' => json_encode(['address' => '1 Esplanade Augustin Aussedat', 'zip_code' => '74000',  'city' => 'Annecy']),

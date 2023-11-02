@@ -16,7 +16,7 @@ class UserFactory extends Factory
     {
         return [
             'firstname' => $this->faker->firstName(),
-            'gender' => $this->faker->randomElement(['madam', 'mister']),
+            'civility' => $this->faker->randomElement(['madam', 'mister']),
             'lastname'  => $this->faker->lastName(),
             'email'  => $this->faker->unique()->safeEmail(),
             //'email_verified_at' => now(), // TODO - Enable ?

@@ -461,7 +461,7 @@ export default defineComponent({
             },
             formUser: {
                 id: this.userStore.user.id,
-                civility: this.userStore.user.gender || '',
+                civility: this.userStore.user.civility || '',
                 firstname: this.userStore.user.firstname || '',
                 lastname: this.userStore.user.lastname || "",
                 email: this.userStore.user.email || "",
