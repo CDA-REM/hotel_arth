@@ -22,7 +22,6 @@ export const useUserStore = defineStore('user', {
             await axios.get('api/users/me')
                 .then((response) => {
                     this.user = response.data.user
-                    console.log(this.user)
                 })
                 .catch((error) => {
                     if(error.response.status === 401 ){
