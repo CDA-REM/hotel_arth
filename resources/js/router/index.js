@@ -45,7 +45,7 @@ const routes = [
         }
     },
     {
-        path: '/user/mon-compte',
+        path: '/mon-compte',
         name: 'userAccount',
         component: () => import('../Views/private/Account.vue'),
         meta: {
@@ -76,6 +76,11 @@ const router = createRouter({
     },
 })
 
+/**
+ * Checks if the user is authenticated by checking if the 'isLogged' property in the localStorage is set to 'true'.
+ *
+ * @return {boolean} Returns true if the user is authenticated, false otherwise.
+ */
 function checkIfUserIsAuthenticated() {
     return localStorage.isLogged === 'true'
 }
@@ -97,6 +102,5 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
-
 
 export default router
