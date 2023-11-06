@@ -7,34 +7,72 @@
                 <div class="card md:card-side bg-base-100 shadow-xl border">
                     <div class="user-infos__avatar flex items-center justify-center ml-5">
                         <figure>
-                            <img :src="user.avatar_url" alt="Mon avatar">
+                            <img :src="user.avatar_url" alt="Mon avatar" />
                         </figure>
                     </div>
                     <div class="card-body user-infos__text flex flex-wrap flex-row justify-between">
                         <div>
                             <h2 class="card-title">{{ user.firstname }} {{ user.name }}</h2>
-                            <p>{{ personalAddress.address }}</p>
-                            <p>{{ personalAddress.zip_code }} {{ personalAddress.city }}</p>
+                            <p>
+                                {{ personalAddress ? personalAddress.address : 'Adresse non disponible' }}
+                            </p>
+                            <p>
+                                {{ personalAddress ? `${personalAddress.zip_code} ${personalAddress.city}` : 'Adresse non disponible' }}
+                            </p>
                             <p>{{ user.phone }}</p>
                             <p>{{ user.email }}</p>
                         </div>
                         <div
-                            class="card-actions justify-end account__container--user-infos--left--buttons flex flex-col">
+                            class="card-actions justify-end account__container--user-infos--left--buttons flex flex-col"
+                        >
                             <button class="btn__yellow--outline flex justify-start w-full gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                                    />
                                 </svg>
                                 Modifier mes informations
                             </button>
                             <button class="btn__yellow--outline flex flex-wrap justify-start w-full gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                                    />
                                 </svg>
                                 Modifier mon mot de passe
                             </button>
                             <button class="btn__darkblue--outline flex flex-wrap justify-start w-full gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                    />
                                 </svg>
 
                                 Supprimer mon compte
@@ -88,7 +126,7 @@
                         </td>
                         <td>
                             Zemlak, Daniel and Leannon
-                            <br/>
+                            <br />
                             <span class="badge badge-ghost badge-sm">Desktop Support Technician</span>
                         </td>
                         <td>Purple</td>
@@ -118,7 +156,7 @@
                         </td>
                         <td>
                             Carroll Group
-                            <br/>
+                            <br />
                             <span class="badge badge-ghost badge-sm">Tax Accountant</span>
                         </td>
                         <td>Red</td>
@@ -148,7 +186,7 @@
                         </td>
                         <td>
                             Rowe-Schoen
-                            <br/>
+                            <br />
                             <span class="badge badge-ghost badge-sm">Office Assistant I</span>
                         </td>
                         <td>Crimson</td>
@@ -178,7 +216,7 @@
                         </td>
                         <td>
                             Wyman-Ledner
-                            <br/>
+                            <br />
                             <span class="badge badge-ghost badge-sm">Community Outreach Specialist</span>
                         </td>
                         <td>Indigo</td>
@@ -197,7 +235,6 @@
                         <th></th>
                     </tr>
                     </tfoot>
-
                 </table>
             </div>
         </div>
@@ -236,6 +273,8 @@ export default defineComponent({
     async mounted() {
         await this.getUser()
         await this.getPersonalAddress()
+
+        console.log(this.user)
     },
 })
 </script>
