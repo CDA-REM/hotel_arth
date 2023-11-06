@@ -44,7 +44,7 @@ class AuthController extends Controller
         }
         // thow exception if user is not admin
         function isAdmin($user) {
-            if($user->role !== 'admin') {
+            if($user->user_role !== 'admin') {
                 throw new Exception("Accès refusé");
             }
             return true;
@@ -122,7 +122,7 @@ class AuthController extends Controller
             Auth::login($user);
 
             // Create a new token if user isAdmin
-            if($user->role == 'admin'){
+            if($user->user_role == 'admin'){
                 $token = $user->createToken('auth_token')->plainTextToken;
             }else{
                 $token = '';
@@ -179,7 +179,7 @@ class AuthController extends Controller
             $rememberToken = $user->remember_token;
 
             // Create a new token if user isAdmin
-            if($user->role == 'admin'){
+            if($user->user_role == 'admin'){
                 $token = $user->createToken('auth_token')->plainTextToken;
             }else{
                 $token = null;

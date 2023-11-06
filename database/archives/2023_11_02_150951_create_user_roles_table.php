@@ -1,10 +1,11 @@
 <?php
+# Do not remove this file it can be needed.
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-class CreateRolesTable extends Migration
+# The initial class name what CreateRolesTable
+class CreateUserRolesTable extends Migration
 {
     /**
      * Run the migrations.

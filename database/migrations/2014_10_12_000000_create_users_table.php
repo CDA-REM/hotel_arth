@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->json('personal_address')->nullable();
             $table->string('enterprise_name')->nullable();;
             $table->json('professional_address')->nullable();;
-            $table->enum('role', ['user', 'admin'])->default('user');
+            $table->enum('user_role', ['user', 'admin'])->default('user');
         });
     }
 
