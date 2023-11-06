@@ -60,7 +60,7 @@ class ReservationRepository
      * @param string $date
      * @return Collection
      */
-    static function getAvailableRooms($started_date, $end_date) {
+    static function getAvailableRooms($started_date, $end_date): Collection|array {
         // Get the id of every reservation between two dates
         $reservationsIdArray = Reservation::whereBetween("started_date", [$started_date, $end_date])
             ->orWhereBetween("end_date", [$started_date, $end_date])

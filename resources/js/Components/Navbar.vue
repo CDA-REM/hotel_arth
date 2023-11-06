@@ -255,9 +255,21 @@ export default defineComponent({
         }
     },
     methods: {
+        /**
+         * Checks if the current view is the home view.
+         *
+         * @return {boolean} Returns true if the current view is the home view, otherwise false.
+         */
         isHomeView() {
             return this.$router.currentRoute.value.name === 'landingPage';
         },
+
+        /**
+         * Get the user from the store and assign it to the 'user' property.
+         *
+         * @param {type} paramName - description of parameter
+         * @return {type} description of return value
+         */
         getUser() {
             this.user = this.store;
         },
