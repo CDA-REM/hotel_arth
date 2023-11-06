@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Repository\DashboardTacticRepository;
+use App\Repository\DashboardRepository;
+use App\Repository\ReservationRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Repository\DashboardRepository;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\ReservationResource;
 use App\Http\Resources\DashboardOperationalTableResource;
-use App\Repository\ReservationRepository;
+use App\Models\Reservation;
+use Carbon\Carbon;
+use DateTime;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
 {

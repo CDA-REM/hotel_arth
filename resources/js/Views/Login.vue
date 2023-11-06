@@ -46,7 +46,7 @@
                 <span class="text-red-500 text-sm" v-for="password in errors.password">{{ password }}</span>
                 <div class=" flex space-x-4 mt-4">
                     <span class="label-text">{{ $t("signUp.rememberToken") }}</span>
-                    <input type="checkbox" class="w-4 h-4" v-model="rememberMe" id="remember_me" />
+                    <input type="checkbox" class="w-4 h-4 dark:checkbox-primary" v-model="rememberMe" id="remember_me" />
                 </div>
                 <p class="mt-6 text-arth-dark-blue text-center">{{ $t('login.dontHaveAccount') }}
                     <router-link :to="{ name:'signUp' }">
@@ -86,6 +86,11 @@ export default {
         }
     },
     methods: {
+        /**
+         * Submits the login form.
+         *
+         * @return {Promise} A promise that resolves when the login is successful.
+         */
         async submitLogin() {
             this.errors = []
 
@@ -97,7 +102,16 @@ export default {
                 authStore.setRememberMe(this.rememberMe);
                 localStorage.setItem('isLogged', 'true')
                 const intendedURL = sessionStorage.getItem('intendedURL') || '/';
+
+                console.log(intendedURL)
                 this.$router.push(intendedURL);
+
+                if (intendedURL !== '/login') {
+                    this.$router.push(intendedURL);
+                } else {
+                    this.$router.push('/');
+                }
+
             } catch (errors) {
                 this.errors = errors
             }

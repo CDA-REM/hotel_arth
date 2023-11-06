@@ -73,7 +73,7 @@ class ReservationController extends Controller
 
         } catch (PDOException $e) {
             // Catching database exception
-            Log::error("A database error occured : {{$e}}");
+            Log::error("A database error occurred : {{$e}}");
         } catch (Exception $e) {
             Log::error($e);
         }

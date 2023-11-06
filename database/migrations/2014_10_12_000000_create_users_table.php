@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->enum('gender', ['madam', 'mister'])->nullable();; // TODO: Modifier l'enum
+            $table->enum('civility', ['madam', 'mister'])->nullable();; // TODO: Modifier l'enum
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->string('email')->unique();
@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->json('personal_address')->nullable();
             $table->string('enterprise_name')->nullable();;
             $table->json('professional_address')->nullable();;
-            $table->enum('role', ['customer', 'admin'])->default('customer');
+            $table->enum('user_role', ['user', 'admin'])->default('user');
         });
     }
 

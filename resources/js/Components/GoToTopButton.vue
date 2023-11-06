@@ -29,6 +29,11 @@ export default {
         window.addEventListener("scroll", this.updateScroll);
     },
     methods: {
+        /**
+         * Updates the scroll position and sets the `scrolledPage` flag accordingly.
+         *
+         * @return {void} This function does not return a value.
+         */
         updateScroll() {
             const scrollPosition = window.scrollY;
             if (scrollPosition > 50) {
