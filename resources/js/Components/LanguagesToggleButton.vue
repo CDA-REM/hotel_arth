@@ -12,16 +12,13 @@
                 class="navbar__flag"
                 :class="flag.value"
             >
-                 {{ flag.text }}
+                {{ flag.text }}
             </option>
         </select>
     </div>
-
 </template>
 
 <script>
-import * as url from "url";
-
 export default {
     name: "LanguagesToggleButton.vue",
     data() {
@@ -33,7 +30,7 @@ export default {
                     name: 'Français',
                     image: {
                         source: '/storage/pictures/flag-french.jpg',
-                        alt: "Drapeau Français"
+                        alt: "Français"
                     },
                     value: 'fr',
                     text: '🇫🇷'
@@ -42,7 +39,7 @@ export default {
                     name: 'English',
                     image: {
                         source: '/storage/pictures/flag-english.jpg',
-                        alt: "British Flag"
+                        alt: "English"
                     },
                     value: 'en',
                     text: '🇬🇧'
@@ -54,13 +51,22 @@ export default {
         url() {
             return url
         },
+        /**
+         * Check if the current language is selected.
+         *
+         * @return {boolean} Whether the current language is selected.
+         */
         isSelected() {
             return this.lang === localStorage.lang
         }
     },
     methods: {
-        // ...mapActions(useLangStore, ['switchLocale'])
-
+        /**
+         * Switches the locale of the application and reloads the page.
+         *
+         * @param {type} paramName - description of parameter
+         * @return {type} description of return value
+         */
         switchLocale() {
             this.$i18n.locale = this.lang
             localStorage.lang = this.lang
@@ -70,21 +76,22 @@ export default {
     mounted() {
         this.lang = localStorage.lang || 'fr';
     }
-
 }
 </script>
 
 <style scoped>
-
 .section__navbar {
     /*@apply w-1/12;*/
 }
-.navbar__button{
+
+.navbar__button {
     @apply px-0 py-0;
 }
 
 .navbar__flag {
     @apply mt-0 max-h-5 h-auto;
+    background-size: contain; /* Pour ajuster la taille de l'image dans l'option */
+    background-repeat: no-repeat;
 }
 
 .fr {

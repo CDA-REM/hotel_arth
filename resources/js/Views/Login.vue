@@ -86,6 +86,11 @@ export default {
         }
     },
     methods: {
+        /**
+         * Submits the login form.
+         *
+         * @return {Promise} A promise that resolves when the login is successful.
+         */
         async submitLogin() {
             this.errors = []
 

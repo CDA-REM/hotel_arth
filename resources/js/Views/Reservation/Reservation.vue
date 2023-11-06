@@ -500,10 +500,20 @@ export default defineComponent({
         }
     },
     computed: {
+        /**
+         * Retrieves the ID of the user.
+         *
+         * @return {number} The ID of the user.
+         */
         userId() {
             return this.user.id
         },
-// Calculate room price
+
+        /**
+         * Calculates the room price based on the number of rooms and the number of days.
+         *
+         * @return {number} The calculated room price.
+         */
         calculateRoomPrice() {
             let roomPrice = 0;
             let numberOfDays = this.calculateNumberOfDays();
@@ -513,7 +523,12 @@ export default defineComponent({
             }
             return roomPrice;
         },
-// Calculate options price
+
+        /**
+         * Calculates the price of the options based on the form reservation and options store.
+         *
+         * @return {number} The total price of the options.
+         */
         calculateOptionsPrice() {
             let optionsPrice = 0;
             let numberOfDays = this.calculateNumberOfDays();
@@ -536,11 +551,21 @@ export default defineComponent({
             }
             return optionsPrice;
         },
-// Calculate total price of reservation
+
+        /**
+         * Calculates the total price by adding the room price and options price.
+         *
+         * @return {number} The calculated total price.
+         */
         calculateTotalPrice() {
             return this.calculateRoomPrice + this.calculateOptionsPrice;
         },
-// Calculate Minimum number of rooms depending on number of people
+
+        /**
+         * Calculates the minimum number of rooms required based on the number of people.
+         *
+         * @return {number} The minimum number of rooms required.
+         */
         calculateMinNumberOfRooms() {
             const numberOfPeople = this.formReservation.numberOfPeople;
             let minNumberOfRooms = 1;
@@ -552,7 +577,12 @@ export default defineComponent({
                 return minNumberOfRooms;
             }
         },
-// Define maximum number of rooms depending on number of people
+
+        /**
+         * Calculates the maximum number of rooms based on the number of people in the reservation.
+         *
+         * @return {number} The maximum number of rooms.
+         */
         calculateMaxNumberOfRooms() {
             if (this.formReservation.numberOfPeople > 0 && this.formReservation.numberOfPeople <= 96) {
                 return this.formReservation.numberOfPeople;
@@ -561,7 +591,12 @@ export default defineComponent({
                 return 32;
             }
         },
-// Calculate minimum date of checkout depending on checkin date
+
+        /**
+         * Calculates the minimum checkout date based on the started date.
+         *
+         * @return {Date} The minimum checkout date.
+         */
         calculateMinCheckoutDate() {
             if (this.formReservation.started_date) {
                 const checkinDate = new Date(moment(this.formReservation.started_date, "DD MM YYYY"));
@@ -570,17 +605,33 @@ export default defineComponent({
 
             }
         },
-// This method is only for component display
+
+        /**
+         * Formats the date for the date picker.
+         * This method is only used for component display
+         *
+         * @return {string} The formatted date string.
+         */
         formateDateForDatePicker() {
             return this.globalStore.getLocale === 'fr' ? 'dd/MM/yyyy' : 'MM/dd/yyyy'
         },
-// Formate checkin date for recap
+
+        /**
+         * Formats the check-in date
+         *
+         * @return {type} The formatted check-in date.
+         */
         formateCheckinDate() {
             if (this.formReservation.started_date) {
                 return this.formateDateForRecap(this.formReservation.started_date);
             }
         },
-// Formate checkin date for recap
+
+        /**
+         * Formats the checkout date
+         *
+         * @return {type} The formatted checkout date.
+         */
         formateCheckoutDate() {
             if (this.formReservation.end_date) {
                 return this.formateDateForRecap(this.formReservation.end_date);
@@ -598,6 +649,12 @@ export default defineComponent({
     },
     methods: {
         useGlobalStore,
+
+        /**
+         * Retrieves availability data from the server.
+         *
+         * @return {Promise} A promise that resolves with the availability data.
+         */
         async getAvailability() {
             console.log("getAvailability");
             // axios.get(`api/availability/?started_date=${this.formateCheckinDateForRequest()}&end_date=${this.formateCheckoutDateForRequest()}`, {
@@ -626,38 +683,75 @@ export default defineComponent({
                 });
         },
 
-        calculateNumberOfDays() {
-            if (this.formReservation.started_date && this.formReservation.end_date) {
-                const checkinDate = new Date(moment(this.formReservation.started_date, "DD MM YYYY"));
-                const checkoutDate = new Date(moment(this.formReservation.end_date, "DD MM YYYY"));
-                const numberOfDays = moment(checkoutDate).diff(moment(checkinDate), 'days');
-                return numberOfDays;
-            }
-        },
-// This methods is called by the computed properties formateChekinDate() and formateCheckoutDate
+        /**
+         * Calculates the number of days between the start and end dates of a reservation.
+         *
+         * @return {number} The number of days between the start and end dates.
+        */
+         calculateNumberOfDays() {
+                    if (this.formReservation.started_date && this.formReservation.end_date) {
+                        const checkinDate = new Date(moment(this.formReservation.started_date, "DD MM YYYY"));
+                        const checkoutDate = new Date(moment(this.formReservation.end_date, "DD MM YYYY"));
+                        const numberOfDays = moment(checkoutDate).diff(moment(checkinDate), 'days');
+                        return numberOfDays;
+                    }
+                },
+
+        /**
+         * Formats the given date for the recap.
+         * Called by the computed properties formateChekinDate() and formateCheckoutDate
+         *
+         * @param {Date} input - The date to be formatted.
+         * @return {string} The formatted date.
+         */
         formateDateForRecap(input) {
             if (input && !this.isLoading) {
                 return input = input.toLocaleDateString(this.globalStore.getLocale)
             }
             return new Date
         },
-// This method formate date to match required format for request. It's called at sumbit
+
+        /**
+         * Formats the check-in date to match required format for the request.
+         * It's called at submit.
+         *
+         * @return {string} The formatted check-in date in the format 'YYYY-MM-DD'.
+         */
         formateCheckinDateForRequest() {
             if (this.formReservation.started_date) {
                 return this.formReservation.started_date = moment(this.formReservation.started_date).format('YYYY-MM-DD');
             }
         },
-// This method formate date to match required format for request. It's called at sumbit
+
+        /**
+         * Formats the checkout date to match required format for request.
+         * It's called at sumbit
+         *
+         * @return {string} The formatted checkout date.
+         */
         formateCheckoutDateForRequest() {
             if (this.formReservation.end_date) {
                 return this.formReservation.end_date = moment(this.formReservation.end_date).format('YYYY-MM-DD');
             }
         },
+
+        /**
+         * Sets the active tab based on the given tab reference.
+         *
+         * @param {string} tabRef - The reference to the tab to set as active.
+         * @return {void}
+         */
         setActiveTab(tabRef) {
             if (this.$refs.reservationForm.reportValidity()) {
                 this.activeTab = tabRef;
             }
         },
+
+        /**
+         * Moves to the next tab if the current tab is not "validateBooking" and the reservation form is valid.
+         *
+         * @return {void} description of return value
+         */
         nextTab() {
             if (
                 this.activeTab !== "validateBooking" &&
@@ -666,18 +760,53 @@ export default defineComponent({
                 this.activeTab = this.allTabs[this.allTabs.indexOf(this.activeTab) + 1];
             }
         },
+
+        /**
+         * Resets the form.
+         *
+         * @return {void} description of return value
+         */
         resetForm() {
             this.$refs.reservationForm.reset();
         },
+
+        /**
+         * Get the user from the user store and assign it to the 'user' property.
+         *
+         * @return {void}
+         */
         getUser() {
             this.user = this.userStore;
         },
+
+        /**
+         * Retrieves the personal address from the user's store and assigns it to the component's personalAddress property.
+         *
+         * @return {Object} The parsed personal address object.
+         */
         getPersonalAddress() {
             return this.personalAddress = JSON.parse(this.userStore.user.personal_address)
         },
+
+
+        /**
+         * Retrieves the professional address from the user store.
+         *
+         * @return {Object|null} The professional address object, or null if it doesn't exist.
+         */
         getProfessionalAddress() {
-            return this.professionalAddress = JSON.parse(this.userStore.user.professional_address)
+            if (this.userStore.user && this.userStore.user.professional_address) {
+                return this.professionalAddress = JSON.parse(this.userStore.user.professional_address);
+            } else {
+                return null;
+            }
         },
+
+        /**
+         * Submits the user information to the server.
+         *
+         * @return {Promise} A promise that resolves with the response from the server.
+         */
         async submitUser() {
             axios.post('api/users/' + this.userStore.user.id, {...this.formUser, _method: 'put'})
                 .then(
@@ -715,7 +844,12 @@ export default defineComponent({
                     );
                 });
         },
-// Send request to create reservation
+
+        /**
+         * Submits the booking.
+         *
+         * @return {Promise} A promise that resolves when the booking is submitted.
+         */
         async submitBooking() {
             this.isLoading = true
             this.formateCheckinDateForRequest();

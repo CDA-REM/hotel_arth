@@ -94,6 +94,11 @@ export default {
     },
 
     methods: {
+        /**
+         * Registers a user.
+         *
+         * @return {Promise<void>} - A promise that resolves when the user is registered.
+         */
         async registerUser() {
             this.errors = []
 
