@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Venez séjourner à l'Hôtel Arth. Situé près du lac d'Annecy, notre personnel
-    vous accueille pour vos séjour détente ou business. Dans une ambiance douce et reposante, profitez de nuits de
+    <meta name="description" content="Venez séjourner à l'Hôtel Arth ! Situé à proximité du lac d'Annecy, notre personnel
+    vous accueille pour vos séjours détente ou business. Dans une ambiance douce et reposante, profitez de nuits de
     repos dans nos chambres parfaitement insonorisées. Le Chef vous fera découvrir ses délices. Envie d'une
     expérience inoubliable ? Réservez votre accès à la piscine de l'hôtel, située sur le rooftop.">
     <meta name="keywords" content="hôtel, repos, dépaysement, voyage, séjour, Annecy, lac, lac d'Annecy, dormir,
