@@ -15,5 +15,5 @@ yarn-error.log
 /.vscode
 
 # To remove before deploiement
-public/js/app.js
-public/css/app.css
+public/js
+public/css
