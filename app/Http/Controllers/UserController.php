@@ -66,7 +66,7 @@ class UserController extends Controller
 //            throw new Exception('Non');
 //        }
 
-//        $admin = $users->where('role', '=', 'Admin');
+//        $admin = $users->where('user_role', '=', 'Admin');
 //       $admin = Auth::check();
 
     }

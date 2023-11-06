@@ -52,6 +52,12 @@ export const translations = {
             button: "Sign Up",
             rememberToken: "Remember me"
         },
+        signUpConfirmation: {
+            title: "Sign Up Confirmation",
+            subtitle: "Welcome to Hotel Arth !",
+            sentence1: "Your registration request has been taken into account.",
+            sentence2: " You can now return to the home page, or make your reservation."
+        },
         reservation: {
             title: "Reservation",
             arrival: "Arrival",
@@ -176,6 +182,12 @@ export const translations = {
             haveAccount: "J\'ai déjà un compte",
             button: "S\'inscrire",
             rememberToken: "Se souvenir de moi"
+        },
+        signUpConfirmation: {
+            title: "Votre inscription est confirmée",
+            subtitle: "Bienvenue à l'Hotel Arth !",
+            sentence1: "Votre demande d'inscription a bien été prise en compte.",
+            sentence2: " Vous pouvez mainenant retourner sur la page d'accueil, ou effectuer votre réservation."
         },
         reservation: {
             title: "Réservation",

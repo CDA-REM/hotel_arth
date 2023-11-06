@@ -39,7 +39,11 @@ export default {
         }
     },
     async mounted() {
-        const response = await axios.get('api/home/footer');
+        const language = localStorage.getItem("lang");
+        const response = await axios.get('api/home/footer', {
+            headers:{
+                'Accept-Language' : language
+            }});
         this.footer = {...response.data};
     },
     methods: {

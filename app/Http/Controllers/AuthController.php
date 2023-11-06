@@ -16,6 +16,84 @@ class AuthController extends Controller
      ** @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
+    public function loginApi(Request $request)
+    {
+        // Validation
+        $validatedData = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string',
+        ]);
+
+        // if validation fails
+        if ($validatedData->fails())
+        {
+            return response()->json([
+                'errors' => $validatedData->errors()
+            ]);
+        }
+
+        // Check if right email and password match in database (authentication)
+        $authentication = Auth::attempt(['email' => $request['email'], 'password' => $request['password']]) === true;
+
+        // Trow an exception if authentication fails
+        function checkAuthentication($credentials) {
+            if(!$credentials) {
+                throw new Exception("Email et/ ou mot de passe incorrecte");
+            }
+            return true;
+        }
+        // thow exception if user is not admin
+        function isAdmin($user) {
+            if($user->user_role !== 'admin') {
+                throw new Exception("Accès refusé");
+            }
+            return true;
+        }
+        try {
+            // Authentication of user pass
+            checkAuthentication($authentication);
+            // Get user information
+            $user = User::where('email', $request['email'])->firstOrFail();
+
+            isAdmin($user);
+
+            //Get remember token
+            $rememberToken = $user->remember_token;
+
+            // Create a new token
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'token' => $token,
+                'remember_token' => $rememberToken,
+                'user' => $user,
+            ]);
+
+        }
+        catch (Exception $e){
+            // Authentication of user fails
+            if($e->getMessage() === "Email et/ ou mot de passe incorrecte") {
+                return response()->json([
+                    'errors' => [
+                        'error' => $e->getMessage()
+                    ]
+                ], 401);
+            }
+            if($e->getMessage() === "Accès refusé") {
+                return response()->json([
+                    'errors' => [
+                        'error' => $e->getMessage()
+                    ]
+                ], 403);
+            }
+        }
+    }
+
+    /**
+     * Register a user.
+     ** @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(Request $request)
     {
 
@@ -32,6 +110,7 @@ class AuthController extends Controller
             $user = User::create([
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
+                'avatar_url' => 'storage/avatars/avatar1.png'
             ]);
 
             // Delete old tokens in db
@@ -44,7 +123,7 @@ class AuthController extends Controller
             Auth::login($user);
 
             // Create a new token if user isAdmin
-            if($user->role == 'admin'){
+            if($user->user_role == 'admin'){
                 $token = $user->createToken('auth_token')->plainTextToken;
             }else{
                 $token = '';
@@ -101,10 +180,10 @@ class AuthController extends Controller
             $rememberToken = $user->remember_token;
 
             // Create a new token if user isAdmin
-            if($user->role == 'admin'){
+            if($user->user_role == 'admin'){
                 $token = $user->createToken('auth_token')->plainTextToken;
             }else{
-                $token = '';
+                $token = null;
             }
 
             return response()->json([

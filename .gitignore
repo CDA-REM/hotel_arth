@@ -17,3 +17,12 @@ yarn-error.log
 # To remove before deploiement
 public/js
 public/css
+
+# Laravel Mix
+mix-manifest.json
+resources_js_Views*.js
+
+# TODO - To remove before deploiement
+public/js/app.js
+public/css/app.css
+

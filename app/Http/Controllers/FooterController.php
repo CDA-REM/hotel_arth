@@ -17,7 +17,6 @@ class FooterController extends Controller
     public function index()
     {
         return FooterResource::collection(Footer::all());
-
     }
 
     /**
@@ -45,15 +44,16 @@ class FooterController extends Controller
             'url_redirection' => 'required'
         ]);
         $validatedData = $validator->validate();
-//        dd($validatedData);
+//        var_dump($validatedData);
         // Create a new instance of footer
         $footer = new Footer();
-
+//        dd($footer);
         //Fill $footer with validated data and save
         $footer->fill($validatedData)
                ->save();
-
-        return new FooterResource($footer);
+//        return FooterResource::collection(Footer::all());
+        return response()->json($footer);
+//        return new FooterResource($footer);
 
     }
 

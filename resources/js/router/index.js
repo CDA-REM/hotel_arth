@@ -27,6 +27,15 @@ const routes = [
         }
     },
     {
+        path: '/signup-confirmation',
+        name: 'signUpConfirmation',
+        component: () => import('../Views/SignUpConfirmation.vue'),
+        meta: {
+            name: 'signUpConfirmation',
+            requiresAuth: true
+        }
+    },
+    {
         path: '/reservation',
         name: 'reservation',
         meta: {
