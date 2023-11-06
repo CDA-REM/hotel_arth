@@ -12,7 +12,7 @@
                     </div>
                     <div class="card-body user-infos__text flex flex-wrap flex-row justify-between">
                         <div>
-                            <h2 class="card-title">{{ user.firstname }} {{ user.lastname }}</h2>
+                            <h2 class="card-title">{{ user.firstname }} {{ user.name }}</h2>
                             <p>{{ personalAddress.address }}</p>
                             <p>{{ personalAddress.zip_code }} {{ personalAddress.city }}</p>
                             <p>{{ user.phone }}</p>

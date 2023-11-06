@@ -18,7 +18,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'avatar' => $this->avatar_url, // Indicates the fields of the table customers we want to retrieve.
             'firstname' => $this->firstname,
-            'lastname' => $this->lastname,
+            'name' => $this->name,
 
         ];
     }

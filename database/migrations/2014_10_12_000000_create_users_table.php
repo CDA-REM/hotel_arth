@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->enum('civility', ['madam', 'mister'])->nullable();; // TODO: Modifier l'enum
             $table->string('firstname')->nullable();
-            $table->string('lastname')->nullable();
+            $table->string('name')->nullable();
             $table->string('email')->unique();
             //$table->timestamp('email_verified_at')->nullable(); // TODO - enable ?
             $table->string('phone')->nullable();

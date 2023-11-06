@@ -272,11 +272,11 @@
 
                 <div class="flex flex-col">
                     <div class="form-control w-full">
-                        <label for="lastname" class="label">
-                            <span class="label-text">{{ $t('validation.lastname') }}</span>
+                        <label for="name" class="label">
+                            <span class="label-text">{{ $t('validation.name') }}</span>
                         </label>
-                        <input type="text" id="lastname" name="lastname" placeholder=""
-                               class="input input-bordered w-full max-w-md" v-model="formUser.lastname" required/>
+                        <input type="text" id="name" name="name" placeholder=""
+                               class="input input-bordered w-full max-w-md" v-model="formUser.name" required/>
                     </div>
 
                     <div class="form-control w-full">
@@ -463,7 +463,7 @@ export default defineComponent({
                 id: this.userStore.user.id,
                 civility: this.userStore.user.civility || '',
                 firstname: this.userStore.user.firstname || '',
-                lastname: this.userStore.user.lastname || "",
+                name: this.userStore.user.name || "",
                 email: this.userStore.user.email || "",
                 phoneNumber: this.userStore.user.phone || "",
                 address: "",
