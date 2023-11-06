@@ -40,9 +40,27 @@ export default {
         },
     },
     methods: {
-        //TODO - Terminate the breadcrumb code refactor
+        /**
+         * Sets the active tab.
+         *
+         * @param {type} tab - The tab to set as active.
+         * @return {void}
+         */
         setActiveTab(tab) {
             this.$emit('update:activeTab', tab);
+        },
+        /**
+         * Moves to the next tab if the active tab is not "validateBooking" and the reservation form is valid.
+         *
+         * @return {void}
+         */
+        nextTab() {
+            if (
+                this.activeTab !== "validateBooking" &&
+                this.$refs.reservationForm.reportValidity()
+            ) {
+                this.activeTab = this.allTabs[this.allTabs.indexOf(this.activeTab) + 1];
+            }
         },
     },
 };

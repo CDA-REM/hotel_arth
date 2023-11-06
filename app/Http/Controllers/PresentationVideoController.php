@@ -4,74 +4,56 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PresentationVideoResource;
 use App\Models\PresentationVideo;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
+use Exception;
 
 class PresentationVideoController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return PresentationVideoResource|JsonResponse
      */
-    public function index()
+    public function index(): PresentationVideoResource|JsonResponse
     {
-        return PresentationVideoResource::make(PresentationVideo::first());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        try {
+            return PresentationVideoResource::make(PresentationVideo::first());
+        } catch (QueryException $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Une erreur s\'est produite au niveau de la base de données.'], 500);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Une erreur s\'est produite'], 500);
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return PresentationVideoResource
      */
-    public function show($id)
+    public function show(int $id): PresentationVideoResource
     {
         return new PresentationVideoResource(PresentationVideo::findOrFail($id)); // TEST BARRE URL OK
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
      * https://laravel.com/docs/8.x/eloquent#updates
      */
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): JsonResponse
     {
         // Retrieves information stored in DB for video corresponding to the id passed as a parameter of the request.
         $resource= PresentationVideoResource::make(PresentationVideo::findOrFail($id));
@@ -108,7 +90,7 @@ class PresentationVideoController extends Controller
             ->fill($validatedData)
             ->setTranslations('title', $request->post('title'))
             ->setTranslations('description', $request->post('description'));
-        // Send updated datas to DB
+        // Send updated data to DB
         $resource->update();
 
         // Return response content in JSON format

@@ -229,22 +229,31 @@ Route::get('/dashboard/operational', [DashboardController::class, 'getOperationa
 Route::get('/dashboard/strategic', [DashboardController::class, 'getStrategicalDashboardData'])->name('strategicalDashboardData');
 
 
-// START - Routes Dashboard Tactic
-Route::get('dashboard/tactical/reservationsBetweenDates', [DashboardController::class, 'getReservationsBetweenTwoDates'])->name('tacticalDashboard');
-Route::get('/dashboard/tactical/totalSales', [DashboardController::class, 'getTotalSalesBetweenTwoDates']);
-Route::get('/dashboard/tactical/averageCartEvolution', [DashboardController::class, 'getAverageCartValueBetweenTwoDates']);
-Route::get('/dashboard/tactical/occupancy', [DashboardController::class, 'getNumberOfReservationsBetweenTwoDates']);
-Route::get('/dashboard/tactical/occupancyRate', [DashboardController::class, 'getOccupancyRateBetweenTwoDates']);
-Route::get('/dashboard/tactical/occupancyRateByRoomType', [DashboardController::class, 'getOccupancyRatePerRoomTypeBetweenTwoDates']);
-Route::get('/dashboard/tactical/occupancyRateByOptions', [DashboardController::class, 'getOccupancyRatePerOptionBetweenTwoDates']);
-Route::get('/dashboard/tactical/averageTimeBetweenBookingAndCheckin', [DashboardController::class, 'getAverageTimeBetweenBookingAndCheckin']);
-Route::get('/dashboard/tactical/averageDurationOfAReception', [DashboardController::class, 'getAverageDurationOfAReception']);
-// END - Routes Dashboard Tactic
+
 
 Route::prefix('dashboard')->name('dashboard')->group(function () {
     Route::prefix('operational')->name('.operational')->group(function () {
         Route::get('table', [DashboardController::class, 'getOperationalDashboardTableData'])->name('.table');
         Route::get('total-people', [DashboardController::class, 'getNumberOfPeople'])->name('.people');
         Route::get('menus', [DashboardController::class, 'getReservationsMenusOptions'])->name('.menus');
-    });});
+    });
+    // START - Routes Dashboard Tactic
+    Route::prefix('tactical')->name('.tactical')->group(function() {
+        Route::get('/reservationsBetweenDates', [DashboardController::class, 'getReservationsBetweenTwoDates'])->name
+        ('tacticalDashboard');
+        Route::get('totalSales', [DashboardController::class, 'getTotalSalesBetweenTwoDates']);
+        Route::get('averageCart', [DashboardController::class, 'getAverageCartValueBetweenTwoDates']);
+        Route::get('averageCartEvolution', [DashboardController::class, 'getAverageCartEvolutionBetweenTwoDates']);
+        Route::get('occupancy', [DashboardController::class, 'getNumberOfReservationsBetweenTwoDates']);
+        Route::get('occupancyRate', [DashboardController::class, 'getOccupancyRateBetweenTwoDates']);
+        Route::get('occupancyRateByRoomType', [DashboardController::class, 'getOccupancyRatePerRoomTypeBetweenTwoDates']);
+        Route::get('occupancyRateByOptions', [DashboardController::class, 'getOccupancyRatePerOptionBetweenTwoDates']);
+        Route::get('averageTimeBetweenBookingAndCheckin', [DashboardController::class, 'getAverageTimeBetweenBookingAndCheckin']);
+        Route::get('averageDurationOfACheckin', [DashboardController::class, 'getAverageDurationOfACheckin']);
+        Route::get('averageDurationOfAStay', [DashboardController::class, 'getAverageDurationOfAStay']);
+    });
+    // END - Routes Dashboard Tactic
+
+});
+
 
