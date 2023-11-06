@@ -97,7 +97,16 @@ export default {
                 authStore.setRememberMe(this.rememberMe);
                 localStorage.setItem('isLogged', 'true')
                 const intendedURL = sessionStorage.getItem('intendedURL') || '/';
+
+                console.log(intendedURL)
                 this.$router.push(intendedURL);
+
+                if (intendedURL !== '/login') {
+                    this.$router.push(intendedURL);
+                } else {
+                    this.$router.push('/');
+                }
+
             } catch (errors) {
                 this.errors = errors
             }

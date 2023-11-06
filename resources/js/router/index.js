@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory, createWebHistory} from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
 import LandingPage from '../Views/LandingPage/LandingPage';
 import ReservationConfirmation from "../Views/Reservation/ReservationConfirmation.vue";
 
@@ -45,7 +45,7 @@ const routes = [
         }
     },
     {
-        path: '/mon-compte',
+        path: '/user/mon-compte',
         name: 'userAccount',
         component: () => import('../Views/private/Account.vue'),
         meta: {
@@ -61,7 +61,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+    history: createWebHashHistory(process.env.BASE_URL),
     routes,
     scrollBehavior(to, from, savedPosition) {
         if (to.hash) {
