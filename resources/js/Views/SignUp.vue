@@ -94,6 +94,16 @@ export default {
     },
 
     methods: {
+        /**
+         * Enregistre un utilisateur et redirige vers la page de confirmation en cas de succès.
+         *
+         * Cette fonction effectue une requête d'inscription à l'API et, si l'inscription réussit, redirige l'utilisateur vers la page de confirmation.
+         * En cas d'échec, l'utilisateur est redirigé vers la page précédemment prévue.
+         *
+         * @async
+         * @return {Promise<void>}
+         * @throws {Error[]} errors - Une liste d'erreurs en cas d'échec de l'inscription.
+         */
         async registerUser() {
             this.errors = []
 
@@ -105,13 +115,18 @@ export default {
                 authStore.setRememberMe(this.rememberMe);
                 localStorage.setItem('isLogged', 'true')
                 const intendedURL = sessionStorage.getItem('intendedURL') || '/';
-                this.$router.push(intendedURL);
 
+                // Vérifier le statut de la réponse et rediriger l'utilisateur en conséquence
+                if (response.status === 200) {
+                    this.$router.push({name: 'signUpConfirmation'}); // Rediriger vers la page 'signUpConfirmation'
+                } else {
+                    // Rediriger vers la page précédemment demandée
+                    this.$router.push(intendedURL);
+                }
             } catch (errors) {
                 this.errors = errors
             }
         },
-
     }
 }
 </script>

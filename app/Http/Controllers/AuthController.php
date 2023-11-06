@@ -110,6 +110,7 @@ class AuthController extends Controller
             $user = User::create([
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
+                'avatar_url' => 'storage/avatars/avatar1.png'
             ]);
 
             // Delete old tokens in db
