@@ -23,7 +23,7 @@ class ReservationResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'user_civility' => $this->user->civility,
-            'user_name' => $this->user->firstname .' '. $this->user->lastname,
+            'user_name' => $this->user->firstname .' '. $this->user->name,
             'number_of_people' => $this->number_of_people,
             'started_date' => $this->started_date,
             'end_date' => $this->end_date,

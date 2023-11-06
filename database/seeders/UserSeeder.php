@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
                 'enterprise_name' => 'Le Campus numérique',
                 'professional_address' => json_encode(['address' => '1 Esplanade Augustin Aussedat', 'zip_code' => '74000',  'city' => 'Annecy']),
                 'firstname' => 'Kaley',
-                'lastname' => 'King',
+                'name' => 'King',
                 'email' => 'rem@hotel.fr',
                 'phone' => '1-281-295-6068',
                 'avatar_url' => 'storage/avatars/avatar1.png',
