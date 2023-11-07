@@ -151,7 +151,7 @@ class ReservationController extends Controller
      * @return JsonResponse|Collection
      * @throws ValidationException
      */
-    public function getAvailableRoomsFromRequest(Request $request): Collection|Response
+    public function getAvailableRoomsFromRequest(Request $request): JsonResponse|Collection
     {
         // Data validation
         $validator = ReservationControllerValidator::getAvailableRoomsValidator($request);
@@ -187,5 +187,18 @@ class ReservationController extends Controller
     {
         $reservation = Reservation::findOrFail($id);
         dd($reservation->user);
+    }
+
+    /**
+     * Retrieves the reservations made by the authenticated user.
+     *
+     * @return AnonymousResourceCollection The collection of reservation resources.
+     */
+    public function getUserReservations(): AnonymousResourceCollection
+    {
+        $user = Auth::user(); // L'utilisateur authentifié
+        $userReservations = Reservation::where('user_id', $user->id)->get();
+
+        return ReservationResource::collection($userReservations);
     }
 }

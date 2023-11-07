@@ -32,7 +32,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::middleware('setLocale')->group(function () {
     # Login route
     Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -50,6 +49,7 @@ Route::middleware('setLocale')->group(function () {
             # Reviews API routes
             Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
         });
+        Route::get('/user-reservations', [ReservationController::class, 'getUserReservations']);
     });
     # Protected Users API routes 'api/users/'
     Route::middleware('auth:sanctum')->prefix('users')->name('users')->group(function () {
