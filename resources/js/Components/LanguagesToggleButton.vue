@@ -2,8 +2,8 @@
     <div class="section__navbar">
         <select name="lang"
                 v-model="lang"
-                @change="switchLocale(lang)"
-                class="navbar__button appearance-none bg-white text-2xl"
+                @change="switchLocale()"
+                class="navbar__button appearance-none bg-white text-xl"
                 aria-label="Menu déroulant pour changer la langue du site">
             <option
                 v-for="flag in flags"
@@ -33,7 +33,7 @@ export default {
                         alt: "Français"
                     },
                     value: 'fr',
-                    text: '🇫🇷'
+                    text: '🇫🇷 Français'
                 },
                 {
                     name: 'English',
@@ -42,7 +42,7 @@ export default {
                         alt: "English"
                     },
                     value: 'en',
-                    text: '🇬🇧'
+                    text: '🇬🇧 English'
                 }
             ]
         }
@@ -63,9 +63,8 @@ export default {
     methods: {
         /**
          * Switches the locale of the application and reloads the page.
-         *
-         * @param {type} paramName - description of parameter
-         * @return {type} description of return value
+         *- description of parameter
+         * @return {void} description of return value
          */
         switchLocale() {
             this.$i18n.locale = this.lang
