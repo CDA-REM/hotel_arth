@@ -5,8 +5,8 @@
             <h2>Mes informations personnelles</h2>
             <div v-if="user" class="account__container--user-infos--left">
                 <div class="card md:card-side bg-base-100 shadow-xl border">
-                    <div class="user-infos__avatar flex items-center justify-center ml-5">
-                        <figure>
+                    <div class="avatar user-infos__avatar flex items-center justify-center ml-5">
+                        <figure class="w-24 rounded">
                             <img :src="user.avatar_url" alt="Mon avatar" />
                         </figure>
                     </div>
@@ -85,156 +85,129 @@
                 <p>Aucune information à afficher</p>
             </div>
         </div>
+        <div class="account__container--user-infos-pro p-5">
+            <h2>Mes informations professionnelles</h2>
+            <div v-if="user.enterprise_name" class="card md:card-side bg-base-100 shadow-xl border">
+                <div class="avatar user-infos__company-avatar flex items-center justify-center ml-5">
+                    <figure class="w-24 rounded">
+                        <img src="/storage/pictures/avatar-company.jpg" alt="Avatar de l'entreprise" />
+                    </figure>
+                </div>
+                <div class="card-body user-infos__text flex flex-wrap flex-row justify-between">
+                    <div>
+                        <h2 class="card-title">{{ user.enterprise_name }} </h2>
+                        <p>
+                            {{ professionalAddress ? professionalAddress.address : 'Adresse non disponible' }}
+                        </p>
+                        <p>
+                            {{ professionalAddress ? `${professionalAddress.zip_code} ${professionalAddress.city}` : 'Adresse non disponible' }}
+                        </p>
+                    </div>
+                    <div
+                        class="card-actions justify-end account__container--user-infos--left--buttons flex flex-col"
+                    >
+                        <button class="btn__yellow--outline flex justify-start w-full gap-2">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="w-6 h-6"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                                />
+                            </svg>
+                            Modifier mes informations
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div v-else>
+                <p>Aucune information à afficher</p>
+            </div>
+        </div>
         <div class="account__container--user-reservation-history p-5">
             <h2>Mon historique de réservations</h2>
             <div class="overflow-x-auto">
-                <table class="table mx-auto">
+                <table class="table w-full">
                     <!-- head -->
                     <thead>
                     <tr>
-                        <th>
-                            <label>
-                                <input type="checkbox" class="checkbox" />
-                            </label>
-                        </th>
-                        <th>Name</th>
-                        <th>Job</th>
-                        <th>Favorite Color</th>
+                        <th>Numéro de réservation</th>
+                        <th>Dates du séjour</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <!-- row 1 -->
                     <tr>
-                        <th>
-                            <label>
-                                <input type="checkbox" class="checkbox" />
-                            </label>
-                        </th>
                         <td>
                             <div class="flex items-center space-x-3">
-                                <div class="avatar">
-                                    <div class="mask mask-squircle w-12 h-12">
-                                        <img src="/tailwind-css-component-profile-2@56w.png" alt="Avatar Tailwind CSS Component" />
-                                    </div>
-                                </div>
                                 <div>
-                                    <div class="font-bold">Hart Hagerty</div>
-                                    <div class="text-sm opacity-50">United States</div>
+                                    <div class="font-bold">765432</div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            Zemlak, Daniel and Leannon
-                            <br />
-                            <span class="badge badge-ghost badge-sm">Desktop Support Technician</span>
+                            du 11/10/2023 au 12/10/2023
                         </td>
-                        <td>Purple</td>
                         <th>
                             <button class="btn btn-ghost btn-xs">details</button>
                         </th>
                     </tr>
                     <!-- row 2 -->
                     <tr>
-                        <th>
-                            <label>
-                                <input type="checkbox" class="checkbox" />
-                            </label>
-                        </th>
                         <td>
                             <div class="flex items-center space-x-3">
-                                <div class="avatar">
-                                    <div class="mask mask-squircle w-12 h-12">
-                                        <img src="/tailwind-css-component-profile-3@56w.png" alt="Avatar Tailwind CSS Component" />
-                                    </div>
-                                </div>
                                 <div>
-                                    <div class="font-bold">Brice Swyre</div>
-                                    <div class="text-sm opacity-50">China</div>
+                                    <div class="font-bold">654321</div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            Carroll Group
-                            <br />
-                            <span class="badge badge-ghost badge-sm">Tax Accountant</span>
+                            du 01/09/2023 au 03/10/2023
                         </td>
-                        <td>Red</td>
                         <th>
                             <button class="btn btn-ghost btn-xs">details</button>
                         </th>
                     </tr>
                     <!-- row 3 -->
                     <tr>
-                        <th>
-                            <label>
-                                <input type="checkbox" class="checkbox" />
-                            </label>
-                        </th>
                         <td>
                             <div class="flex items-center space-x-3">
-                                <div class="avatar">
-                                    <div class="mask mask-squircle w-12 h-12">
-                                        <img src="/tailwind-css-component-profile-4@56w.png" alt="Avatar Tailwind CSS Component" />
-                                    </div>
-                                </div>
                                 <div>
-                                    <div class="font-bold">Marjy Ferencz</div>
-                                    <div class="text-sm opacity-50">Russia</div>
+                                    <div class="font-bold">123456</div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            Rowe-Schoen
-                            <br />
-                            <span class="badge badge-ghost badge-sm">Office Assistant I</span>
+                            du 16/08/2023 au 20/08/2023
                         </td>
-                        <td>Crimson</td>
                         <th>
                             <button class="btn btn-ghost btn-xs">details</button>
                         </th>
                     </tr>
                     <!-- row 4 -->
                     <tr>
-                        <th>
-                            <label>
-                                <input type="checkbox" class="checkbox" />
-                            </label>
-                        </th>
                         <td>
                             <div class="flex items-center space-x-3">
-                                <div class="avatar">
-                                    <div class="mask mask-squircle w-12 h-12">
-                                        <img src="/tailwind-css-component-profile-5@56w.png" alt="Avatar Tailwind CSS Component" />
-                                    </div>
-                                </div>
                                 <div>
-                                    <div class="font-bold">Yancy Tear</div>
-                                    <div class="text-sm opacity-50">Brazil</div>
+                                    <div class="font-bold">483219</div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            Wyman-Ledner
-                            <br />
-                            <span class="badge badge-ghost badge-sm">Community Outreach Specialist</span>
+                            du 23/05/2023 au 25/05/2023
                         </td>
-                        <td>Indigo</td>
                         <th>
                             <button class="btn btn-ghost btn-xs">details</button>
                         </th>
                     </tr>
                     </tbody>
-                    <!-- foot -->
-                    <tfoot>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Job</th>
-                        <th>Favorite Color</th>
-                        <th></th>
-                    </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
@@ -255,26 +228,53 @@ export default defineComponent({
         return {
             user: null,
             personalAddress: null,
+            professionalAddress: null,
         }
     },
     computed: {
+        /**
+         * Retrieves the user ID.
+         *
+         * @return {number} The user ID.
+         */
         userId() {
             return this.user.id
         }
     },
     methods: {
+        /**
+         * Retrieves the user from the user store and assigns it to the 'user' property.
+         *
+         * @return {object}
+         */
         getUser() {
             this.user = this.userStore.user
         },
+        /**
+         * Retrieves the personal address from the user store and assigns it to the 'personalAddress' property.
+         *
+         * @return {Object} The parsed personal address object.
+         */
         getPersonalAddress() {
             return this.personalAddress = JSON.parse(this.userStore.user.personal_address)
+        },
+        /**
+         * Retrieves the professional address from the user store and assigns it to the 'professionalAddress' property.
+         *
+         * @return {Object} The parsed professional address object.
+         */
+        getProfessionalAddress() {
+            return this.professionalAddress = JSON.parse(this.userStore.user.professional_address)
         }
     },
     async mounted() {
         await this.getUser()
         await this.getPersonalAddress()
+        await this.getProfessionalAddress()
 
         console.log(this.user)
+        console.log(this.personalAddress)
+        console.log(this.professionalAddress)
     },
 })
 </script>
@@ -294,4 +294,12 @@ export default defineComponent({
     background-color: white !important;
     @apply w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden
 }
+
+.account__container > div:nth-child(2),
+.account__container > div:nth-child(3),
+.account__container > div:nth-child(4) {
+    @apply mx-auto;
+    max-width: 1000px;
+}
+
 </style>
