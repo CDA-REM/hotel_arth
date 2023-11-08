@@ -56,7 +56,7 @@
                             auto-apply placeholder="Select Date"
                             required prevent-min-max-navigation
                             :locale="globalStore.getLocale"
-                            :format="formateDateForDatePicker"
+                            :format="formatDateForDatePicker"
                             :format-locale="fr"
                             :min-date="new Date()"
                             :max-date="maxDate">
@@ -74,7 +74,7 @@
                             auto-apply placeholder="Select Date"
                             required prevent-min-max-navigation
                             :locale="globalStore.getLocale"
-                            :format="formateDateForDatePicker"
+                            :format="formatDateForDatePicker"
                             :format-locale="fr"
                             :min-date="calculateMinCheckoutDate"
                             :max-date="maxDate">
@@ -133,11 +133,11 @@
                     class="w-full max-w-md"
                     v-model="formReservation.numberOfRooms"
                     required>
-                <p class="mt-6 text-center font-bold text-lg">{{ calculateRoomPrice }} € </p>
-                <p class="text-center text-red-600 font-bold italic text-sm">
-                    {{ $t('reservation.totalPriceLegend') }}</p>
+                <p class="mt-6 text-center font-bold text-lg">{{ dynamicRoomPrice }}</p>
+                <p class=" mt-6 text-center text-arth-dark-blue font-bold italic text-sm">{{ dynamicMessage }}</p>
+
                 <!-- START - Navigation Button -->
-                <button type="button" @click="nextTab()" class="btn__lightblue">
+                <button type="button" @click="nextTab()" class="btn__lightblue" :disabled="availabilityStatus === false">
                     {{ $t('buttons.buttonBooking') }}
                 </button>
                 <!-- END - Navigation Button -->
@@ -157,9 +157,9 @@
                 <div class="option__heading--recap">
                     <p>{{ $t(('options.recapTitle')) }} <br>
                         {{ $t(('options.recapStartDate')) }}
-                        {{ formateCheckinDate }}
+                        {{ formatCheckinDate }}
                         {{ $t(('options.recapEndDate')) }}
-                        {{ formateCheckoutDate }} <br>
+                        {{ formatCheckoutDate }} <br>
                         {{ formReservation.numberOfRooms }} {{ $t(('options.recapRoom')) }}
                         {{ $t((`reservation.${formReservation.roomCategory}`)) }},
 
@@ -380,9 +380,9 @@
 
                         <div class="booking__validation--recap leading-6">
                             <p class="m-2">{{ $t(('options.recapTitle')) }} <br>
-                                {{ $t(('options.recapStartDate')) }} {{ formateCheckinDate }} {{
+                                {{ $t(('options.recapStartDate')) }} {{ formatCheckinDate }} {{
                                     $t(('options.recapEndDate'))
-                                }} {{ formateCheckoutDate }} <br>
+                                }} {{ formatCheckoutDate }} <br>
                                 {{ formReservation.numberOfRooms }} {{ $t(('options.recapRoom')) }}
                                 {{ $t((`reservation.${formReservation.roomCategory}`)) }},
                                 {{ formReservation.numberOfPeople }} {{ $t(('options.recapPeople')) }}
@@ -447,7 +447,6 @@ export default defineComponent({
     },
     data() {
         return {
-            user: null,
             personalAddress: null,
             professionalAddress: null,
             formReservation: {
@@ -466,13 +465,13 @@ export default defineComponent({
                 name: this.userStore.user.name || "",
                 email: this.userStore.user.email || "",
                 phoneNumber: this.userStore.user.phone || "",
-                address: "",
-                zipCode: "",
-                city: "",
-                companyName: null,
-                companyAddress: null,
-                companyZipCode: null,
-                companyCity: null
+                address: this.personalAddress ? this.personalAddress.address : "",
+                zipCode: this.personalAddress ? this.personalAddress.zip_code : "",
+                city: this.personalAddress ? this.personalAddress.city : "",
+                companyName: this.personalAddress ? this.userStore.user.enterprise_name : "",
+                companyAddress: this.professionalAddress ? this.professionalAddress.address : "",
+                companyZipCode: this.professionalAddress ? this.professionalAddress.zip_code : "",
+                companyCity: this.professionalAddress ? this.professionalAddress.city : "",
             },
             roomsImg: {
                 classic: {
@@ -497,17 +496,10 @@ export default defineComponent({
             errors: [],
             isLoading: false,
             availabilityStatus: null,
+            roomPrice: 0,
         }
     },
     computed: {
-        /**
-         * Retrieves the ID of the user.
-         *
-         * @return {number} The ID of the user.
-         */
-        userId() {
-            return this.user.id
-        },
 
         /**
          * Calculates the room price based on the number of rooms and the number of days.
@@ -515,13 +507,12 @@ export default defineComponent({
          * @return {number} The calculated room price.
          */
         calculateRoomPrice() {
-            let roomPrice = 0;
-            let numberOfDays = this.calculateNumberOfDays();
+            let numberOfDays = this.calculateNumberOfDays(this.formReservation.started_date, this.formReservation.end_date);
             if (this.formReservation.numberOfRooms > 0) {
-                roomPrice = (this.roomCategoriesStore.getRoomCategories.find(roomCategory => roomCategory.slug ===
+                this.roomPrice = (this.roomCategoriesStore.getRoomCategories.find(roomCategory => roomCategory.slug ===
                     this.formReservation.roomCategory).price) * this.formReservation.numberOfRooms * numberOfDays;
             }
-            return roomPrice;
+            return this.roomPrice;
         },
 
         /**
@@ -531,7 +522,7 @@ export default defineComponent({
          */
         calculateOptionsPrice() {
             let optionsPrice = 0;
-            let numberOfDays = this.calculateNumberOfDays();
+            let numberOfDays = this.calculateNumberOfDays(this.formReservation.started_date, this.formReservation.end_date);
 
             if (this.formReservation.formOptions.length > 0) {
                 this.formReservation.formOptions.forEach(option => {
@@ -612,7 +603,7 @@ export default defineComponent({
          *
          * @return {string} The formatted date string.
          */
-        formateDateForDatePicker() {
+        formatDateForDatePicker() {
             return this.globalStore.getLocale === 'fr' ? 'dd/MM/yyyy' : 'MM/dd/yyyy'
         },
 
@@ -621,9 +612,9 @@ export default defineComponent({
          *
          * @return {type} The formatted check-in date.
          */
-        formateCheckinDate() {
+        formatCheckinDate() {
             if (this.formReservation.started_date) {
-                return this.formateDateForRecap(this.formReservation.started_date);
+                return this.formatDateForRecap(this.formReservation.started_date);
             }
         },
 
@@ -632,13 +623,44 @@ export default defineComponent({
          *
          * @return {type} The formatted checkout date.
          */
-        formateCheckoutDate() {
+        formatCheckoutDate() {
             if (this.formReservation.end_date) {
-                return this.formateDateForRecap(this.formReservation.end_date);
+                return this.formatDateForRecap(this.formReservation.end_date);
             }
-        }
-    },
+        },
 
+        /**
+         * Generates a dynamic message based on the values of `formReservation.numberOfRooms` and `availabilityStatus`.
+         *
+         * @return {string} The generated dynamic message.
+         */
+        dynamicMessage() {
+            if (this.availabilityStatus === null) {
+                return '';
+            }
+
+            if (this.formReservation.numberOfRooms > 0 && this.availabilityStatus) {
+                return this.$t('reservation.totalPriceLegend');
+            }
+
+            if (this.formReservation.numberOfRooms > 0 && !this.availabilityStatus) {
+                return this.$t('reservation.availabilityStatus');
+            }
+        },
+
+        /**
+         * Calculates the dynamic room price based on the availability status.
+         *
+         * @return {string} The calculated room price in €, or an empty string if the availability status is false.
+         */
+        dynamicRoomPrice() {
+            if (!this.isLoading && this.availabilityStatus) {
+                return this.calculateRoomPrice + " €";
+            } else {
+                return "";
+            }
+        },
+    },
     watch: {
         'formReservation.numberOfRooms'() {
             if (this.formReservation.started_date && this.formReservation.end_date &&
@@ -646,39 +668,74 @@ export default defineComponent({
                 this.getAvailability();
             }
         },
+        'formReservation.numberOfPeople'() {
+            if (this.formReservation.started_date && this.formReservation.end_date &&
+                this.formReservation.roomCategory && this.formReservation.numberOfRooms && this.formReservation.numberOfPeople) {
+                this.getAvailability();
+            }
+        },
+        'formReservation.roomCategory'() {
+            if (this.formReservation.started_date && this.formReservation.end_date &&
+                this.formReservation.roomCategory && this.formReservation.numberOfRooms && this.formReservation.numberOfPeople) {
+                this.getAvailability();
+            }
+        },
+        'formReservation.end_date'() {
+            if (this.formReservation.started_date && this.formReservation.end_date &&
+                this.formReservation.roomCategory && this.formReservation.numberOfRooms && this.formReservation.numberOfPeople) {
+                this.getAvailability();
+            }
+        }
     },
     methods: {
         useGlobalStore,
-
+        /**
+         * Check if the number of available rooms with the selected style is sufficient.
+         *
+         * @param availableRooms
+         * @param {number} selectedRoomStyle - The ID of the selected room style.
+         * @param {number} numberOfRooms - The number of rooms chosen by the user.
+         * @return {boolean} true if there are enough available rooms, false otherwise.
+         */
+        areAvailableRoomsSufficient(availableRooms, selectedRoomStyle, numberOfRooms) {
+            const styleMatchedRooms = Object.values(availableRooms).filter(room => room.style === selectedRoomStyle);
+            return styleMatchedRooms.length >= numberOfRooms;
+        },
         /**
          * Retrieves availability data from the server.
          *
          * @return {Promise} A promise that resolves with the availability data.
          */
         async getAvailability() {
-            console.log("getAvailability");
-            // axios.get(`api/availability/?started_date=${this.formateCheckinDateForRequest()}&end_date=${this.formateCheckoutDateForRequest()}`, {
-            await axios.get(`api/availability`, {
+            await axios.get(`api/reservations/availability`, {
                 params: {
-                    started_date: this.formateCheckinDateForRequest(),
-                    end_date: this.formateCheckoutDateForRequest(),
-                //     // roomCategory: this.formReservation.roomCategory,
-                //     // numberOfRooms: this.formReservation.numberOfRooms,
-                //     // numberOfPeople: this.formReservation.numberOfPeople,
+                    started_date: this.formatDateForRequest(this.formReservation.started_date),
+                    end_date: this.formatDateForRequest(this.formReservation.end_date),
                 }
             })
                 .then((response) => {
                     if (response.status === 200 || response.status === 201) {
-                        console.log("response code: " + response.status);
-                        console.log("response data : ", response.data);
-                        this.availabilityStatus = response.data;
+                        const rooms = response.data;
+
+                        let count = 0;
+                        for (const key in rooms) {
+                            if (rooms.hasOwnProperty(key)) {
+                                count++;
+                            }
+                        }
+
+                        if (count === 0) {
+                            this.availabilityStatus = false;
+                        } else {
+                            this.availabilityStatus = this.areAvailableRoomsSufficient(rooms, this.formReservation.roomCategory, this.formReservation.numberOfRooms);
+                            console.log("availabilityStatus:", this.availabilityStatus);
+                        }
                     }
                 })
                 .catch((error) => {
                     if (error.response) {
                         this.errors.push('Une erreur est survenue',error?.response?.data?.message || " Erreur inconnue")
-                        console.log(`Erreur : ${error}`)
-// The request was made and the server responded with a status code
+                        console.debug(`Erreur : ${error}`)
                     }
                 });
         },
@@ -688,27 +745,34 @@ export default defineComponent({
          *
          * @return {number} The number of days between the start and end dates.
         */
-         calculateNumberOfDays() {
-                    if (this.formReservation.started_date && this.formReservation.end_date) {
-                        const checkinDate = new Date(moment(this.formReservation.started_date, "DD MM YYYY"));
-                        const checkoutDate = new Date(moment(this.formReservation.end_date, "DD MM YYYY"));
-                        const numberOfDays = moment(checkoutDate).diff(moment(checkinDate), 'days');
-                        return numberOfDays;
-                    }
-                },
+        calculateNumberOfDays(checkinDate, checkoutDate) {
+            if (checkinDate && checkoutDate) {
+                const checkinDateObj = new Date(moment(checkinDate, "DD MM YYYY"));
+                const checkoutDateObj = new Date(moment(checkoutDate, "DD MM YYYY"));
+                return moment(checkoutDateObj).diff(moment(checkinDateObj), 'days');
+            }
+        },
 
         /**
          * Formats the given date for the recap.
-         * Called by the computed properties formateChekinDate() and formateCheckoutDate
+         * Called by the computed properties formatChekinDate() and formatCheckoutDate
          *
          * @param {Date} input - The date to be formatted.
          * @return {string} The formatted date.
          */
-        formateDateForRecap(input) {
-            if (input && !this.isLoading) {
-                return input = input.toLocaleDateString(this.globalStore.getLocale)
-            }
-            return new Date
+        formatDateForRecap(input) {
+            const date = input
+            return (date && !this.isLoading) ? date.toLocaleDateString(this.globalStore.getLocale) : '';
+        },
+
+        /**
+         * Formats a date for request.
+         *
+         * @param {Date} - the date to be formatted
+         * @return {String} the formatted date
+         */
+        formatDateForRequest(date) {
+            return date ? moment(date).format('YYYY-MM-DD') : '';
         },
 
         /**
@@ -717,7 +781,7 @@ export default defineComponent({
          *
          * @return {string} The formatted check-in date in the format 'YYYY-MM-DD'.
          */
-        formateCheckinDateForRequest() {
+        formatCheckinDateForRequest() {
             if (this.formReservation.started_date) {
                 return this.formReservation.started_date = moment(this.formReservation.started_date).format('YYYY-MM-DD');
             }
@@ -729,7 +793,7 @@ export default defineComponent({
          *
          * @return {string} The formatted checkout date.
          */
-        formateCheckoutDateForRequest() {
+        formatCheckoutDateForRequest() {
             if (this.formReservation.end_date) {
                 return this.formReservation.end_date = moment(this.formReservation.end_date).format('YYYY-MM-DD');
             }
@@ -771,15 +835,6 @@ export default defineComponent({
         },
 
         /**
-         * Get the user from the user store and assign it to the 'user' property.
-         *
-         * @return {void}
-         */
-        getUser() {
-            this.user = this.userStore;
-        },
-
-        /**
          * Retrieves the personal address from the user's store and assigns it to the component's personalAddress property.
          *
          * @return {Object} The parsed personal address object.
@@ -787,7 +842,6 @@ export default defineComponent({
         getPersonalAddress() {
             return this.personalAddress = JSON.parse(this.userStore.user.personal_address)
         },
-
 
         /**
          * Retrieves the professional address from the user store.
@@ -808,39 +862,22 @@ export default defineComponent({
          * @return {Promise} A promise that resolves with the response from the server.
          */
         async submitUser() {
-            axios.post('api/users/' + this.userStore.user.id, {...this.formUser, _method: 'put'})
+            axios.post('api/users/' + this.userStore.user.id + '/userInfos', {...this.formUser, _method: 'put'})
                 .then(
                     (response) => {
                         if (response.status === 200 || response.status === 201) {
-                            console.log(this.form);
-                            console.debug("response code: " + response.status);
+                            this.userStore.user = response.data.user;
+                            this.userStore.user.personal_address = JSON.stringify(this.personalAddress.address);
+                            this.userStore.user.professional_address = JSON.stringify(this.professionalAddress);
+                            this.$router.push("/reservation-confirmation");
                             this.resetForm();
-                            return router.push("/reservation-confirmation");
                         }
                     }
                 )
                 .catch((error) => {
-                    if (error.response) {
-// The request was made and the server responded with a status code
-// that falls out of the range of 2xx
-                        console.log('Server error out of 2xx')
-                        console.log("response data error : ", error.response.data);
-                        console.log("response data status : ", error.response.status);
-                        console.log("response data headers : ", error.response.headers);
-                    } else if (error.request) {
-// The request was made but no response was received
-// `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-// http.ClientRequest in node.js
-                        console.log('No response was received to your request.')
-                        console.log("error.request : ", error.request);
-                    } else {
-// Something happened in setting up the request that triggered an Error
-                        console.log('An error occured : ', error.message);
-                    }
-                    console.log(error.config);
                     this.errors.push(
-                        "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
-                        (error?.response?.data?.message || " Erreur inconnue")
+                        "Une erreur s'est produite lors de l'enregistrement de vos informations utilisateur : " +
+                        (error?.response?.data?.message || " Erreur inconnue. \n") + "Veuillez réessayer ou nous contacter si le problème persiste."
                     );
                 });
         },
@@ -852,18 +889,14 @@ export default defineComponent({
          */
         async submitBooking() {
             this.isLoading = true
-            this.formateCheckinDateForRequest();
-            this.formateCheckoutDateForRequest();
+            this.formatCheckinDateForRequest();
+            this.formatCheckoutDateForRequest();
 
             if (this.$refs.reservationForm.reportValidity()) {
                 const config = {
                     headers: {
                         Accept: ["application/json"],
                         "Content-Type": ["application/json"],
-//withCredentials: true,
-                    },
-                    auth: {
-// TODO - Ajouter le cookie utilisateur ? ;
                     },
                 };
 
@@ -880,15 +913,14 @@ export default defineComponent({
                     .catch((error) => {
                         this.errors = [];
                         this.errors.push(
-                            "Une erreur s'est produite lors de l'enregistrement de votre réservation : " +
-                            (error?.response?.data?.message || " Erreur inconnue")
+                            "Une erreur s'est produite lors de l'enregistrement de votre réservation : \n" +
+                            (error?.response?.data?.message || " Erreur inconnue") + "\n" + " Veuillez réessayer ou nous contacter si le problème persiste."
                         );
                     });
             }
         },
     },
     async mounted() {
-        await this.getUser();
         await this.getPersonalAddress();
         await this.getProfessionalAddress();
     },

@@ -27,14 +27,6 @@ export function calculateNumberOfDays(checkinDate, checkoutDate) {
     }
 }
 
-// Function to format date for the recap
-export function formatDateForRecap(input) {
-    if (input) {
-        return input.toLocaleDateString(this.globalStore.getLocale);
-    }
-    return new Date();
-}
-
 // Function to format date for the request
 export function formatDateForRequest(date) {
     return date ? moment(date).format('YYYY-MM-DD') : '';

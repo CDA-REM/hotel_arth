@@ -69,7 +69,9 @@ export const translations = {
             classic: "The Classic - 70€/night",
             luxury: "The Luxury Room - 140€/night",
             royal: "The Royal Suite - 280€/night",
-            totalPriceLegend: " Indicative price, the final price will be calculated at the end of the reservation process.",
+            totalPriceLegend: "Indicative price, the final price will be calculated at the end of the reservation process.",
+            availabilityStatus: "No rooms are available in this category on these dates.\n" +
+                "  Please choose another room category or change the dates of your stay."
         },
         options: {
             title: "Options",
@@ -200,7 +202,9 @@ export const translations = {
             classic: "La Classique - 70€/nuit",
             luxury: "La Chambre de Luxe - 140€/nuit",
             royal: "La Suite Royale - 280€/nuit",
-            totalPriceLegend: " Prix indicatif provisoire, le prix définitif sera calculé à la fin du processus de réservation."
+            totalPriceLegend: "Prix indicatif provisoire, le prix définitif sera calculé à la fin du processus de réservation.",
+            availabilityStatus: "Aucune chambre n'est disponible dans cette catégorie à ces dates.\n" +
+                "Veuillez choisir une autre catégorie de chambre ou modifier les dates de votre séjour."
         },
         options: {
             title: "Options",
