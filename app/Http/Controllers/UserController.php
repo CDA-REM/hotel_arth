@@ -97,7 +97,7 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -143,8 +143,10 @@ class UserController extends Controller
     /**
      * Update a user resource in the database.
      * @param Request $request
+     * @return
      */
-    function updateUserInfo(Request $request) {
+    function updateUserInfo(Request $request): User|\Illuminate\Http\JsonResponse
+    {
         // Data Validation
         $validator = UserControllerValidator::updateUserValidator($request);
         if($validator->fails())

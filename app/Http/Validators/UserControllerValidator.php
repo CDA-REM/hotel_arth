@@ -12,19 +12,6 @@ class UserControllerValidator
     static function updateUserValidator(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         return Validator::make($request->all(), [
-//            "id" => "required|int",
-//            "civility" => "required|in:mister,madame",
-//            "firstname" => "required|string",
-//            "name" => "required|string",
-//            "email" => "required|email",
-//            "phoneNumber" => "required|numeric|digits:10",
-//            "address" => "required|string",
-//            "zipCode" => "required|numeric",
-//            "city" => "required|string",
-//            "companyName" => "required|string",
-//            "companyAddress" => "required|string",
-//            "companyZipCode" => "required|numeric",
-//            "companyCity" => "required|string"
             "id" => "int",
             "civility" => "in:mister,madam",
             "firstname" => "string",
@@ -34,10 +21,10 @@ class UserControllerValidator
             "address" => "string",
             "zipCode" => "numeric",
             "city" => "string",
-            "companyName" => "string",
-            "companyAddress" => "string",
-            "companyZipCode" => "numeric",
-            "companyCity" => "string"
+            "companyName" => "nullable|string",
+            "companyAddress" => "nullable|string",
+            "companyZipCode" => "nullable|numeric",
+            "companyCity" => "nullable|string"
         ], [
             'required' => 'The :attribute field is required.',
             'date_format' => 'The :attribute field is required.',

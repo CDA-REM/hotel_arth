@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
 class UserRepository {
-    static function updateUser(User $user, array $validated) : int
+    static function updateUser(User $user, array $validated): \Illuminate\Http\JsonResponse
     {
 
         $whole_address = json_encode(["address" => $validated["address"],
@@ -43,11 +43,11 @@ class UserRepository {
             $user->email = $validated["email"];
         }
         if ($validated["phoneNumber"] !== $user->phone) {
-            $user->firstname = $validated["phoneNumber"];
+            $user->phone = $validated["phoneNumber"];
         }
 
         $user->update();
 
-        return $user;
+        return response()->json($user);
     }
 }
