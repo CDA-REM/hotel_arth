@@ -117,7 +117,7 @@ export default {
                 const intendedURL = sessionStorage.getItem('intendedURL') || '/';
 
                 // Vérifier le statut de la réponse et rediriger l'utilisateur en conséquence
-                if (response.status === 200) {
+                if (this.userStore.user) {
                     this.$router.push({name: 'signUpConfirmation'}); // Rediriger vers la page 'signUpConfirmation'
                 } else {
                     // Rediriger vers la page précédemment demandée
