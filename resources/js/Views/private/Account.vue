@@ -3,15 +3,15 @@
         <h1>Mon compte</h1>
         <div class="account__container--user-infos p-5">
             <h2>Mes informations personnelles</h2>
-            <div v-if="user" class="account__container--user-infos--left">
+            <div class="account__container--user-infos--left">
                 <div class="card md:card-side bg-base-100 shadow-xl border">
-                    <div class="avatar user-infos__avatar flex items-center justify-center ml-5">
+                    <div class="avatar user-infos__avatar flex items-center justify-center ml-5 mt-5">
                         <figure class="w-24 rounded">
                             <img :src="user.avatar_url" alt="Mon avatar" />
                         </figure>
                     </div>
                     <div class="card-body user-infos__text flex flex-wrap flex-row justify-between">
-                        <div>
+                        <div v-if="user" >
                             <h2 class="card-title">{{ user.firstname }} {{ user.name }}</h2>
                             <p>
                                 {{ personalAddress ? personalAddress.address : 'Adresse non disponible' }}
@@ -23,6 +23,7 @@
                             <p>{{ user.email }}</p>
                         </div>
                         <div
+                            v-if="user"
                             class="card-actions justify-end account__container--user-infos--left--buttons flex flex-col"
                         >
                             <button class="btn__yellow--outline flex justify-start w-full gap-2">
@@ -78,23 +79,23 @@
                                 Supprimer mon compte
                             </button>
                         </div>
+                        <div v-else>
+                            <p>Aucune information à afficher</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div v-else>
-                <p>Aucune information à afficher</p>
             </div>
         </div>
         <div class="account__container--user-infos-pro p-5">
             <h2>Mes informations professionnelles</h2>
-            <div v-if="user.enterprise_name" class="card md:card-side bg-base-100 shadow-xl border">
-                <div class="avatar user-infos__company-avatar flex items-center justify-center ml-5">
+            <div class="card md:card-side bg-base-100 shadow-xl border">
+                <div class="avatar user-infos__company-avatar flex items-center justify-center ml-5 mt-5">
                     <figure class="w-24 rounded">
                         <img src="/storage/pictures/avatar-company.jpg" alt="Avatar de l'entreprise" />
                     </figure>
                 </div>
                 <div class="card-body user-infos__text flex flex-wrap flex-row justify-between">
-                    <div>
+                    <div v-if="user.enterprise_name" >
                         <h2 class="card-title">{{ user.enterprise_name }} </h2>
                         <p>
                             {{ professionalAddress ? professionalAddress.address : 'Adresse non disponible' }}
@@ -104,6 +105,7 @@
                         </p>
                     </div>
                     <div
+                        v-if="user.enterprise_name"
                         class="card-actions justify-end account__container--user-infos--left--buttons flex flex-col"
                     >
                         <button class="btn__yellow--outline flex justify-start w-full gap-2">
@@ -124,11 +126,12 @@
                             Modifier mes informations
                         </button>
                     </div>
+                    <div v-else>
+                        <p>Aucune information à afficher</p>
+                    </div>
                 </div>
             </div>
-            <div v-else>
-                <p>Aucune information à afficher</p>
-            </div>
+
         </div>
         <div class="account__container--user-reservation-history p-5">
             <h2>Mon historique de réservations</h2>
