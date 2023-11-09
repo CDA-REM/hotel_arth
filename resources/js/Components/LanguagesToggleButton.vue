@@ -4,9 +4,12 @@
                 v-model="lang"
                 @change="switchLocale()"
                 class="navbar__button appearance-none bg-white text-xl"
-                aria-label="Menu déroulant pour changer la langue du site">
+                aria-label="Changer la langue du site"
+                title="Changer la langue du site"
+        >
             <option
                 v-for="flag in flags"
+                :key="flag.value"
                 :value="flag.value"
                 :alt="flag.image.alt"
                 class="navbar__flag"
@@ -99,5 +102,9 @@ export default {
 
 .en {
     background-image: url("/storage/pictures/flag-english.jpg");
+}
+
+select {
+    cursor: pointer;
 }
 </style>
