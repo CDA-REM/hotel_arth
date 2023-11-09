@@ -12,7 +12,6 @@ use App\Http\Resources\DashboardOperationalTableResource;
 use App\Models\Reservation;
 use Carbon\Carbon;
 use DateTime;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
