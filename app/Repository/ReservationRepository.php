@@ -119,7 +119,7 @@ class ReservationRepository
                 // One room number per object.
                 $formatted_reservation = [
                     'tags' => 'occupée',
-                    'nom' => $reservation->user->firstname . ' ' . $reservation->user->lastname,
+                    'nom' => $reservation->user->firstname . ' ' . $reservation->user->name,
                     'arrivee' => $reservation->started_date,
                     'depart' => $reservation->end_date,
                     'chambre' => $room->room_number,

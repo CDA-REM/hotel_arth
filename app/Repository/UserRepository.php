@@ -33,8 +33,8 @@ class UserRepository {
         if ($validated["firstname"] !== $user->firstname) {
             $user->firstname = $validated["firstname"];
         }
-        if ($validated["lastname"] !== $user->lastname) {
-            $user->lastname = $validated["lastname"];
+        if ($validated["name"] !== $user->name) {
+            $user->name = $validated["name"];
         }
         if ($validated["civility"] !== $user->civility) {
             $user->civility = strtolower($validated["civility"]);

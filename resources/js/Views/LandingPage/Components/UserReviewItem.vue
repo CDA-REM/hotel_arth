@@ -19,7 +19,7 @@
                             >
                         </div>
                     </div>
-                    <p>{{ review.user.firstname }} {{ review.user.lastname }}</p>
+                    <p>{{ review.user.firstname }} {{ review.user.name }}</p>
                 </div>
             </div>
             <div class="card-body">

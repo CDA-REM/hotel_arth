@@ -2,13 +2,8 @@
 
 namespace App\Repository;
 
-use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class DashboardTacticRepository
 {
