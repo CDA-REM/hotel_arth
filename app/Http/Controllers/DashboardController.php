@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ReservationBetweenDatesRequest;
 use App\Repository\DashboardTacticRepository;
 use App\Repository\DashboardRepository;
 use App\Repository\ReservationRepository;
+use App\Services\DashboardTacticService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Resources\ReservationResource;
 use App\Http\Resources\DashboardOperationalTableResource;
-use App\Models\Reservation;
-use Carbon\Carbon;
-use DateTime;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Exception;
 
 class DashboardController extends Controller
 {
+    protected DashboardTacticService $dashboardTacticService;
+
+    public function __construct(DashboardTacticService $dashboardTacticService)
+    {
+        $this->dashboardTacticService = $dashboardTacticService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -48,123 +54,199 @@ class DashboardController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Retrieves reservations between two dates and returns them as a JSON response.
      *
-     * @return
+     * @param ReservationBetweenDatesRequest $request the request object containing the start and end dates
+     * @throws Exception if an error occurs during the retrieval process
+     * @return JsonResponse the JSON response containing the reservations
      */
-    public function getTacticalDashboardData()
+    public function getReservationsBetweenTwoDates(ReservationBetweenDatesRequest $request) : JsonResponse
     {
-        //
+        try {
+            $reservations = DashboardTacticRepository::getReservationsForPeriod($request->start_date, $request->end_date);
+            return response()->json([
+                'reservations' => ReservationResource::collection($reservations)
+            ]);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Une erreur s\'est produite'], 500);
+        }
     }
 
     /**
-     * Return a listing of the reservations between two dates, using the repository.
-     * @param Request $request
-     * @return JsonResponse
+     * Retrieves the total sales between two specified dates.
+     *
+     * @param ReservationBetweenDatesRequest $request The request object containing the start and end dates.
+     * @throws Exception If an error occurs while calculating the total sales.
+     * @return JsonResponse The JSON response containing the total sales rounded to two decimal places.
      */
-    public function getReservationsBetweenTwoDates(Request $request) : JsonResponse
+    public function getTotalSalesBetweenTwoDates(ReservationBetweenDatesRequest $request): JsonResponse
     {
-        return DashboardTacticRepository::reservations($request);
+        try {
+            // The form request has already validated this data
+            $totalSales = $this->dashboardTacticService->calculateTotalSales($request->start_date, $request->end_date);
+
+            return response()->json(['total_sales' => round($totalSales, 2)]);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
-     * Return the total sales between two dates, using the repository.
-     * @param Request $request
-     * @return JsonResponse
+     * Retrieves the average cart value between two dates.
+     *
+     * @param ReservationBetweenDatesRequest $request The request object containing the start and end dates.
+     * @throws Exception If an error occurs while calculating the average cart value.
+     * @return JsonResponse The JSON response containing the average cart value.
      */
-    public function getTotalSalesBetweenTwoDates(Request $request) : JsonResponse
+    public function getAverageCartValueBetweenTwoDates(ReservationBetweenDatesRequest $request): JsonResponse
     {
-        return DashboardTacticRepository::totalSales($request);
+        try {
+            $averageCartValue = $this->dashboardTacticService->calculateAverageCartValue($request->start_date, $request->end_date);
+
+            return response()->json(['average_cart' => $averageCartValue]);
+
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
-     * Return the total average cart value between two dates, using the repository.
-     * @param Request $request
-     * @return JsonResponse
+     * Retrieves the average cart evolution between two dates.
+     *
+     * @param ReservationBetweenDatesRequest $request The request object containing the start and end dates.
+     * @throws Exception If an error occurs during the calculation.
+     * @return JsonResponse The JSON response containing the average cart evolution.
      */
-    public function getAverageCartValueBetweenTwoDates(Request $request) : JsonResponse
+    public function getAverageCartEvolutionBetweenTwoDates(ReservationBetweenDatesRequest $request): JsonResponse
     {
-        return DashboardTacticRepository::averageCartValue($request);
+        try {
+            $averageCartEvolution = $this->dashboardTacticService->calculateAverageCartEvolution($request->start_date, $request->end_date);
+
+            return response()->json(['average_cart_evolution' => $averageCartEvolution]);
+
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
-     * Return the average cart between two dates, using the repository.
-     * @param Request $request
-     * @return JsonResponse
+     * Retrieves the total number of reservations between two dates.
+     *
+     * @param ReservationBetweenDatesRequest $request The request object containing the start and end dates.
+     * @throws Exception If an error occurs during the calculation.
+     * @return JsonResponse The JSON response containing the total number of reservations.
      */
-    public function getAverageCartEvolutionBetweenTwoDates(Request $request) : JsonResponse
+    public function getNumberOfReservationsBetweenTwoDates(ReservationBetweenDatesRequest $request) : JsonResponse
     {
-        return DashboardTacticRepository::averageCartEvolution($request);
+        try {
+            $numberOfReservations = $this->dashboardTacticService->calculateNumberOfReservations($request->start_date, $request->end_date);
+
+            return response()->json(['total_reservations' => $numberOfReservations]);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Une erreur s\'est produite'], 500);
+        }
     }
 
     /**
-     * Return the total number reservations between two dates, using the repository.
-     * @param Request $request
-     * @return JsonResponse
+     * Retrieves the occupancy rate between two specified dates.
+     *
+     * @param ReservationBetweenDatesRequest $request The request object containing the start and end dates.
+     * @throws Exception If an error occurs during the calculation.
+     * @return JsonResponse The JSON response containing the occupancy rate.
      */
-    public function getNumberOfReservationsBetweenTwoDates(Request $request) : JsonResponse
+    public function getOccupancyRateBetweenTwoDates(ReservationBetweenDatesRequest $request) : JsonResponse
     {
-        return DashboardTacticRepository::numberOfReservations($request);
+        try {
+            $occupancyRate = $this->dashboardTacticService->calculateOccupancyRate($request->start_date, $request->end_date);
+
+            return response()->json(['occupancy_rate' => $occupancyRate]);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Une erreur s\'est produite'], 500);
+        }
     }
 
     /**
-     * Return the occupancy rate between two dates, using the repository.
-     * @param Request $request
-     * @return JsonResponse
+     * Retrieves the occupancy rate per room type between two given dates.
+     *
+     * @param ReservationBetweenDatesRequest $request The request object containing the start and end dates.
+     * @throws Exception If an error occurs while calculating the occupancy rate.
+     * @return JsonResponse The JSON response containing the occupancy rate per room type.
      */
-    public function getOccupancyRateBetweenTwoDates(Request $request) : JsonResponse
+    public function getOccupancyRatePerRoomTypeBetweenTwoDates(ReservationBetweenDatesRequest $request) : JsonResponse
     {
-        return DashboardTacticRepository::occupancyRate($request);
+        try {
+            $occupancyRatePerRoomType = $this->dashboardTacticService->calculateOccupancyRatePerRoomType($request->start_date, $request->end_date);
+
+            return response()->json(['occupancy_rate_per_room_type' => $occupancyRatePerRoomType]);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Une erreur s\'est produite'], 500);
+        }
     }
 
     /**
-     * Return the occupancy rate per room type between two dates, using the repository.
-     * @param Request $request
-     * @return JsonResponse
+     * Retrieves the occupancy rate per option between two given dates.
+     *
+     * @param ReservationBetweenDatesRequest $request The request containing the start and end dates.
+     * @throws Exception If an error occurs during the calculation.
+     * @return JsonResponse The JSON response containing the occupancy rate per option.
      */
-    public function getOccupancyRatePerRoomTypeBetweenTwoDates(Request $request) : JsonResponse
+    public function getOccupancyRatePerOptionBetweenTwoDates(ReservationBetweenDatesRequest $request) : JsonResponse
     {
-        return DashboardTacticRepository::occupancyRatePerRoomType($request);
+        try {
+            $occupancyRatePerOption = $this->dashboardTacticService->calculateOccupancyRatePerOption($request->start_date, $request->end_date);
+
+            return response()->json(['occupancy_rate_per_option' => $occupancyRatePerOption]);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Une erreur s\'est produite'], 500);
+        }
     }
 
     /**
-     * Return the occupancy rate per option between two dates, using the repository.
-     * @param Request $request
-     * @return JsonResponse
+     * Calculate the average time between booking and check-in for a given date range.
+     *
+     * @param ReservationBetweenDatesRequest $request The request object containing the start and end dates.
+     * @throws Exception If an error occurs while calculating the average time.
+     * @return JsonResponse The JSON response containing the average time between booking and check-in.
      */
-    public function getOccupancyRatePerOptionBetweenTwoDates(Request $request) : JsonResponse
+    public function getAverageTimeBetweenBookingAndCheckin(ReservationBetweenDatesRequest $request) : JsonResponse
     {
-        return DashboardTacticRepository::occupancyRatePerOption($request);
+        try {
+            $averageTimeBetweenBookingAndCheckin = $this->dashboardTacticService->calculateAverageTimeBetweenBookingAndCheckin($request->start_date, $request->end_date);
+
+            return response()->json(['average_time_between_booking_and_checkin' => $averageTimeBetweenBookingAndCheckin]);
+
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Une erreur s\'est produite'], 500);
+        }
     }
 
     /**
-     * Return the average time between two dates, using the repository.
-     * @param Request $request
-     * @return JsonResponse
+     * Retrieves the average duration of a stay based on the provided reservation dates.
+     *
+     * @param ReservationBetweenDatesRequest $request The request object containing the start and end dates.
+     * @throws Exception If an error occurs during the calculation.
+     * @return JsonResponse The JSON response containing the average duration of a stay.
      */
-    public function getAverageTimeBetweenBookingAndCheckin(Request $request) : JsonResponse
+    public function getAverageDurationOfAStay(ReservationBetweenDatesRequest $request):JsonResponse
     {
-        return DashboardTacticRepository::averageTimeBetweenBookingAndCheckin($request);
-    }
+        try {
+            $averageDurationOfAStay = $this->dashboardTacticService->calculateAverageDurationOfAStay($request->start_date, $request->end_date);
 
-    /**
-     * Return the average duration of a checkin process, using the repository.
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getAverageDurationOfACheckin(Request $request) : JsonResponse
-    {
-        return DashboardTacticRepository::averageDurationOfACheckin($request);
-    }
+            return response()->json(['average_duration_of_a_stay' => $averageDurationOfAStay]);
 
-    /**
-     * Return the average duration of a stay, using the repository.
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getAverageDurationOfAStay(Request $request):JsonResponse
-    {
-        return DashboardTacticRepository::averageDurationOfAStay($request);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Une erreur s\'est produite'], 500);
+        }
     }
 
     /**
