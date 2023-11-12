@@ -19,10 +19,10 @@ class ReservationFactory extends Factory
 
         return [
             'user_id'=> $this->faker->randomElement($user_id),
-            'number_of_people' => $this->faker->numberBetween(1, 9),
+            'number_of_people' => $this->faker->numberBetween(1, 3),
             'started_date' => $started_random_date,
             'end_date' => $this->faker->dateTimeBetween($started_random_date, '+2 weeks'),
-            'price' => $this->faker->randomFloat(2, 70, 3500),
+            'price' => $this->faker->numberBetween(70, 3500),
             'stay_type' => $this->faker->randomElement(['pro', 'personal']),
             'status' => 'validated',
         ];
