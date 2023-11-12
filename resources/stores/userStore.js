@@ -7,10 +7,8 @@ export const useUserStore = defineStore('user', {
         // token: localStorage.getItem('token'),
         user: null,
         logged: localStorage.getItem('isLogged'),
+        isLogged: false,
     }),
-    getters: {
-        //
-    },
     actions: {
         /**
          * Loads the user data from the API and updates the user state.
@@ -27,7 +25,6 @@ export const useUserStore = defineStore('user', {
                     if(error.response.status === 401 ){
                         localStorage.removeItem('isLogged')
                     }
-
                 })
         },
 
@@ -42,7 +39,9 @@ export const useUserStore = defineStore('user', {
         async logout(){
             await axios.post('api/logout')
             localStorage.removeItem('isLogged')
+            sessionStorage.removeItem('intendedURL')
             this.user = null
+            this.isLogged = false
             await router.push({name: 'landingPage'});
         }
 
