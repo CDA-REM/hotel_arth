@@ -192,13 +192,14 @@ class ReservationController extends Controller
     /**
      * Retrieves the reservations made by the authenticated user.
      *
-     * @return AnonymousResourceCollection The collection of reservation resources.
+     * @return JsonResponse The collection of reservation resources.
      */
-    public function getUserReservations(): AnonymousResourceCollection
+    public function getUserReservations(): JsonResponse
     {
         $user = Auth::user(); // L'utilisateur authentifié
         $userReservations = Reservation::where('user_id', $user->id)->get();
 
-        return ReservationResource::collection($userReservations);
+        //return ReservationResource::collection($userReservations);
+        return response()->json($userReservations, 200);
     }
 }

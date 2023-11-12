@@ -49,7 +49,6 @@ Route::middleware('setLocale')->group(function () {
             # Reviews API routes
             Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
         });
-        Route::get('/user-reservations', [ReservationController::class, 'getUserReservations']);
     });
     # Protected Users API routes 'api/users/'
     Route::middleware('auth:sanctum')->prefix('users')->name('users')->group(function () {
@@ -61,6 +60,8 @@ Route::middleware('setLocale')->group(function () {
         Route::put('/{id}/userInfos', [UserController::class, 'updateUserInfo'])->name('.update');
         # Delete a user
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('.delete');
+        # Get reservation of user connected
+        Route::get('/{id}/reservations', [ReservationController::class, 'getUserReservations'])->name('.user-reservations');
         # Get info of user connected
         Route::get('/me', [UserController::class, 'me'])->name('.me');
         # Get info of admin connected
