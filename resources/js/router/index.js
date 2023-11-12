@@ -54,7 +54,7 @@ const routes = [
         }
     },
     {
-        path: '/mon-compte',
+        path: '/my-account',
         name: 'userAccount',
         component: () => import('../Views/private/Account.vue'),
         meta: {
