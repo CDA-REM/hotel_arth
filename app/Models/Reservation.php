@@ -27,7 +27,7 @@ class Reservation extends Model
 
     public $timestamps = true;
 
-    public $fillable = ['started_date','end_date', 'checkin', 'checkout', 'user_id', 'number_of_people', 'price', 'stay_type'];
+    public $fillable = ['started_date','end_date', 'checkin', 'checkout', 'user_id', 'number_of_people', 'price', 'stay_type', 'status'];
     /**
      * @return BelongsToMany
      */
