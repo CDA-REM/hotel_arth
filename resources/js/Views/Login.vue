@@ -87,11 +87,14 @@ export default {
     },
     methods: {
         /**
-         * Submits the login form.
+         * Submits the login form and performs the necessary actions upon success or failure.
          *
-         * @return {Promise} A promise that resolves when the login is successful.
+         * @param {Event} event - The form submission event.
+         * @return {Promise<void>} A promise that resolves when the login submission is complete.
          */
         async submitLogin() {
+            event.preventDefault();
+
             this.errors = []
 
             try {
@@ -103,17 +106,16 @@ export default {
                 localStorage.setItem('isLogged', 'true')
                 const intendedURL = sessionStorage.getItem('intendedURL') || '/';
 
-                console.log(intendedURL)
-                this.$router.push(intendedURL);
-
                 if (intendedURL !== '/login') {
                     this.$router.push(intendedURL);
                 } else {
                     this.$router.push('/');
                 }
 
+                sessionStorage.removeItem('intendedURL');
+
             } catch (errors) {
-                this.errors = errors
+                this.errors.push(errors);
             }
         },
     },
