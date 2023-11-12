@@ -109,7 +109,7 @@ export default {
                 if (intendedURL !== '/login') {
                     this.$router.push(intendedURL);
                 } else {
-                    this.$router.push('/');
+                    this.$router.push({name: 'landingPage'});
                 }
 
                 sessionStorage.removeItem('intendedURL');
