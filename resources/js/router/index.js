@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory} from "vue-router";
+import {createRouter, createWebHashHistory, createWebHistory} from "vue-router";
 import LandingPage from '../Views/LandingPage/LandingPage';
 import ReservationConfirmation from "../Views/Reservation/ReservationConfirmation.vue";
 
@@ -70,7 +70,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHashHistory(process.env.BASE_URL),
+    history: createWebHistory(process.env.BASE_URL),
     routes,
     scrollBehavior(to, from, savedPosition) {
         if (to.hash) {
