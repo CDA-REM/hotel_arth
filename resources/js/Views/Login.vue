@@ -98,20 +98,30 @@ export default {
             this.errors = []
 
             try {
+                // Demande de cookie CSRF
                 await axios.get('/sanctum/csrf-cookie')
+
+                // Tentative de connexion
                 const response = await axios.post('api/login', this.user)
+
+                // Gestion de la réponse
                 this.userStore.user = handleResponse(response)
+
+                // Définir l'état de connexion
                 this.userStore.isLogged = true
+
                 authStore.setRememberMe(this.rememberMe);
                 localStorage.setItem('isLogged', 'true')
-                const intendedURL = sessionStorage.getItem('intendedURL') || '/';
 
+                // Navigation après connexion réussie
+                const intendedURL = sessionStorage.getItem('intendedURL') || '/';
                 if (intendedURL !== '/login') {
                     this.$router.push(intendedURL);
                 } else {
                     this.$router.push({name: 'landingPage'});
                 }
 
+                // Nettoyage
                 sessionStorage.removeItem('intendedURL');
 
             } catch (errors) {
