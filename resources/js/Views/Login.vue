@@ -89,7 +89,6 @@ export default {
         /**
          * Submits the login form and performs the necessary actions upon success or failure.
          *
-         * @param {Event} event - The form submission event.
          * @return {Promise<void>} A promise that resolves when the login submission is complete.
          */
         async submitLogin() {

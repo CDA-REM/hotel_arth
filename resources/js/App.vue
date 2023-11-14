@@ -22,7 +22,7 @@ export default {
     // To pass user data in userStore after refresh of the page
 
         checkUserConnection() {
-            axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.get('/sanctum/csrf-cookie').then(() => {
                 // Check if user is Authenticate
                 const userStore = useUserStore();
                 userStore.loadUser()
