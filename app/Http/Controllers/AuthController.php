@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +14,7 @@ class AuthController extends Controller
 {
     /**
      * Register a user.
-     ** @param  \Illuminate\Http\Request  $request
+     ** @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function loginApi(Request $request)
@@ -49,6 +50,7 @@ class AuthController extends Controller
             }
             return true;
         }
+
         try {
             // Authentication of user pass
             checkAuthentication($authentication);
@@ -69,8 +71,7 @@ class AuthController extends Controller
                 'user' => $user,
             ]);
 
-        }
-        catch (Exception $e){
+        } catch (Exception $e){
             // Authentication of user fails
             if($e->getMessage() === "Email et/ ou mot de passe incorrecte") {
                 return response()->json([
@@ -91,7 +92,7 @@ class AuthController extends Controller
 
     /**
      * Register a user.
-     ** @param  \Illuminate\Http\Request  $request
+     ** @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(Request $request)
@@ -139,7 +140,7 @@ class AuthController extends Controller
 
     /**
      * Display a user.
-     ** @param  \Illuminate\Http\Request  $request
+     ** @param Request $request
      * @return string
      */
     public function login(Request $request)
@@ -179,11 +180,9 @@ class AuthController extends Controller
             //Get remember token
             $rememberToken = $user->remember_token;
 
-            // Create a new token if user isAdmin
-            if($user->user_role == 'admin'){
+            // Create a new token for all users
+            if($authentication) {
                 $token = $user->createToken('auth_token')->plainTextToken;
-            }else{
-                $token = null;
             }
 
             return response()->json([
@@ -206,10 +205,10 @@ class AuthController extends Controller
     /**
      * Log the user out of the application.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
-    public function logout(Request $request)
+    public function logout(Request $request): Response
     {
         Auth::user()->tokens()->delete();
         Auth::guard("web")->logout();
