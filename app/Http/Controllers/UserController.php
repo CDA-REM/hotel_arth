@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repository\UserRepository;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +24,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function user($id)
     {
@@ -36,7 +37,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function me(Request $request)
     {
@@ -54,10 +55,10 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      * @throws Exception
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $user = Auth::user();
 //        if($user){
@@ -93,78 +94,90 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Updates the user's avatar.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request The HTTP request object.
+     * @param User $user The user object to update.
+     * @return bool Returns true if the avatar is successfully updated, false otherwise.
+     * @throws Exception If there is an error storing the avatar file.
      */
-    public function update(Request $request, $id)
+    private function updateUserAvatar(Request $request, User $user): bool
     {
-        $user = User::query()->find($id);
-        $dataToUpdate = $request->all();
+        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
+            $file = $request->file('avatar');
+            $file_name = preg_replace('/\s+/', '', $file->getClientOriginalName());
 
-        if ($request->hasFile('avatar')) {
-            if ($request->file('avatar')->isValid()) {
+            try {
+                // Le chemin relatif où le fichier sera stocké dans le système de fichiers public
+                $relativePath = 'users/' . $file_name;
 
-                // Gets sent file
-                $file = $request->file('avatar');
-
-                // Removes whitespaces
-                $file_name = preg_replace('/\s+/', '', $file->getClientOriginalName());
-
-                // Puts the file in the storage directory
+                // Stockage du fichier dans le système de fichiers
                 Storage::putFileAs('public/avatars', $file, $file_name);
 
-                // Stocker l'url de l'ancienne video dans une variable
-                $old_avatar_url = $user->avatar_url;
-
-                // Stocker le chemin vers la nouvelle video dans une variable
+                // Construction de l'URL complète de l'avatar
                 $new_avatar_url = 'storage/avatars/' . $file_name;
 
-                // indiquer la colonne à modifier en BD et ce qu'on y stocke
-                $dataToUpdate['avatar'] = $new_avatar_url;
+                if (!empty($user->avatar_url)) {
+                    // Suppression de l'ancien fichier avatar, si nécessaire
+                    $old_avatar_path = str_replace('storage/avatars/', 'public/avatars/', $user->avatar_url);
+                    Storage::delete($old_avatar_path);
+                }
 
-                // Modifies the file path in order to allow the server to find the video in the storage/public/hero
-                $filepath = str_replace('storage/', 'public/', $old_avatar_url);
+                // Mise à jour des colonnes avatar et avatar_url
+                $user->avatar = $relativePath;
+                $user->avatar_url = $new_avatar_url;
+                $user->save();
 
-                // Supprimer le lien vers l'ancienne vidéo
-                Storage::delete($filepath);
+                return true;
+            } catch (Exception $e) {
+                Log::error("Error storing avatar file: " . $e->getMessage());
+                return false;
             }
-        };
-
-        // Envoyer les données mises à jour vers la DB
-        $user->update($dataToUpdate);
-
-        // Retourner le résultat de la réponse au format JSON
-        return response()->json($user);
+        }
+        return false;
     }
 
     /**
-     * Update a user resource in the database.
-     * @param Request $request
-     * @return
+     * Update a user based on the given request data.
+     *
+     * @param Request $request The request object containing the user data.
+     * @return JsonResponse The JSON response containing the updated user and the avatar update status.
      */
-    function updateUserInfo(Request $request): User|\Illuminate\Http\JsonResponse
+    public function update(Request $request): JsonResponse
     {
         // Data Validation
         $validator = UserControllerValidator::updateUserValidator($request);
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             Log::error($validator->errors());
             return Response::json($validator->errors(), 502);
         }
         $validated = $validator->validated();
         Log::info("After validated data");
 
-        return UserRepository::updateUser(User::find($validated["id"]), $validated);
+        // Find user
+        $user = User::find($validated["id"]);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Update avatar
+        $avatarUpdatedSuccessfully = $this->updateUserAvatar($request, $user);
+
+        // Update user using the repository, regardless of avatar update status
+        $updatedUser = UserRepository::updateUser($user, $validated);
+
+        // Include avatar update status in the response
+        return response()->json([
+            'user' => $updatedUser,
+            'avatarUpdated' => $avatarUpdatedSuccessfully
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function destroy($id)
     {

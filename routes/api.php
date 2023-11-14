@@ -56,8 +56,7 @@ Route::middleware('setLocale')->group(function () {
         # Get a user
 //        Route::get('/{id}', [UserController::class, 'user']);
         # Modify a user
-        Route::put('/{id}', [UserController::class, 'update'])->name('.update');
-        Route::put('/{id}/userInfos', [UserController::class, 'updateUserInfo'])->name('.update');
+        Route::put('/{id}/userInfos', [UserController::class, 'update'])->name('.update');
         # Delete a user
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('.delete');
         # Get reservation of user connected
