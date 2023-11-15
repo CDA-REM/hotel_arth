@@ -876,8 +876,7 @@ export default defineComponent({
                 )
                 .catch((error) => {
                     this.errors.push(
-                        "Une erreur s'est produite lors de l'enregistrement de vos informations utilisateur : " +
-                        (error?.response?.data?.message || " Erreur inconnue. \n") + "Veuillez réessayer ou nous contacter si le problème persiste."
+                        "Une erreur s'est produite lors de l'enregistrement de vos informations utilisateur :  \n" + "Veuillez réessayer ou nous contacter si le problème persiste."
                     );
                 });
         },
@@ -913,8 +912,7 @@ export default defineComponent({
                     .catch((error) => {
                         this.errors = [];
                         this.errors.push(
-                            "Une erreur s'est produite lors de l'enregistrement de votre réservation : \n" +
-                            (error?.response?.data?.message || " Erreur inconnue") + "\n" + " Veuillez réessayer ou nous contacter si le problème persiste."
+                            "Une erreur s'est produite lors de l'enregistrement de votre réservation : \n" + " Veuillez réessayer ou nous contacter si le problème persiste."
                         );
                     });
             }
