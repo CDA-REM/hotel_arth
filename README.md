@@ -88,6 +88,37 @@ For this project we have decided to continue using under_score, ex:
 
 This is not a problem, but it is recommended to use the *kebab-case* syntax for readability reasons (because underscores are covered by the blue underlining of link).
 
+### Cache problems
+
+If certain requests suddenly seem to be blocked without (the "/me" request for example), or if the display does not update or does not conform to the code, consider clearing the caches:
+
+**Laravel configuration/routes/vues**
+
+```shell
+php artisan config:cache
+php artisan route:cache
+php artisan view:clear
+```
+
+**VueJS cache**
+```shell
+npm run dev
+```
+or
+
+```shell
+npm run production
+```
+
+**Clear browser cache**
+
+It is also advisable to clear your browser cache.
+
+**Restart dev server**
+
+```shell
+php artisan serve
+```
 
 **Happy coding !**
 
