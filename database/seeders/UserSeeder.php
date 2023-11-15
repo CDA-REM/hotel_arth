@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
                 'firstname' => 'Kaley',
                 'name' => 'King',
                 'email' => 'rem@hotel.fr',
-                'phone' => '1-281-295-6068',
+                'phone' => '0606060606',
                 'avatar_url' => 'storage/avatars/avatar1.png',
                 'password' => '$2y$10$y8F7O8DXCuPskVcv4vOuvOhjTBVSLmbVofU4Sc3dgnNGqadkLbQiC',
                 'user_role' => "admin",
