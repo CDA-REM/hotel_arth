@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
 
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
 
 
-Route::group(['prefix' => 'admin'], function () {
-    Voyager::routes();
-});
