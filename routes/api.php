@@ -243,7 +243,7 @@ Route::prefix('dashboard')->name('dashboard')->group(function () {
         Route::get('/reservationsBetweenDates', [DashboardController::class, 'getReservationsBetweenTwoDates'])->name
         ('tacticalDashboard');
         Route::get('totalSales', [DashboardController::class, 'getTotalSalesBetweenTwoDates']);
-        Route::get('averageCart', [DashboardController::class, 'getAverageCartValueBetweenTwoDates']);
+        Route::get('averageCartValue', [DashboardController::class, 'getAverageCartValueBetweenTwoDates']);
         Route::get('averageCartEvolution', [DashboardController::class, 'getAverageCartEvolutionBetweenTwoDates']);
         Route::get('occupancy', [DashboardController::class, 'getNumberOfReservationsBetweenTwoDates']);
         Route::get('occupancyRate', [DashboardController::class, 'getOccupancyRateBetweenTwoDates']);
