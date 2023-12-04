@@ -7,6 +7,8 @@
     <meta name="keywords" content="hôtel, repos, dépaysement, voyage, séjour, Annecy, lac, lac d'Annecy, dormir,
     famille, déplacement professionnel, où dormir, hôtel-restaurant, suite, réception, piscine, rooftop, toit
     accessible, vue sur les montagnes">
+    <meta name="robots" content="noindex">
+
     <title>Hôtel Arth</title>
     <link rel="icon" type="image/png" href="{{ asset('storage/pictures/favicon.png') }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
