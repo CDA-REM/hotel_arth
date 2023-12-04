@@ -25,8 +25,13 @@ axios.defaults.baseURL = process.env.BASE_URL;
 // Axios interceptor modifies HTTP header before the request is sent back to Laravel
 axios.interceptors.request.use(
     function (config) {
+        if (!localStorage.lang) {
+            localStorage.lang = 'fr'
+        }
+
         config.headers['Accept-Language'] = localStorage.lang;
-        return config;
+        return config
+
     },
     function (error) {
         return Promise.reject(error);

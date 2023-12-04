@@ -20,11 +20,11 @@ class ReservationTest extends TestCase
 
     public function testReservationFunctionality()
     {
-        // Création de données de test pour la réservation
+        // Arrange : Création de données de test pour la réservation
         $user = User::factory()->create();
         $started_random_date = now()->addDays(rand(1, 10));
 
-        // Création et enregistrement de l'instance de réservation
+        // Arrange : Création et enregistrement de l'instance de réservation
         $reservation = Reservation::factory()->create([
             'user_id' => $user->id,
             'number_of_people' => $this->faker->numberBetween(1, 9),
@@ -36,10 +36,10 @@ class ReservationTest extends TestCase
         ]);
 
 
-        // Récupération de l'instance depuis la base de données
+        // Act : Récupération de l'instance depuis la base de données
         $retrievedReservation = Reservation::find($reservation->id);
 
-        // Vérification que les données enregistrées correspondent
+        // Assert: Vérification que les données enregistrées correspondent
         $this->assertNotNull($retrievedReservation);
         $this->assertEquals($reservation['user_id'], $retrievedReservation->user_id);
         $this->assertEquals($reservation['number_of_people'], $retrievedReservation->number_of_people);
@@ -52,21 +52,21 @@ class ReservationTest extends TestCase
 
     public function testReservationStatusUpdateToInProgress()
     {
-        // Créer une réservation initiale
+        // Arrange : Créer une réservation initiale
         $user = User::factory()->create();
         $reservation = Reservation::factory()->create([
             'user_id' => $user->id,
             'status' => 'validated'
         ]);
 
-        // Modifier le statut de la réservation
+        // Act : Modifier le statut de la réservation
         $reservation->status = 'in_progress';
         $reservation->save();
 
-        // Récupérer la réservation mise à jour
+        // Act : Récupérer la réservation mise à jour
         $updatedReservation = Reservation::find($reservation->id);
 
-        // Vérifier si le statut a été mis à jour
+        // Assert : Vérifier si le statut a été mis à jour
         $this->assertEquals('in_progress', $updatedReservation->status);
     }
 }
