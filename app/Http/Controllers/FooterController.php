@@ -33,7 +33,7 @@ class FooterController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -44,16 +44,16 @@ class FooterController extends Controller
             'url_redirection' => 'required'
         ]);
         $validatedData = $validator->validate();
-//        var_dump($validatedData);
+
         // Create a new instance of footer
         $footer = new Footer();
-//        dd($footer);
+
         //Fill $footer with validated data and save
         $footer->fill($validatedData)
                ->save();
 //        return FooterResource::collection(Footer::all());
         return response()->json($footer);
-//        return new FooterResource($footer);
+
 
     }
 
@@ -84,13 +84,12 @@ class FooterController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, int $id)
     {
         $footer = FooterResource::make(Footer::query()->findOrFail($id));
 
-        // Update data in database
         $footer->update($request->post());
         return response()->json($footer);
     }

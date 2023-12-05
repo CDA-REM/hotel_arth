@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Footer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Mockery;
+use Mockery\MockInterface;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
@@ -11,11 +14,13 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class FooterTest extends TestCase
 {
+    use RefreshDatabase, WithFaker;
     /**
-     * A basic feature test example.
+     * Test that the footer is rendered.
      *
      * @return void
      */
+
     public function test_footer_is_rendered()
     {
         $response = $this->get('api/home/footer');
@@ -23,10 +28,17 @@ class FooterTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * Test that a link has been modified in the footer
+     *
+     * @return void
+     */
     public function test_footer_modification_link()
     {
+        $footer = Footer::factory()->create();
+
         $this->withoutMiddleware();
-        $response = $this->put('api/home/footer/2',  [
+        $response = $this->putJson('api/home/footer/' . $footer->getRouteKey(),  [
             'column_number' => '1',
             'entry_name' => ['fr' => 'Se connecter', 'en' => 'Login'],
             'url_redirection' => '/login'
@@ -34,15 +46,24 @@ class FooterTest extends TestCase
         $response->assertStatus(200);
     }
 
-
+    /**
+     * Test that a link has been deleted in the footer
+     *
+     * @return void
+     */
     public function test_footer_delete()
     {
+        $footer = Footer::factory()->create();
         $this->withoutMiddleware();
-        $response = $this->delete('api/home/footer/1');
+        $response = $this->delete('api/home/footer/' . $footer->getRouteKey());
         $response->assertStatus(200);
     }
 
-
+    /**
+     * Test that a link has been created in the footer
+     *
+     * @return void
+     */
         public function test_footer_creation_link()
     {
         $this->withoutMiddleware();
@@ -54,8 +75,4 @@ class FooterTest extends TestCase
         $response->assertStatus(200);
     }
 
-//    public function test_seeder()
-//    {
-//        $this->seed();
-//    }
 }

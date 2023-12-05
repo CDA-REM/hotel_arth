@@ -14,7 +14,9 @@ class FooterFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'column_number' => $this->faker->randomElement(['1','2']),
+            'entry_name' => ['fr' => $this->faker->title(), 'en' => $this->faker->title()],
+            'url_redirection' => '/test',
         ];
     }
 }
