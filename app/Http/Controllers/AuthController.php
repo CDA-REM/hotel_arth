@@ -106,7 +106,7 @@ class AuthController extends Controller
         {
             return response()->json([
                 'errors' => $validatedData->errors(),
-            ]);
+            ], 400);
         }else{
             $user = User::create([
                 'email' => $request['email'],
