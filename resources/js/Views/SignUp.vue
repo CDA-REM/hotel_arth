@@ -26,7 +26,7 @@
     </nav>
     <div class="signup__section">
         <h1 class="mt-8">{{ $t("signUp.title")}}</h1>
-        <form>
+        <form ref="signUpForm">
             <div class="form-control w-full max-w-xs mx-auto mt-12 flex flex-col space-y-5">
                 <div>
                     <label class="label">
@@ -46,7 +46,7 @@
                     <label class="label">
                         <span class="label-text">{{ $t("signUp.confirmPassword") }}</span>
                     </label>
-                    <input type="password" placeholder="Password confirmation" v-model="user.password_confirmation" id="password_confirmation" autocomplete="off"/>
+                    <input type="password" placeholder="Password confirmation" v-model="user.password_confirmation" id="password_confirmation" autocomplete="off" minlength="8"/>
                 </div>
                 <div class=" flex space-x-4 mt-4">
                     <span class="label-text">{{ $t("signUp.rememberToken") }}</span>
@@ -57,7 +57,7 @@
             </div>
 
             <div class="flex mx-auto mt-12 mb-8">
-                <button @click="registerUser()" class="bg-arth-green hover:scale-105" >{{ $t("signUp.button") }}</button>
+                <button @click="registerUserIfFormValid()" class="bg-arth-green hover:scale-105">{{ $t("signUp.button") }}</button>
             </div>
         </form>
     </div>
@@ -94,6 +94,11 @@ export default {
     },
 
     methods: {
+        registerUserIfFormValid() {
+            if (this.$refs.signUpForm.reportValidity()) {
+                this.registerUser()
+            }
+        },
         /**
          * Enregistre un utilisateur et redirige vers la page de confirmation en cas de succès.
          *
@@ -107,6 +112,8 @@ export default {
         async registerUser() {
             this.errors = []
 
+            this.$refs.signUpForm.reportValidity()
+
             try {
                 await axios.get('/sanctum/csrf-cookie')
                 const response = await axios.post('api/register', this.user)
@@ -114,14 +121,13 @@ export default {
                 this.userStore.isLogged = true
                 authStore.setRememberMe(this.rememberMe);
                 localStorage.setItem('isLogged', 'true')
-                const intendedURL = sessionStorage.getItem('intendedURL') || '/';
 
                 // Vérifier le statut de la réponse et rediriger l'utilisateur en conséquence
                 if (this.userStore.user) {
                     this.$router.push({name: 'signUpConfirmation'}); // Rediriger vers la page 'signUpConfirmation'
                 } else {
                     // Rediriger vers la page précédemment demandée
-                    this.$router.push(intendedURL);
+                    this.$router.push({name : 'landingPage'});
                 }
             } catch (errors) {
                 this.errors = errors
