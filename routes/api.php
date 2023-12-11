@@ -222,6 +222,7 @@ Route::middleware('setLocale')->prefix('statistics')->name('statistics')->group(
 
 Route::get('/keycardReservation/{keyCard}', [KeyCardController::class, 'showWithReservation'])->name('keycardReservation.show');
 
+Route::middleware(['auth:sanctum', 'role:admin'])->name('admin')->group(function () {
 // Tests for dashboard
 
 Route::get('/dashboard/operational', [DashboardController::class, 'getOperationalDashboardData'])->name('operationalDashboard');
@@ -247,4 +248,4 @@ Route::prefix('dashboard')->name('dashboard')->group(function () {
         Route::get('total-people', [DashboardController::class, 'getNumberOfPeople'])->name('.people');
         Route::get('menus', [DashboardController::class, 'getReservationsMenusOptions'])->name('.menus');
     });});
-
+});
