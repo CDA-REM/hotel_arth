@@ -11,7 +11,7 @@ class PromotionalBannerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return PromotionalBannerResource
      */
     public function index()
     {
@@ -23,7 +23,7 @@ class PromotionalBannerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
