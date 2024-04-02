@@ -3,41 +3,88 @@
 namespace App\Repository;
 
 use App\Models\KeyCard;
+use App\Models\Reservation;
+use App\Models\Room;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use PHPUnit\Framework\Constraint\Count;
+use Ramsey\Collection\Collection;
 
 class KeyCardRepository
 {
+//    /**
+//     * Get the number of keycards for a room
+//     * @param $roomId
+//     * @return int
+//     */
+//    public static function getCurrentCards($roomId): int
+//    {
+//        // Create empty array $keyCardsAlreadyInUse
+//        $keyCardsAlreadyInUse = [];
+//        // Get all keycards whose room_id is equal to the room_id of the room for which we want to know/display the number of keycards.
+//        foreach (KeyCard::all() as $keyCard) {
+//            if ($keyCard->room_id == $roomId) {
+//                // Add the keycard to the array $keyCardsAlreadyInUse
+//                array_push($keyCardsAlreadyInUse, $keyCard);
+//            }
+//        }
+//        // Return number of elements in array $keyCardsAlreadyInUse
+//        return count($keyCardsAlreadyInUse);
+//    }
+//
+//    /**
+//     * Verifies if the number of keycards is less than 2
+//     * @param $roomId
+//     * @return bool
+//     */
+//    public static function checkIfKeyCardCreationIsAllowed($roomId): bool
+//    {
+//        // Return true if the number of keycards is less than 2, otherwise return false
+//        return KeyCardRepository::getCurrentCards($roomId) < 2 ? true : false;
+//    }
     /**
      * Get the number of keycards for a room
      * @param $roomId
+     * @param $reservationId
      * @return int
      */
-    public static function getCurrentCards($roomId): int
+    public static function getCurrentCards($roomId, $reservationId): int
     {
         // Create empty array $keyCardsAlreadyInUse
         $keyCardsAlreadyInUse = [];
+
+        // Find the current reservation
+        $reservation = Reservation::where('id',$reservationId)->first();
+            $reservation_id = $reservation->id;
+
+            // Find the current roomId in reservation_room
+            $room = $reservation->rooms()->where('id', $roomId)->first();
+
         // Get all keycards whose room_id is equal to the room_id of the room for which we want to know/display the number of keycards.
         foreach (KeyCard::all() as $keyCard) {
-            if ($keyCard->room_id == $roomId) {
-                // Add the keycard to the array $keyCardsAlreadyInUse
-                array_push($keyCardsAlreadyInUse, $keyCard);
+//            dd($keyCard->room_id);
+                if ($keyCard->reservation_id == $reservation_id && $keyCard->room_id == $roomId) {
+                    // Add the keycard to the array $keyCardsAlreadyInUse
+                    array_push($keyCardsAlreadyInUse, $keyCard);
+                }
             }
-        }
         // Return number of elements in array $keyCardsAlreadyInUse
+//        dd($keyCardsAlreadyInUse);
         return count($keyCardsAlreadyInUse);
     }
 
     /**
      * Verifies if the number of keycards is less than 2
      * @param $roomId
+     * @param $reservationId
      * @return bool
      */
-    public static function checkIfKeyCardCreationIsAllowed($roomId): bool
+    public static function checkIfKeyCardCreationIsAllowed($roomId, $reservationId): bool
     {
         // Return true if the number of keycards is less than 2, otherwise return false
-        return KeyCardRepository::getCurrentCards($roomId) < 2 ? true : false;
+        return KeyCardRepository::getCurrentCards($roomId, $reservationId) < 2 ? true : false;
     }
+
 
     /**
      * Verify if the keycard is valid before allowing access to the room
@@ -77,4 +124,6 @@ class KeyCardRepository
             ]);
         }
     }
+
+
 }

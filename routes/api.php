@@ -210,6 +210,9 @@ Route::middleware('setLocale')->prefix('keycard')->name('keycard')->group(functi
     Route::post('/', [KeyCardController::class, 'create'])->name('.create');
     Route::get('/{keyCard}', [KeyCardController::class, 'show'])->name('.show');
     Route::post('/room', [KeyCardController::class, 'openRoomDoor'])->name('.openRoomDoor');
+    Route::get('/', [KeyCardController::class, 'index'])->name('.index');
+
+
 });
 # END - Route key cards
 
@@ -222,6 +225,8 @@ Route::middleware('setLocale')->prefix('statistics')->name('statistics')->group(
 
 
 Route::get('/keycardReservation/{keyCard}', [KeyCardController::class, 'showWithReservation'])->name('keycardReservation.show');
+Route::get('/keycardReservation', [KeyCardController::class, 'showKeyCardByReservationAndRoom'])->name('.showKeyCardByReservationAndRoom');
+
 
 // Tests for dashboard
 
