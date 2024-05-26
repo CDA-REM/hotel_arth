@@ -208,7 +208,7 @@ Route::get('reservation/test/{id}', [ReservationController::class, 'test'])->nam
 # START - Route key cards
 Route::middleware('setLocale')->prefix('keycard')->name('keycard')->group(function () {
     Route::post('/', [KeyCardController::class, 'create'])->name('.create');
-    Route::get('/{keyCard}', [KeyCardController::class, 'show'])->name('.show');
+    Route::get('/{keyCode}', [KeyCardController::class, 'show'])->name('.show');
     Route::post('/room', [KeyCardController::class, 'openRoomDoor'])->name('.openRoomDoor');
     Route::get('/', [KeyCardController::class, 'index'])->name('.index');
 
@@ -224,7 +224,7 @@ Route::middleware('setLocale')->prefix('statistics')->name('statistics')->group(
 # END - Route statistics
 
 
-Route::get('/keycardReservation/{keyCard}', [KeyCardController::class, 'showWithReservation'])->name('keycardReservation.show');
+Route::get('/keycardReservation/{keyCode}', [KeyCardController::class, 'showWithReservation'])->name('keycardReservation.show');
 Route::get('/keycardReservation', [KeyCardController::class, 'showKeyCardByReservationAndRoom'])->name('.showKeyCardByReservationAndRoom');
 
 

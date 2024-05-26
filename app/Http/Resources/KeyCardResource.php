@@ -25,7 +25,6 @@ class KeyCardResource extends JsonResource
             'key_code' => $this->key_code,
             'room_id' => $this->room_id,
             'reservation_id' => $this->reservation_id
-//            'reservation' => ReservationResource::make($this->reservation), //Use ReservationResource to associate the fields of the reservation table.
         ];
     }
 }
