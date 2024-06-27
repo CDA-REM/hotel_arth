@@ -92,38 +92,7 @@ class KeyCardRepository
      * @return bool
      */
 
-//    public static function allowsRoomAccess($room_id, $key_code): bool
-//    {
-//
-//        //Récupérer la $keycard->room_id
-//        $keycard= KeyCard::where("key_code", $key_code)->first();
-//
-//        //Créer une variable pour stocker la valeur de $keycard->room_id
-//        $keyCard_room_id = $keycard->room_id;
-//
-//        // Récupérer l'id de la key card
-//        $key_card_id = $keycard->id;
-//
-//        // Créer une variable pour stocker la date du jour
-//        $today = date("Y-m-d");
-//        // Créer une variable pour stocker la date de fin de la réservation
-//        $end_date = $keycard->reservation->end_date;
-//        // Créer une variable pour stocker la valeur du checkout de la réservation
-//        $checkout = $keycard->reservation->checkout;
-//        // Créer une variable pour stocker la valeur du checkin de la réservation
-//        $checkin = $keycard->reservation->checkin;
-//
-//        //Vérifier si $room_id est égale à $keycard->room_id
-//        if ($keyCard_room_id == $room_id && !isset($checkout) && $today <= $end_date && isset($checkin)) {
-//            // enregistrer la date et l'heure dans les statistiques
-//            StatisticRepository::updateStatistic($key_card_id);
-//            // retourner un objet json avec un message et le status de la requete
-//            return true;
-//        } else {
-//            // retourner un objet json avec un message et le status de la requete
-//            return false;
-//        }
-//    }
+
     public static function allowsRoomAccess($room_id, $key_code): bool
     {
 
