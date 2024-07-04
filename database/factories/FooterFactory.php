@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+
 class FooterFactory extends Factory
 {
     /**
@@ -14,7 +15,10 @@ class FooterFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'column_number' => $this->faker->numberBetween(1, 2),
+            'entry_name' => ['fr' => $this->faker->word(), 'en' => $this->faker->word()],
+            'url_redirection' => $this->faker->url(),
+
         ];
     }
 }

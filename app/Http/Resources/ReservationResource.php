@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\KeyCard;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -33,7 +34,8 @@ class ReservationResource extends JsonResource
             'stay_type' => $this->stay_type,
             'status' => $this->status,
             'rooms' => RoomResource::collection($this->rooms), //
-            'options' => OptionResource::collection($this->options)
+            'options' => OptionResource::collection($this->options),
+            'key_cards' => KeyCardResource::collection($this->key_cards)
         ];
     }
 }

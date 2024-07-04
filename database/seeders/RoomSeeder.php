@@ -136,16 +136,16 @@ class RoomSeeder extends Seeder
                 'style' => 'classic',
                 'price' => 70,
             ],
-            [
-                'room_number' => 305,
-                'style' => 'classic',
-                'price' => 70,
-            ],
-            [
-                'room_number' => 111,
-                'style' => 'luxury',
-                'price' => 140,
-            ],
+//            [
+//                'room_number' => 305,
+//                'style' => 'classic',
+//                'price' => 70,
+//            ],
+//            [
+//                'room_number' => 111,
+//                'style' => 'luxury',
+//                'price' => 140,
+//            ],
             [
                 'room_number' => 211,
                 'style' => 'luxury',
@@ -166,16 +166,20 @@ class RoomSeeder extends Seeder
                 'style' => 'luxury',
                 'price' => 140,
             ],
-            [
-                'room_number' => 309,
-                'style' => 'royal',
-                'price' => 280,
-            ],
+//            [
+//                'room_number' => 309,
+//                'style' => 'royal',
+//                'price' => 280,
+//            ],
             [
                 'room_number' => 310,
                 'style' => 'royal',
                 'price' => 280,
             ],
         ]);
+
+        Room::factory()
+            ->count(3)
+            ->create();
     }
 }

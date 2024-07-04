@@ -53,7 +53,11 @@ class Reservation extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function keys() : HasMany
+    /**
+     * Defines a relationship to key_card from the reservation table
+     * @return HasMany
+     */
+    public function key_cards() : HasMany
     {
         return $this->hasMany(KeyCard::class, 'reservation_id', 'id');
     }

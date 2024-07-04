@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\FooterResource;
 use Illuminate\Http\Request;
 use App\Models\Footer;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class FooterController extends Controller
@@ -33,7 +35,7 @@ class FooterController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -43,8 +45,12 @@ class FooterController extends Controller
             'entry_name' => 'required|array|min:2',
             'url_redirection' => 'required'
         ]);
+        if($validator->fails()){
+            Log::error($validator->errors());
+            return response()->json($validator->errors(), 400);
+        }
         $validatedData = $validator->validate();
-//        var_dump($validatedData);
+
         // Create a new instance of footer
         $footer = new Footer();
 //        dd($footer);
@@ -84,14 +90,24 @@ class FooterController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, int $id)
     {
-        $footer = FooterResource::make(Footer::query()->findOrFail($id));
 
+        $footer = Footer::query()->findOrFail($id);
+        $validator = Validator::make($request->post(), [
+            'column_number' => 'in:1,2',
+            'entry_name' => 'array|min:2',
+        ]);
+
+        if ($validator->fails()) {
+            Log::error($validator->errors());
+            return response()->json($validator->errors(), 400);
+        }
         // Update data in database
         $footer->update($request->post());
+
         return response()->json($footer);
     }
 
@@ -99,11 +115,13 @@ class FooterController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        Footer::destroy($id);
+        $footer = Footer::query()->findOrFail($id);
+        $footer->delete();
+        return response()->json($footer);
 
     }
 }

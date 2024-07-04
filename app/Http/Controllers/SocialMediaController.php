@@ -33,7 +33,7 @@ class SocialMediaController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -75,7 +75,7 @@ class SocialMediaController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -91,7 +91,7 @@ class SocialMediaController extends Controller
             $file = $request->file('logo_url');
             // Minimal sanitizing of the file name (deleting all whitespace)
             $file_name = preg_replace('/\s+/', '', $file->getClientOriginalName());
-//            dd( $socialM->social_url);
+//
             $validatedData['logo_url'] = 'storage/social_medias/' . $file_name;
 
             // Putting the file in said directory with said filename
@@ -113,7 +113,7 @@ class SocialMediaController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
